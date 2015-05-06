@@ -4,8 +4,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'nw_-0v1gumzd=w1l+fc8ji)5%7624%!mb0ha9i1i+iwdcrqg#!'
 
 # session settings for php compatibility
-SESSION_ENGINE = 'base.sessions'
-SESSION_COOKIE_NAME = 'PHPSESSID'
+# SESSION_ENGINE = 'base.sessions'
+# SESSION_COOKIE_NAME = 'PHPSESSID'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +31,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base',
+    'forum'
 )
 
 MIDDLEWARE_CLASSES = (
