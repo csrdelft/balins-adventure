@@ -1,0 +1,7 @@
+.virtualenv/
+node_modules/
+*.pyc
+__pycache__/
+.sass-cache/
+
+src/assets/css/
