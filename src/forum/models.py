@@ -31,14 +31,14 @@ class ForumDeel(Model):
 
 class ForumDraad(Model):
   draad_id = AutoField(primary_key=True)
-  forum_id = IntegerField()
+  forum = ForeignKey(ForumDeel, db_column="forum_id")
   gedeeld_met = IntegerField(blank=True, null=True)
-  uid = ForeignKey(Profiel, db_column='uid')
+  user = ForeignKey(Profiel, db_column='uid')
   titel = CharField(max_length=255)
   datum_tijd = DateTimeField()
   laatst_gewijzigd = DateTimeField(blank=True, null=True)
   laatste_post_id = IntegerField(blank=True, null=True)
-  laatste_wijziging_uid = ForeignKey(Profiel, blank=True, related_name='+', db_column="laatste_wijziging_uid")
+  laatste_wijziging_user = ForeignKey(Profiel, blank=True, related_name='+', db_column="laatste_wijziging_uid")
   belangrijk = CharField(max_length=255, blank=True)
   gesloten = IntegerField()
   verwijderd = IntegerField()
@@ -55,8 +55,8 @@ class ForumDraad(Model):
 
 class ForumDraadGelezen(Model):
   id = AutoField(primary_key=True)
-  draad_id = IntegerField()
-  uid = ForeignKey(Profiel, db_column='uid')
+  draad = ForeignKey(ForumDraad, db_column="draad_id")
+  user = ForeignKey(Profiel, db_column='uid')
   datum_tijd = DateTimeField()
 
   def __str__(self):
@@ -64,13 +64,13 @@ class ForumDraadGelezen(Model):
 
   class Meta:
     db_table = 'forum_draden_gelezen'
-    unique_together = (('draad_id', 'uid'),)
+    unique_together = (('draad', 'user'),)
 
 class ForumDraadReageren(Model):
   id = AutoField(primary_key=True)
-  forum_id = IntegerField()
-  draad_id = IntegerField()
-  uid = ForeignKey(Profiel, db_column='uid')
+  forum = ForeignKey(ForumDeel, db_column="forum_id")
+  draad = ForeignKey(ForumDraad, db_column="draad_id")
+  user = ForeignKey(Profiel, db_column='uid')
   datum_tijd = DateTimeField()
   concept = TextField(blank=True)
   titel = CharField(max_length=255, blank=True)
@@ -80,36 +80,36 @@ class ForumDraadReageren(Model):
 
   class Meta:
     db_table = 'forum_draden_reageren'
-    unique_together = (('forum_id', 'draad_id', 'uid'),)
+    unique_together = (('forum', 'draad', 'user'),)
 
 class ForumDraadVerbergen(Model):
   id = AutoField(primary_key=True)
-  draad_id = IntegerField()
-  uid = ForeignKey(Profiel, db_column='uid')
+  draad = ForeignKey(ForumDraad, db_column="draad_id")
+  user = ForeignKey(Profiel, db_column='uid')
 
   def __str__(self):
     return "draad %s verbergen voor %s" % (self.draad_id, self.uid_id)
 
   class Meta:
-    unique_together = (('draad_id', 'uid'),)
+    unique_together = (('draad', 'user'),)
     db_table = 'forum_draden_verbergen'
 
 class ForumDraadVolgen(Model):
   id = AutoField(primary_key=True)
-  draad_id = IntegerField()
-  uid = ForeignKey(Profiel, db_column='uid')
+  draad = ForeignKey(ForumDraad, db_column="draad_id")
+  user = ForeignKey(Profiel, db_column='uid')
 
   def __str__(self):
     return "draad %s gevolgd door %s" % (self.draad_id, self.uid_id)
 
   class Meta:
-    unique_together = (('draad_id', 'uid'),)
+    unique_together = (('draad', 'user'),)
     db_table = 'forum_draden_volgen'
 
 class ForumPost(Model):
   post_id = AutoField(primary_key=True)
-  draad_id = IntegerField()
-  uid = ForeignKey(Profiel, db_column='uid')
+  draad = ForeignKey(ForumDraad, db_column="draad_id")
+  user = ForeignKey(Profiel, db_column='uid')
   tekst = TextField()
   datum_tijd = DateTimeField()
   laatst_gewijzigd = DateTimeField()

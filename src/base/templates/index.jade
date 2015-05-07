@@ -50,7 +50,9 @@ html
             i.fa.fa-cogs
           li Groepen
           li.active Actueel
-          li Forum
+          li
+            a(href="{% url 'forum.main' %}")
+              | Reformaforum
           li Communicatie
 
     #all
@@ -82,7 +84,8 @@ html
           .col-xs-8
             .row#content
               h1
-                | Civitas Studiosorum Reformatorum
+                | {{ title }}
+
               div.divider
 
               | {{ content }}

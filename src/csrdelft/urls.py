@@ -1,10 +1,11 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-urlpatterns = patterns('',
-    # Examples:
-     url(r'^$', 'base.views.index', name='index'),
-    # url(r'^blog/', include('blog.urls')),
+import forum.views
 
-    url(r'^admin/', include(admin.site.urls)),
+urlpatterns = patterns('',
+  url(r'^$', 'base.views.index', name='index'),
+  url(r'^forum/', include(forum.views.urls)),
+
+  url(r'^admin/', include(admin.site.urls)),
 )

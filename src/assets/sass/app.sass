@@ -3,6 +3,7 @@
 @import breadcrumbs
 @import fonts
 @import sidebar
+@import forum
 
 $topbar-h: 60px
 $topmenu-h: 40px
@@ -135,8 +136,12 @@ body
           color: $accent
 
   #all
-    margin-top: $topbar-h + $topmenu-h + 20px
-    height: 100%
+    position: absolute
+    top: $topbar-h + $topmenu-h + 20px
+    left: 0px
+    bottom: 0px
+    overflow: auto
+    width: 100%
     z-index: 10
 
     #background-logo

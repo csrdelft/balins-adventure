@@ -10,14 +10,30 @@ SECRET_KEY = 'nw_-0v1gumzd=w1l+fc8ji)5%7624%!mb0ha9i1i+iwdcrqg#!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
-TEMPLATE_LOADERS = (
-    ('pyjade.ext.django.Loader',(
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
-    )),
-)
+TEMPLATES = [
+  {
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [],
+    'OPTIONS': {
+      'context_processors': [
+        'django.contrib.auth.context_processors.auth',
+        'django.template.context_processors.debug',
+        'django.template.context_processors.i18n',
+        'django.template.context_processors.media',
+        'django.template.context_processors.static',
+        'django.template.context_processors.tz',
+        'django.contrib.messages.context_processors.messages',
+        'django.template.context_processors.request',
+      ],
+      'loaders': [
+        ('pyjade.ext.django.Loader', (
+          'django.template.loaders.filesystem.Loader',
+          'django.template.loaders.app_directories.Loader',
+        )),
+      ]
+    },
+  },
+]
 
 ALLOWED_HOSTS = []
 
@@ -30,6 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_tables2',
     'base',
     'forum'
 )
@@ -73,3 +90,19 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = '/static/'
+
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': False,
+  'handlers': {
+    'console': {
+      'class': 'logging.StreamHandler',
+    },
+  },
+  'loggers': {
+    'django': {
+      'handlers': ['console'],
+      'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+    },
+  },
+}
