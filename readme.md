@@ -1,3 +1,13 @@
+## Getting Started With Development
+
+    make install && npm install && npm install -g gulp
+    gulp
+    source .virtualenv/bin/activate
+    mysql -u root << "create database csrdelft_django; grant all privileges on `csrdelft_django`.* to csrdelft@localhost identified by 'bl44t';"
+    cd src
+    ./manage.py migrate
+    ./manage.py runserver
+
 ## Apps
 
 ### Base
