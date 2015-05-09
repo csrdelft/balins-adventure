@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_tables2',
+    'permission',
     'base',
     'forum'
 )
@@ -61,6 +62,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # default
+    'permission.backends.PermissionBackend',
+)
+
 ROOT_URLCONF = 'csrdelft.urls'
 
 WSGI_APPLICATION = 'csrdelft.wsgi.application'
@@ -70,6 +76,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'csrdelft_django',
+        'USER': 'csrdelft',
+        'PASSWORD': 'bl44t'
+    },
+    'legacy': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'csrdelft',
         'USER': 'csrdelft',
         'PASSWORD': 'bl44t'
     }

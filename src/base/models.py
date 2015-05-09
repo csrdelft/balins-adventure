@@ -1,7 +1,10 @@
 from django.db.models import *
+from django.contrib.auth.models import User
 
 class Profiel(Model):
+  user = OneToOneField(User, null=True)
   uid = CharField(primary_key=True, max_length=4)
+
   nickname = CharField(max_length=255)
   duckname = CharField(max_length=255)
   voornaam = CharField(max_length=255)
@@ -70,6 +73,12 @@ class Profiel(Model):
   startkamp = CharField(max_length=255)
   medisch = TextField()
   novitiaatbijz = TextField(db_column='novitiaatBijz')  # Field name made lowercase.
+
+  def formal_name(self):
+    if self.geslacht == 'm':
+      return "Am. %s" % self.achternaam
+    else:
+      return "Ama. %s" % self.achternaam
 
   class Meta:
     db_table = 'profielen'
