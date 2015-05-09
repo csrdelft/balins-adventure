@@ -28,7 +28,15 @@ class ForumMostRecentTable(ForumTable):
     order_by = ('-laatst_gewijzigd',)
 
 def forum_root(request):
+  # TODO filter viewable by user
   queryset = ForumDraad.objects.all()
+
+  # filter on forum deel
+  if 'forum' in request.GET:
+    titel = ForumDeel.objects.get(pk=request.GET['forum']).titel + " Reformaforum"
+    queryset = queryset.filter(forum_id=request.GET['forum'])
+  else:
+    titel = "Reformaforum"
 
   table = ForumMostRecentTable(queryset)
   table.paginate(page=request.GET.get('page', 1), per_page=25)
@@ -36,7 +44,7 @@ def forum_root(request):
   delen = ForumDeel.get_viewable_by(request.user)
   cats = grouped_dict(map(lambda d: (d.categorie, d), delen))
 
-  return render_with_layout(request, 'forum_main.jade', title="Reformaforum", ctx={
+  return render_with_layout(request, 'forum_main.jade', title=titel, ctx={
     'categories': cats,
     'posts': table
   })
