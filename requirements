@@ -8,5 +8,6 @@ django-permission
 django-tables2
 django_extensions
 phpserialize
+ipython
 pyjade
 PyYAML

@@ -2,8 +2,11 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.shortcuts import render
 from base.views import render_with_layout
+from base.utils import grouped_dict
 from .models import *
+
 import logging
+logger = logging.getLogger(__name__)
 
 import django_tables2 as tables
 from django_tables2.utils import A
@@ -30,7 +33,11 @@ def forum_root(request):
   table = ForumMostRecentTable(queryset)
   table.paginate(page=request.GET.get('page', 1), per_page=25)
 
+  delen = ForumDeel.get_viewable_by(request.user)
+  cats = grouped_dict(map(lambda d: (d.categorie, d), delen))
+
   return render_with_layout(request, 'forum_main.jade', title="Reformaforum", ctx={
+    'categories': cats,
     'posts': table
   })
 

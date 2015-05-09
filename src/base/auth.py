@@ -62,7 +62,7 @@ class SSHAPasswordHasher(BasePasswordHasher):
     assert encoded.startswith('SSHA')
 
     # strip off the hash label
-    digest_salt_b64 = encoded[6:]
+    digest_salt_b64 = encoded[5:]
 
     # the password+salt buffer is also base64-encoded.  decode and split the
     # digest and salt

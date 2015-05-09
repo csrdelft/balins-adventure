@@ -1,2 +1,17 @@
 - load django_tables2
+
+div.dropdown
+  button#forum-delen.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown")
+    | Dropdown
+    span.caret
+  ul.dropdown-menu(aria-labelledby="forum-delen")
+    - for cat, delen in categories.items
+      li
+        strong {{ cat.titel }}
+
+      - for deel in delen
+        li
+          a(href="?deel={{ deel }}" role="menuitem")
+            | {{ deel }}
+
 - render_table posts

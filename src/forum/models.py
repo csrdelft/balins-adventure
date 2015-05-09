@@ -23,11 +23,18 @@ class ForumDeel(Model):
   rechten_modereren = CharField(max_length=255)
   volgorde = IntegerField()
 
+  @classmethod
+  def get_viewable_by(cls, user):
+    return filter(
+      lambda d: user.has_perm('forum.view_forumdeel', d),
+      cls.objects.all().prefetch_related('categorie'))
+
   def __str__(self):
     return self.titel
 
   class Meta:
     db_table = 'forum_delen'
+    default_permissions = ('add', 'change', 'delete', 'moderate')
 
 class ForumDraad(Model):
   draad_id = AutoField(primary_key=True)
