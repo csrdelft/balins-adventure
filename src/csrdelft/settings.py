@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_tables2',
+    'django_extensions',
     'permission',
     'base',
     'forum'
@@ -65,6 +66,12 @@ MIDDLEWARE_CLASSES = (
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # default
     'permission.backends.PermissionBackend',
+)
+
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'base.auth.SSHAPasswordHasher',
 )
 
 ROOT_URLCONF = 'csrdelft.urls'

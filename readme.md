@@ -1,5 +1,12 @@
 ## Apps
 
+### Base
+
+You can import the data from 'profielen' on the database after migration 0001 (or 002)
+
+    mysqldump -u root profielen --no-create-info -c > profielen_data.sql
+    mysql -u root csrdelft_django < profielen_data.sql
+
 ### Forum
 
 You can import the data from the production database, like so:
@@ -20,3 +27,7 @@ django. The one difference being the id columns on the following tables, which w
     forum_draden_reageren
     forum_draden_verbergen
     forum_draden_volgen
+
+## TODO
+
+- Add password policies (has been implemented for django)

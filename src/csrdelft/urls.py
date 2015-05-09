@@ -3,6 +3,9 @@ from django.contrib import admin
 
 import forum.views
 
+# apply the permission logics
+import permission; permission.autodiscover()
+
 urlpatterns = patterns('',
   url(r'^$', 'base.views.index', name='index'),
   url(r'^forum/', include(forum.views.urls)),

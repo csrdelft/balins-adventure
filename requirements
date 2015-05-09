@@ -6,6 +6,7 @@ django-livefield
 django-filter
 django-permission
 django-tables2
+django_extensions
 phpserialize
 pyjade
 PyYAML

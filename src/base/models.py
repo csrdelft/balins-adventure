@@ -2,6 +2,9 @@ from django.db.models import *
 from django.contrib.auth.models import User
 
 class Profiel(Model):
+  class Meta:
+    db_table = 'profielen'
+
   user = OneToOneField(User, null=True)
   uid = CharField(primary_key=True, max_length=4)
 
@@ -74,11 +77,11 @@ class Profiel(Model):
   medisch = TextField()
   novitiaatbijz = TextField(db_column='novitiaatBijz')  # Field name made lowercase.
 
+  def __str__(self):
+    return "%s (%s)" % (self.formal_name(), self.uid)
+
   def formal_name(self):
     if self.geslacht == 'm':
       return "Am. %s" % self.achternaam
     else:
       return "Ama. %s" % self.achternaam
-
-  class Meta:
-    db_table = 'profielen'
