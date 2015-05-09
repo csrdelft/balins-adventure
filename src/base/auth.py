@@ -1,7 +1,8 @@
 import hashlib
 import base64
 from django.contrib.auth.hashers import BasePasswordHasher, mask_hash
-
+from collections import OrderedDict
+from django.utils.translation import ugettext_noop as _
 
 class SSHAPasswordHasher(BasePasswordHasher):
   """
@@ -72,6 +73,6 @@ class SSHAPasswordHasher(BasePasswordHasher):
     return OrderedDict([
       (_('algorithm'), 'SSHA'),
       (_('iterations'), 0),
-      (_('salt'), mask_hash(salt)),
-      (_('hash'), mash_hash(digest)),
+      (_('salt'), mask_hash(str(salt))),
+      (_('hash'), mask_hash(str(digest))),
     ])
