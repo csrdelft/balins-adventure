@@ -8,6 +8,11 @@
     ./manage.py migrate
     ./manage.py runserver
 
+### Migrating old models
+
+The idea is to take the existing production database, create a model + migration on the django side
+that is compatible with it, migrate the existing data as exampled below and take it from there.
+
 ## Apps
 
 ### Base

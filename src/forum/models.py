@@ -34,7 +34,7 @@ class ForumDeel(Model):
 
   class Meta:
     db_table = 'forum_delen'
-    default_permissions = ('add', 'change', 'delete', 'moderate')
+    default_permissions = ('add', 'change', 'delete', 'moderate', 'post_in')
 
 class ForumDraad(Model):
   draad_id = AutoField(primary_key=True)

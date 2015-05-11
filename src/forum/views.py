@@ -1,9 +1,12 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.shortcuts import render
+from django.contrib.auth.models import User
 from django import forms
+from django.http import *
+from django.core.urlresolvers import reverse
 from base.views import render_with_layout
-from base.utils import grouped_dict
+from base.utils import *
 from .models import *
 
 from datetime import datetime
@@ -56,8 +59,9 @@ class ForumPostForm(forms.ModelForm):
     return post
 
 def forum_root(request):
-  # TODO filter viewable by user
-  queryset = ForumDraad.objects.all()
+  # find the forumdelen that may be seen by the user
+  delen = list(ForumDeel.get_viewable_by(request.user))
+  queryset = ForumDraad.objects.filter(forum__in=delen)
 
   # filter on forum deel
   if 'forum' in request.GET:
@@ -69,7 +73,6 @@ def forum_root(request):
   table = ForumMostRecentTable(queryset)
   table.paginate(page=request.GET.get('page', 1), per_page=25)
 
-  delen = ForumDeel.get_viewable_by(request.user)
   cats = grouped_dict(map(lambda d: (d.categorie, d), delen))
 
   return render_with_layout(request, 'forum_main.jade', title=titel, ctx={
@@ -78,19 +81,24 @@ def forum_root(request):
   })
 
 def forum_draad(request, draad_id):
-  draad = ForumDraad.objects.get(pk=draad_id)
+  draad = ForumDraad.objects.prefetch_related('forum').get(pk=draad_id)
   fresh_form = ForumPostForm(initial={'draad': draad})
 
-  # new post form
+  # make sure the user can view the forum draad
+  deny_on_fail(request.user.has_perm('forum.view_forumdeel', draad))
+
   if request.method == 'POST':
+    # if the user is posting, make sure he has the permissions to post here
+    deny_on_fail(request.user.has_perm('forum.post_in_forumdeel', draad.forum))
+
+    # initiate the filled in form
     form = ForumPostForm(request.POST, user=request.user)
 
     if form.is_valid():
       form.save()
 
       # use a fresh form for the next page
-      form = fresh_form
-
+      return HttpResponseRedirect(reverse('forum.draad', args=[draad_id]))
   else:
     form = fresh_form
 

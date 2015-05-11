@@ -17,7 +17,6 @@ def add_view_permissions(sender, **kwargs):
   This syncdb hooks takes care of adding a view permission too all our
   content types.
   """
-  logger.info("Checking if default permissions exist on all models...")
 
   # for each of our content types
   for content_type in ContentType.objects.all():

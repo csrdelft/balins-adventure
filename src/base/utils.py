@@ -1,4 +1,5 @@
 from permission.utils.field_lookup import field_lookup
+from django.core.exceptions import PermissionDenied
 
 def accessor(fieldname):
   """ returns an accessor function for fieldname
@@ -16,3 +17,7 @@ def grouped_dict(iterable):
       result[k].append(v)
 
   return result
+
+def deny_on_fail(test):
+  if(not test):
+    raise PermissionDenied()
