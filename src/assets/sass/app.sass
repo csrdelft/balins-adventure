@@ -5,6 +5,9 @@
 @import sidebar
 @import forum
 @import legacy
+@import frontpage
+@import font-awesome-compass
+@import font-awesome
 
 $topbar-h: 60px
 $topmenu-h: 40px
@@ -12,6 +15,18 @@ $topmenu-h: 40px
 h1
   font-family: Lato
   font-size: $font-huge
+  font-weight: 300
+  margin-top: 10px
+
+h2
+  font-family: Lato
+  font-size: $font-large
+  font-weight: 300
+  margin-top: 10px
+
+h3
+  font-family: Lato
+  font-size: $font-Medium
   font-weight: 300
   margin-top: 10px
 
@@ -152,9 +167,6 @@ body
     overflow-x: hidden
     z-index: 10
 
-    .container
-      height: 100%
-
     #background-logo
       +opacity(0.7)
       position: absolute
@@ -167,9 +179,3 @@ body
       background-repeat: no-repeat
       background-size: 2000px
       background-position: 0px 0px
-
-    #page
-      height: 100%
-
-      .row
-        height: 100%

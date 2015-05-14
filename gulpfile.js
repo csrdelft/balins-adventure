@@ -8,7 +8,10 @@ gulp.task('compass', function() {
     .pipe(compass({
       project: path.join(__dirname, 'src/assets'),
       css: 'css',
-      sass: 'sass'
+      sass: 'sass',
+      require: [
+        'font-awesome-sass'
+      ]
     }))
     .pipe(gulp.dest('src/assets/css'));
 });

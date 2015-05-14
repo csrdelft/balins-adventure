@@ -1,0 +1,64 @@
+@import compass/css3
+@import compass/utilities/general/clearfix
+@import colors
+
+#frontpage
+
+  .front-page-block
+    +box-shadow(0px 0px 5px rgba(black, 0.10))
+    border: 1px solid rgba(black, 0.2)
+
+    background-color: white
+    margin-top: 20px
+
+    & > *
+      padding: 10px
+
+    ul
+      background-color: #f5f5f5
+      border-top: 1px solid rgba(black, 0.2)
+      padding: 0px
+      padding:
+        top: 10px
+        bottom: 10px
+
+  #agenda
+    ul
+      li
+        +clearfix
+        padding-left: 10px
+        margin-bottom: 5px
+
+        &:last-child
+          margin-bottom: 0px
+
+        p.date
+          position: relative
+          float: left
+          width: 40px
+          height: 40px
+          background-color: $accent
+          text-align: center
+
+          span.no
+            position: absolute
+            top: 2px
+            left: 0px
+            width: 100%
+            font-size: 15pt
+            font-weight: bold
+            color: white
+
+          span.mo
+            position: absolute
+            top: 22px
+            left: 0px
+            width: 100%
+            font-size: 11pt
+            color: white
+
+        p.text
+          float: left
+          line-height: 40px
+          vertical-align: middle
+          padding-left: 10px
