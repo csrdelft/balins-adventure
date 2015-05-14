@@ -1,3 +1,4 @@
+from django.conf.urls import patterns, include, url
 from django.shortcuts import render
 from django.template import loader, RequestContext
 
@@ -13,3 +14,7 @@ def render_with_layout(request, template, ctx={}, title=DEFAULT_TITLE):
 
 def index(request):
   return render_with_layout(request, 'main.jade')
+
+urls = patterns('',
+  url(r'^$', 'base.views.index', name='index')
+)

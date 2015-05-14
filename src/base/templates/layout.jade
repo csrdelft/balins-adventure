@@ -6,11 +6,8 @@ html
   head
     link(
       rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
-    link(href="{% static 'css/app.css' %}" rel="stylesheet")
-    link(
-      rel="stylesheet"
       href="{% static 'css/bootstrap.min.css' %}")
+    link(href="{% static 'css/app.css' %}" rel="stylesheet")
 
     script(src="{% static 'scripts/jquery.min.js' %}")
     script(src="{% static 'scripts/bootstrap.min.js' %}")
@@ -37,7 +34,8 @@ html
       .container
         .row
           #logo.col-xs-1
-            img(src="{% static 'images/beeldmerk.svg' %}")
+            a(href="{% url 'index' %}")
+              img(src="{% static 'images/beeldmerk.svg' %}")
 
           #search.col-xs-5
             input(type="text" placeholder="Search")
