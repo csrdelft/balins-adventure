@@ -7,8 +7,9 @@
       p
       | {{ post.tekst }}
 
-div#new-forum-post
-  form(method="post" action="{% url 'forum.draad' draad.pk %}")
-    - csrf_token
-    {{ new_post_form }}
-    input(type="submit")
+- if can_post
+  div#new-forum-post
+    form(method="post" action="{% url 'forum.draad' draad.pk %}")
+      - csrf_token
+      {{ new_post_form }}
+      input(type="submit")

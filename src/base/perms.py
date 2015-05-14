@@ -1,6 +1,7 @@
 from permission.logics import PermissionLogic
 from permission.utils.field_lookup import field_lookup
 from base.utils import accessor
+from django.core.exceptions import PermissionDenied
 
 import logging
 logger = logging.getLogger(__name__)

@@ -86,10 +86,11 @@ def forum_draad(request, draad_id):
 
   # make sure the user can view the forum draad
   deny_on_fail(request.user.has_perm('forum.view_forumdeel', draad))
+  can_post = request.user.has_perm('forum.post_in_forumdeel', draad.forum)
 
   if request.method == 'POST':
     # if the user is posting, make sure he has the permissions to post here
-    deny_on_fail(request.user.has_perm('forum.post_in_forumdeel', draad.forum))
+    deny_on_fail(can_post)
 
     # initiate the filled in form
     form = ForumPostForm(request.POST, user=request.user)
@@ -109,7 +110,8 @@ def forum_draad(request, draad_id):
   return render_with_layout(request, 'forum_draad.jade', title="Forum draad %s" % draad.titel, ctx={
     'draad': draad,
     'posts': posts,
-    'new_post_form': form
+    'new_post_form': form,
+    'can_post': can_post
   })
 
 urls = patterns('',
