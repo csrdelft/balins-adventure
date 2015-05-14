@@ -1,0 +1,67 @@
+doctype html
+
+- load staticfiles
+
+html
+  head
+    link(
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
+    link(href="{% static 'css/app.css' %}" rel="stylesheet")
+    link(
+      rel="stylesheet"
+      href="{% static 'css/bootstrap.min.css' %}")
+
+    script(src="{% static 'scripts/jquery.min.js' %}")
+    script(src="{% static 'scripts/bootstrap.min.js' %}")
+
+    block head
+
+  body
+
+
+    #topbar
+      #topbar-poly
+        svg(preserveAspectRatio="none" viewbox="0 0 100 100")
+          path(id="topbar-shard" d="M0 0 L50 0 L55 100 L0 100 z")
+          style(type="text/css")
+            path#topbar-shard {
+              fill: black;
+              opacity: 0.4;
+            }
+          defs
+            linearGradient(id="bg-gradient")
+              stop(offset="5%" stop-color="#C63D0F")
+              stop(offset="95%" stop-color="#DB5021")
+
+      .container
+        .row
+          #logo.col-xs-1
+            img(src="{% static 'images/beeldmerk.svg' %}")
+
+          #search.col-xs-5
+            input(type="text" placeholder="Search")
+
+          #whoami.col-xs-6
+            img(src="/plaetjes/pasfoto/1337.vierkant.png")
+            div.tag
+              p.name Welkom Am. Rouvoet
+              p.uid  1337
+
+    #topmenu
+      .container
+        ul
+          li
+            i.fa.fa-home
+            i.fa.fa-cogs
+          li
+            a(href="{% url 'legacy.groepen' %}")
+              | Groepen
+          li.active Actueel
+          li
+            a(href="{% url 'forum.main' %}")
+              | Reformaforum
+          li Communicatie
+
+    #all
+      block content

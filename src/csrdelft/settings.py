@@ -35,6 +35,8 @@ TEMPLATES = [
   },
 ]
 
+LEGACY_HOST = 'http://embed.csrdelft.nl'
+
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -50,7 +52,8 @@ INSTALLED_APPS = (
     'django_extensions',
     'permission',
     'base',
-    'forum'
+    'forum',
+    'legacy'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -123,7 +126,7 @@ LOGGING = {
       'handlers': ['console'],
       'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
     },
-    'base': {
+    'root': {
       'handlers': ['console'],
       'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
     },

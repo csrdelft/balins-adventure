@@ -1,95 +1,38 @@
-doctype html
+-extends 'layout.jade'
 
-- load staticfiles
+block content
+  .container
+    #background-logo
 
-html
-  head
-    link(
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
-    link(href="{% static 'css/app.css' %}" rel="stylesheet")
-    link(
-      rel="stylesheet"
-      href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css")
+    .row#page
 
-    script(src="https://code.jquery.com/jquery-2.1.4.min.js")
-    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
+      //-
+        .col-xs-4#sidebar-container
+          #sidebar
+            ol.categories
+              li
+                h4 Agenda
+                ol
+                    li 19:30 Van Hasseltlezing
+                    li wo 06 Kring
+                    li wo 06 Verticalekring X en Lekker
+                    li do 07 Donderdagmaaltijd
+                    li do 07 Borrel
+                    li do 07 themapresentatie OweeCie '15
+                    li 12-05 Eetplan 12-05 HV
+                    li 13-05 Live it! 2015 'Wie volg jij?'
 
-  body
-
-
-    #topbar
-      #topbar-poly
-        svg(preserveAspectRatio="none" viewbox="0 0 100 100")
-          path(id="topbar-shard" d="M0 0 L50 0 L55 100 L0 100 z")
-          style(type="text/css")
-            path#topbar-shard {
-              fill: url(#bg-gradient);
-            }
-          defs
-            linearGradient(id="bg-gradient")
-              stop(offset="5%" stop-color="#C63D0F")
-              stop(offset="95%" stop-color="#DB5021")
-
-      .container
+                h4 Mededelingen
+              li
+                h4 Forum Belangrijk
+              li
+                h4 Forum
+      .col-xs-12#content
         .row
-          #logo.col-xs-1
-            img(src="{% static 'images/beeldmerk.svg' %}")
+          h1
+            | {{ title }}
 
-          #search.col-xs-5
-            input(type="text" placeholder="Search")
+          div.divider
 
-          #whoami.col-xs-6
-            img(src="/plaetjes/pasfoto/1337.vierkant.png")
-            div.tag
-              p.name Welkom Am. Rouvoet
-              p.uid  1337
-
-    #topmenu
-      .container
-        ul
-          li
-            i.fa.fa-home
-            i.fa.fa-cogs
-          li Groepen
-          li.active Actueel
-          li
-            a(href="{% url 'forum.main' %}")
-              | Reformaforum
-          li Communicatie
-
-    #all
-      .container
-        #background-logo
-
-        .row#page
-
-          .col-xs-4#sidebar-container
-            #sidebar
-              ol.categories
-                li
-                  h4 Agenda
-                  ol
-                      li 19:30 Van Hasseltlezing
-                      li wo 06 Kring
-                      li wo 06 Verticalekring X en Lekker
-                      li do 07 Donderdagmaaltijd
-                      li do 07 Borrel
-                      li do 07 themapresentatie OweeCie '15
-                      li 12-05 Eetplan 12-05 HV
-                      li 13-05 Live it! 2015 'Wie volg jij?'
-
-                  h4 Mededelingen
-                li
-                  h4 Forum Belangrijk
-                li
-                  h4 Forum
-          .col-xs-8
-            .row#content
-              h1
-                | {{ title }}
-
-              div.divider
-
-              | {{ content }}
+          | {{ content }}
 

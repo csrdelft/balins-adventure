@@ -4,6 +4,7 @@
 @import fonts
 @import sidebar
 @import forum
+@import legacy
 
 $topbar-h: 60px
 $topmenu-h: 40px
@@ -35,8 +36,10 @@ input
 body
   background-color: #e5e5e5
   position: absolute
-  width: 100%
-  height: 100%
+  left: 0px
+  right: 0px
+  top: 0px
+  bottom: 0px
   font-family: RobotoDraft
   font-size: $font-default
   font-weight: 300
@@ -47,6 +50,9 @@ body
     width: 100%
     height: $topbar-h
     background-color: white
+    background-image: url('/static/images/blurred.jpg')
+    background-position: 50% -30%
+    background-size: 100% auto
     position: fixed
     top: 0px
     left: 0px
@@ -99,6 +105,7 @@ body
             font-size: $font-small
 
       img
+        background-color: white
         +border-radius(100px)
         width: 40px
         float: right
@@ -137,12 +144,16 @@ body
 
   #all
     position: absolute
-    top: $topbar-h + $topmenu-h + 20px
+    top: $topbar-h + $topmenu-h
     left: 0px
+    right: 0px
     bottom: 0px
     overflow: auto
-    width: 100%
+    overflow-x: hidden
     z-index: 10
+
+    .container
+      height: 100%
 
     #background-logo
       +opacity(0.7)
@@ -156,3 +167,9 @@ body
       background-repeat: no-repeat
       background-size: 2000px
       background-position: 0px 0px
+
+    #page
+      height: 100%
+
+      .row
+        height: 100%

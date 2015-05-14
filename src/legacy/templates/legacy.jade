@@ -1,0 +1,13 @@
+-extends 'layout.jade'
+
+block head
+  style
+    #all {
+      overflow: hidden !important;
+    }
+    #legacy-embed {
+      padding: 30px;
+    }
+
+block content
+  iframe(id="legacy-embed" src="{{ embed_url }}")
