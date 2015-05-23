@@ -85,3 +85,159 @@ class Profiel(Model):
       return "Am. %s" % self.achternaam
     else:
       return "Ama. %s" % self.achternaam
+
+class AbstractGroep(Model):
+  naam = CharField(max_length=255)
+  status = CharField(max_length=2)
+  familie = CharField(max_length=255)
+  samenvatting = TextField()
+  omschrijving = TextField(blank=True)
+  begin_moment = DateTimeField()
+  eind_moment = DateTimeField(blank=True, null=True)
+  maker_user = ForeignKey(Profiel, db_column='maker_uid', related_name='+')
+  keuzelijst = CharField(max_length=255, blank=True)
+
+  class Meta:
+    abstract = True
+
+class GroepDoodlijnenMixin(Model):
+  aanmeld_limiet = IntegerField(blank=True, null=True)
+  aanmelden_vanaf = DateTimeField()
+  aanmelden_tot = DateTimeField()
+  bewerken_tot = DateTimeField(blank=True, null=True)
+  afmelden_tot = DateTimeField(blank=True, null=True)
+
+  class Meta:
+    abstract = True
+
+class Groep(AbstractGroep):
+  rechten_aanmelden = CharField(max_length=255)
+
+  class Meta:
+    db_table = 'groepen'
+
+class Ketzer(GroepDoodlijnenMixin, AbstractGroep):
+
+  class Meta:
+    db_table = 'ketzers'
+
+class Lichting(AbstractGroep):
+  lidjaar = IntegerField(unique=True)
+
+  class Meta:
+    db_table = 'lichtingen'
+
+class Ondervereniging(AbstractGroep):
+  soort = CharField(max_length=1)
+
+  class Meta:
+    db_table = 'onderverenigingen'
+
+class Verticale(AbstractGroep):
+  letter = CharField(unique=True, max_length=1)
+
+  class Meta:
+    db_table = 'verticalen'
+
+class Kring(AbstractGroep):
+  verticale = ForeignKey(Verticale, db_column='verticale')
+  kring_nummer = IntegerField()
+
+  class Meta:
+    db_table = 'kringen'
+
+class Werkgroep(GroepDoodlijnenMixin, AbstractGroep):
+
+  class Meta:
+    db_table = 'werkgroepen'
+
+class Activiteit(GroepDoodlijnenMixin, AbstractGroep):
+  soort = CharField(max_length=15)
+  rechten_aanmelden = CharField(max_length=255, blank=True)
+  locatie = CharField(max_length=255, blank=True)
+  in_agenda = IntegerField()
+
+  class Meta:
+    db_table = 'activiteiten'
+
+class Bestuur(AbstractGroep):
+  bijbeltekst = TextField()
+
+  class Meta:
+    db_table = 'besturen'
+
+class Commissie(AbstractGroep):
+  soort = CharField(max_length=1)
+
+  class Meta:
+    db_table = 'commissies'
+
+class AbstractLid(Model):
+  user = ForeignKey(Profiel, db_column='uid', related_name='+')
+  opmerking = CharField(max_length=255, blank=True)
+  lid_sinds = DateTimeField()
+  door_user = ForeignKey(Profiel, db_column='door_uid', related_name='+')
+
+  class Meta:
+    unique_together = (('groep', 'user'),)
+    abstract = True
+
+class GroepLeden(AbstractLid):
+  groep = ForeignKey(Groep)
+
+  class Meta:
+    db_table = 'groep_leden'
+
+class KringLid(AbstractLid):
+  groep = ForeignKey(Kring)
+
+  class Meta:
+    db_table = 'kring_leden'
+
+class CommissieLid(AbstractLid):
+  groep = ForeignKey(Commissie)
+
+  class Meta:
+    db_table = 'commissie_leden'
+
+class BestuursLid(AbstractLid):
+  groep = ForeignKey(Bestuur)
+
+  class Meta:
+    db_table = 'bestuurs_leden'
+
+class VerticaleLid(AbstractLid):
+  groep = ForeignKey(Verticale)
+
+  class Meta:
+    db_table = 'verticale_leden'
+
+class LichtingLid(AbstractLid):
+  groep = ForeignKey(Lichting)
+
+  class Meta:
+    db_table = 'lichting_leden'
+
+class OnderverenigingsLid(AbstractLid):
+  groep = ForeignKey(Ondervereniging)
+
+  class Meta:
+    db_table = 'ondervereniging_leden'
+
+class KetzerDeelnemer(AbstractLid):
+  groep = ForeignKey(Ketzer)
+
+  class Meta:
+    db_table = 'ketzer_deelnemers'
+
+class WerkgroepDeelnemer(AbstractLid):
+  groep = ForeignKey(Werkgroep)
+
+  class Meta:
+    db_table = 'werkgroep_deelnemers'
+
+class ActiviteitDeelnemer(AbstractLid):
+  groep = ForeignKey(Activiteit)
+
+  class Meta:
+    db_table = 'activiteit_deelnemers'
