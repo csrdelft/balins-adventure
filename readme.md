@@ -77,7 +77,8 @@ django. The one difference being the id columns on the following tables, which w
    preloaded.
 4. **Migrations???**
    Ain't it awesome? Remember these commands:
-   `./manage.py makemigrations # to generate new migrations based on model changes (CHECK!)
-   ./manage.py migrate # make db up to date
-   ./manage.py migrate <appname> <000x> # migrate specific app to specific migration
-   ./manage.py makemigrations --empty base # create new data migration for app base`
+
+     ./manage.py makemigrations # to generate new migrations based on model changes (CHECK!)
+     ./manage.py migrate # make db up to date
+     ./manage.py migrate <appname> <000x> # migrate specific app to specific migration
+     ./manage.py makemigrations --empty base # create new data migration for app base
