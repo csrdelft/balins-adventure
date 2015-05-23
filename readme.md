@@ -17,10 +17,26 @@ that is compatible with it, migrate the existing data as exampled below and take
 
 ### Base
 
-You can import the data from 'profielen' on the database after migration 0001 (or 002)
+You can import the data from 'profielen' on the database after migration 0001 (or 0002)
 
     mysqldump -u root profielen --no-create-info -c > profielen_data.sql
     mysql -u root csrdelft_django < profielen_data.sql
+
+You can import the data from 'groepen' on the database after base migration 0003:
+
+    mysqldump -u root csrdelft \
+      kringen kring_leden \
+      commissies commissie_leden \
+      besturen bestuurs_leden \
+      werkgroepen werkgroep_deelnemers \
+      verticalen verticale_leden \
+      onderverenigingen ondervereniging_leden \
+      lichtingen lichting_leden \
+      ketzers ketzer_deelnemers \
+      activiteiten activiteit_deelnemers \
+      groepen groep_leden \
+      --no-create-info -c > groepen_data.sql
+    mysql -u root csrdelft_django < groepen_data.sql
 
 ### Forum
 
