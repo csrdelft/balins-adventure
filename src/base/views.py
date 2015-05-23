@@ -28,13 +28,10 @@ def make_groep_view(category_model, name):
     # sort the members
     for lid in leden:
       # if somehow the group doesn't exist, skip the member
-      try:
-        groepen.get(lid.groep_id)[1].append(lid)
-      except Exception as e:
-        logger.error(str(e))
-        pass
+      groep = groepen.get(lid.groep_id)
+      if groep is not None:
+        groep[1].append(lid)
 
-    logger.error(groepen)
     return render_with_layout(request, 'groep.jade', title=name, ctx={
       'groepen':groepen,
       'leden'  :leden
