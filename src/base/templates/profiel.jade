@@ -1,0 +1,27 @@
+h1 {{ user.full_name }}
+
+div.gegevens
+  table.table.table-bordered
+    tr
+      td Verticale
+      td {{ verticale.naam }}
+    tr
+      td Kring
+      td {{ kring.naam }}
+
+div.commissies
+
+  h2 Commissies
+  ul
+    - for comm in commissies
+      li {{ comm.naam }}
+
+  h2 Werkgroepen
+  ul
+    - for wg in werkgroepen
+      li {{ wg.naam }}
+
+  h2 Overige Groepen
+  ul
+    - for g in groepen
+      li {{ g.naam }}

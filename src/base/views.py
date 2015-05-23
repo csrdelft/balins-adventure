@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.shortcuts import render
 from django.template import loader, RequestContext
 from .models import *
+import django_tables2 as tables
 
 from collections import OrderedDict
 import logging
@@ -35,6 +36,25 @@ def profiel(request, uid):
     "werkgroepen": user.werkgroepen(),
     "onderverenigingen": user.onderverenigingen(),
     "groepen": user.overige_groepen()
+  })
+
+class GroepenTable(tables.Table):
+  class Meta:
+    model = AbstractGroep
+    orderable = False
+    attrs = {
+      "class" : 'table table-striped table-hover'
+    }
+    fields = ('naam',)
+    order_by = ('naam',)
+
+def groepen_overview(request):
+  return render_with_layout(request, 'groepen_overview.jade', title="CSR Groepen", ctx={
+    "verticalen": GroepenTable(Verticale.objects.all()),
+    "lichtingen": GroepenTable(Lichting.objects.all()),
+    "commissies": GroepenTable(Commissie.objects.filter(status="ht")),
+    "werkgroepen": GroepenTable(Werkgroep.objects.filter(status="ht")),
+    "onderverenigingen": GroepenTable(Ondervereniging.objects.all())
   })
 
 def make_groep_view(groepen_qs, leden_qs, name):
@@ -74,6 +94,7 @@ commissies_view = make_groep_view(
 urls = patterns('',
   url(r'^$', index, name='index'),
   url(r'^profiel/(.{4})/$', profiel, name='base.profiel'),
+  url(r'^groepen/$', groepen_overview, name='base.groepen'),
   url(r'^verticalen/$', verticalen_view, name='base.verticalen'),
   url(r'^lichtingen/$', lichtingen_view, name='base.lichtingen'),
   url(r'^commissies/$', commissies_view, name='base.commissies'),
