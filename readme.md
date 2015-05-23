@@ -1,6 +1,6 @@
 ## Getting Started With Development
 
-    make install && npm install && npm install -g gulp
+    make install && npm install && npm install -g gulp && gem install compass
     gulp
     source .virtualenv/bin/activate
     mysql -u root << "create database csrdelft_django; grant all privileges on `csrdelft_django`.* to csrdelft@localhost identified by 'bl44t';"
@@ -40,13 +40,13 @@ You can import the data from 'groepen' on the database after base migration 0003
 
 ### Forum
 
-You can import the data from the production database, like so:
+You can import the data from the production database after it's initial migration 0001:
 
-    mysqldump -u root csrdelft forum_posts forum_draden_gelezen forum_draden_reageren forum_draden_volgen forum_draden_verbergen forum_categorien forum_delen forum_draden --no-create-info -c > forum_data.sql
-  mysql -u root csrdelft_django < forum_data.sql
-
-Into the forum app right after it's initial migration 0001
-
+    mysqldump -u root csrdelft \
+      forum_posts forum_draden_gelezen forum_draden_reageren \
+      forum_draden_volgen forum_draden_verbergen forum_categorien \
+      forum_delen forum_draden --no-create-info -c > forum_data.sql
+    mysql -u root csrdelft_django < forum_data.sql
 
 #### Backwards compatability
 
@@ -62,3 +62,15 @@ django. The one difference being the id columns on the following tables, which w
 ## TODO
 
 - Add password policies (has been implemented for django)
+
+## Notes
+
+### Setting up
+
+1. **pyjade has some trouble with django 1.8**
+
+   This might fix it: `pip install --upgrade git+https://github.com/syrusakbary/pyjade.git`
+
+2. **How do I django???**
+
+   Django has EXCELLENT documentation: https://docs.djangoproject.com/en/1.8/
