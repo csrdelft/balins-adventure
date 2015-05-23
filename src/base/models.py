@@ -43,7 +43,6 @@ class Profiel(Model):
   bankrekening = CharField(max_length=255, blank=True)
   machtiging = IntegerField()
   moot = CharField(max_length=1)
-  verticale = CharField(max_length=1)
   verticaleleider = IntegerField()
   kringcoach = CharField(max_length=1, blank=True)
   o_adres = CharField(max_length=255, blank=True)
@@ -97,6 +96,9 @@ class AbstractGroep(Model):
   maker_user = ForeignKey(Profiel, db_column='maker_uid', related_name='+')
   keuzelijst = CharField(max_length=255, blank=True)
 
+  ## !! IMPORTANT
+  ## abstract related object manager `leden` expected on any child class
+
   class Meta:
     abstract = True
 
@@ -111,6 +113,7 @@ class GroepDoodlijnenMixin(Model):
     abstract = True
 
 class Groep(AbstractGroep):
+
   rechten_aanmelden = CharField(max_length=255)
 
   class Meta:
@@ -122,24 +125,28 @@ class Ketzer(GroepDoodlijnenMixin, AbstractGroep):
     db_table = 'ketzers'
 
 class Lichting(AbstractGroep):
+
   lidjaar = IntegerField(unique=True)
 
   class Meta:
     db_table = 'lichtingen'
 
 class Ondervereniging(AbstractGroep):
+
   soort = CharField(max_length=1)
 
   class Meta:
     db_table = 'onderverenigingen'
 
 class Verticale(AbstractGroep):
+
   letter = CharField(unique=True, max_length=1)
 
   class Meta:
     db_table = 'verticalen'
 
 class Kring(AbstractGroep):
+
   verticale = ForeignKey(Verticale, db_column='verticale')
   kring_nummer = IntegerField()
 
@@ -152,6 +159,7 @@ class Werkgroep(GroepDoodlijnenMixin, AbstractGroep):
     db_table = 'werkgroepen'
 
 class Activiteit(GroepDoodlijnenMixin, AbstractGroep):
+
   soort = CharField(max_length=15)
   rechten_aanmelden = CharField(max_length=255, blank=True)
   locatie = CharField(max_length=255, blank=True)
@@ -161,12 +169,14 @@ class Activiteit(GroepDoodlijnenMixin, AbstractGroep):
     db_table = 'activiteiten'
 
 class Bestuur(AbstractGroep):
+
   bijbeltekst = TextField()
 
   class Meta:
     db_table = 'besturen'
 
 class Commissie(AbstractGroep):
+
   soort = CharField(max_length=1)
 
   class Meta:
@@ -178,66 +188,92 @@ class AbstractLid(Model):
   lid_sinds = DateTimeField()
   door_user = ForeignKey(Profiel, db_column='door_uid', related_name='+')
 
+  ## !! IMPORTANT
+  ## foreignkey `groep` expected on any child class
+  ## of type "class.groepmodel"
+
   class Meta:
     unique_together = (('groep', 'user'),)
     abstract = True
 
-class GroepLeden(AbstractLid):
+class GroepLid(AbstractLid):
+  groepmodel = Groep
   groep = ForeignKey(Groep, related_name="leden")
 
   class Meta:
     db_table = 'groep_leden'
 
 class KringLid(AbstractLid):
+  groepmodel = Kring
   groep = ForeignKey(Kring, related_name="leden")
 
   class Meta:
     db_table = 'kring_leden'
 
 class CommissieLid(AbstractLid):
+  groepmodel = Commissie
   groep = ForeignKey(Commissie, related_name="leden")
 
   class Meta:
     db_table = 'commissie_leden'
 
 class BestuursLid(AbstractLid):
+  groepmodel = Bestuur
   groep = ForeignKey(Bestuur, related_name="leden")
 
   class Meta:
     db_table = 'bestuurs_leden'
 
 class VerticaleLid(AbstractLid):
+  groepmodel = Verticale
   groep = ForeignKey(Verticale, related_name="leden")
 
   class Meta:
     db_table = 'verticale_leden'
 
 class LichtingLid(AbstractLid):
+  groepmodel = Lichting
   groep = ForeignKey(Lichting, related_name="leden")
 
   class Meta:
     db_table = 'lichting_leden'
 
 class OnderverenigingsLid(AbstractLid):
+  groepmodel = Ondervereniging
   groep = ForeignKey(Ondervereniging, related_name="leden")
 
   class Meta:
     db_table = 'ondervereniging_leden'
 
 class KetzerDeelnemer(AbstractLid):
+  groepmodel = Ketzer
   groep = ForeignKey(Ketzer, related_name="leden")
 
   class Meta:
     db_table = 'ketzer_deelnemers'
 
 class WerkgroepDeelnemer(AbstractLid):
+  groepmodel = Werkgroep
   groep = ForeignKey(Werkgroep, related_name="leden")
 
   class Meta:
     db_table = 'werkgroep_deelnemers'
 
 class ActiviteitDeelnemer(AbstractLid):
+  groepmodel = Activiteit
   groep = ForeignKey(Activiteit, related_name="leden")
 
   class Meta:
     db_table = 'activiteit_deelnemers'
+
+# hacky but it works...
+Groep.lidmodel = GroepLid
+Ketzer.lidmodel = KetzerDeelnemer
+Lichting.lidmodel = LichtingLid
+Ondervereniging.lidmodel = OnderverenigingsLid
+Verticale.lidmodel = VerticaleLid
+Kring.lidmodel = KringLid
+Werkgroep.lidmodel = WerkgroepDeelnemer
+Activiteit.lidmodel = ActiviteitDeelnemer
+Bestuur.lidmodel = BestuursLid
+Commissie.lidmodel = CommissieLid

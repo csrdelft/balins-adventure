@@ -1,0 +1,9 @@
+
+- for groep, leden in groepen.values
+  div.groep
+    h2 {{ groep.naam }}
+
+    .leden
+      ul
+        - for lid in leden
+          li {{ lid.user.formal_name }}

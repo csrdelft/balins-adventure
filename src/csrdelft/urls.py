@@ -9,7 +9,7 @@ import legacy.views
 import permission; permission.autodiscover()
 
 urlpatterns = patterns('',
-  url(r'^/', include(base.views.urls)),
+  url(r'^', include(base.views.urls)),
   url(r'^forum/', include(forum.views.urls)),
 
   url(r'^admin/', include(admin.site.urls)),
