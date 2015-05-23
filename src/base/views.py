@@ -21,6 +21,22 @@ def render_with_layout(request, template, ctx={}, title=DEFAULT_TITLE):
 def index(request):
   return render_with_layout(request, 'main.jade')
 
+def profiel(request, uid):
+  try:
+    user = Profiel.objects.get(pk=uid)
+  except Profiel.DoesNotExist:
+    raise Http404("Geen gebruiker met lidnummer %s" % uid)
+
+  return render_with_layout(request, 'profiel.jade', title=user.full_name(), ctx={
+    "user": user,
+    "kring": user.kring(),
+    "verticale": user.verticale(),
+    "commissies": user.commissies(),
+    "werkgroepen": user.werkgroepen(),
+    "onderverenigingen": user.onderverenigingen(),
+    "groepen": user.overige_groepen()
+  })
+
 def make_groep_view(groepen_qs, leden_qs, name):
   def groep_view(request):
     groepen = OrderedDict(list(map(lambda g: (g.pk, (g, [])), groepen_qs)))
@@ -57,6 +73,7 @@ commissies_view = make_groep_view(
 
 urls = patterns('',
   url(r'^$', index, name='index'),
+  url(r'^profiel/(.{4})/$', profiel, name='base.profiel'),
   url(r'^verticalen/$', verticalen_view, name='base.verticalen'),
   url(r'^lichtingen/$', lichtingen_view, name='base.lichtingen'),
   url(r'^commissies/$', commissies_view, name='base.commissies'),

@@ -76,8 +76,37 @@ class Profiel(Model):
   medisch = TextField(blank=True)
   novitiaatbijz = TextField(db_column='novitiaatBijz', blank=True)  # Field name made lowercase.
 
+  def commissies(self):
+    return map(lambda cl: cl.groep, CommissieLid.objects.filter(user=self))
+
+  def verticale(self):
+    vert_lid = VerticaleLid.objects.filter(user=self).first()
+    if vert_lid is not None:
+      return vert_lid.groep
+
+    return None
+
+  def kring(self):
+    kring_lid = KringLid.objects.filter(user=self).first()
+    if kring_lid is not None:
+      return kring_lid.groep
+
+    return None
+
+  def werkgroepen(self):
+    return map(lambda cl: cl.groep, WerkgroepDeelnemer.objects.filter(user=self))
+
+  def onderverenigingen(self):
+    return map(lambda cl: cl.groep, OnderverenigingsLid.objects.filter(user=self))
+
+  def overige_groepen(self):
+    return map(lambda cl: cl.groep, GroepsLid.objects.filter(user=self))
+
   def __str__(self):
     return "%s (%s)" % (self.formal_name(), self.uid)
+
+  def full_name(self):
+    return "%s %s" % (self.voornaam, self.achternaam)
 
   def formal_name(self):
     if self.geslacht == 'm':
@@ -195,7 +224,7 @@ class AbstractLid(Model):
     unique_together = (('groep', 'user'),)
     abstract = True
 
-class GroepLid(AbstractLid):
+class GroepsLid(AbstractLid):
   groep = ForeignKey(Groep, related_name="leden")
 
   class Meta:
