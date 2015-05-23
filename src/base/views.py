@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.template import loader, RequestContext
 from .models import *
 
+from collections import OrderedDict
 import logging
 logger = logging.getLogger(__name__)
 
@@ -20,10 +21,10 @@ def render_with_layout(request, template, ctx={}, title=DEFAULT_TITLE):
 def index(request):
   return render_with_layout(request, 'main.jade')
 
-def make_groep_view(category_model, name):
+def make_groep_view(groepen_qs, leden_qs, name):
   def groep_view(request):
-    groepen = dict(list(map(lambda g: (g.pk, (g, [])), category_model.objects.all())))
-    leden   = category_model.lidmodel.objects.filter(user__status='S_LID')
+    groepen = OrderedDict(list(map(lambda g: (g.pk, (g, [])), groepen_qs)))
+    leden   = leden_qs
 
     # sort the members
     for lid in leden:
@@ -39,7 +40,24 @@ def make_groep_view(category_model, name):
 
   return groep_view
 
+verticalen_view = make_groep_view(
+  Verticale.objects.all(),
+  VerticaleLid.objects.filter(user__status="S_LID"),
+  "Verticalen")
+
+lichtingen_view = make_groep_view(
+  Lichting.objects.all().order_by('-lidjaar'),
+  LichtingLid.objects.all().exclude(groep=Lichting.objects.get(lidjaar=0)),
+  "Lichtingen")
+
+commissies_view = make_groep_view(
+  Commissie.objects.filter(status='ht').order_by('naam'),
+  CommissieLid.objects.filter(groep__status='ht'),
+  "Lichtingen")
+
 urls = patterns('',
   url(r'^$', index, name='index'),
-  url(r'^verticalen/$', make_groep_view(Verticale, "Verticalen"), name='index')
+  url(r'^verticalen/$', verticalen_view, name='base.verticalen'),
+  url(r'^lichtingen/$', lichtingen_view, name='base.lichtingen'),
+  url(r'^commissies/$', commissies_view, name='base.commissies'),
 )
