@@ -67,18 +67,21 @@ django. The one difference being the id columns on the following tables, which w
 
 ### Setting up
 
-1. **pyjade has some trouble with django 1.8**
-   This might fix it: `pip install --upgrade git+https://github.com/syrusakbary/pyjade.git`
-2. **How do I django???**
-   Django has EXCELLENT documentation: https://docs.djangoproject.com/en/1.8/
-3. **How can I CLI???**
-   By default IPython and Django extensions are installed, so you can `./manage.py shell_plus`
-   to open a top-notch shell with autocomplete, colors, great debugging and all the models
-   preloaded.
-4. **Migrations???**
-   Ain't it awesome? Remember these commands:
+#### pyjade has some trouble with django 1.8
+This might fix it: `pip install --upgrade git+https://github.com/syrusakbary/pyjade.git`
 
-     ./manage.py makemigrations # to generate new migrations based on model changes (CHECK!)
-     ./manage.py migrate # make db up to date
-     ./manage.py migrate <appname> <000x> # migrate specific app to specific migration
-     ./manage.py makemigrations --empty base # create new data migration for app base
+#### How do I django???
+Django has EXCELLENT documentation: https://docs.djangoproject.com/en/1.8/
+
+#### How can I CLI???
+By default IPython and Django extensions are installed, so you can `./manage.py shell_plus`
+to open a top-notch shell with autocomplete, colors, great debugging and all the models
+preloaded.
+
+#### Migrations???
+Ain't it awesome? Remember these commands:
+
+    python manage.py makemigrations # to generate new migrations based on model changes (CHECK!)
+    python manage.py migrate # make db up to date
+    python manage.py migrate <appname> <000x> # migrate specific app to specific migration
+    python manage.py makemigrations --empty base # create new data migration for app base
