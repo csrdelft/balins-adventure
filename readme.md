@@ -68,9 +68,10 @@ django. The one difference being the id columns on the following tables, which w
 ### Setting up
 
 1. **pyjade has some trouble with django 1.8**
-
    This might fix it: `pip install --upgrade git+https://github.com/syrusakbary/pyjade.git`
-
 2. **How do I django???**
-
    Django has EXCELLENT documentation: https://docs.djangoproject.com/en/1.8/
+3. **How can I CLI???**
+   By default IPython and Django extensions are installed, so you can `./manage.py shell_plus`
+   to open a top-notch shell with autocomplete, colors, great debugging and all the models
+   preloaded.
