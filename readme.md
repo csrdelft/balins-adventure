@@ -22,6 +22,13 @@ You can import the data from 'profielen' on the database after migration 0001 (o
     mysqldump -u root profielen --no-create-info -c > profielen_data.sql
     mysql -u root csrdelft_django < profielen_data.sql
 
+After importing those, you can create the authentication users from the legacy `accounts` table.
+Because the migration requires some transformation of the passwords and access to both
+the old and new database, it has been implemented as a separate script (`bin/migrate_accounts.py`).
+If you've setup the DATABASE config in your `settings.py` correctly, with legacy pointing to
+a running legacy database, you can run the script `python bin/migrate_accounts.py` from the `src/`
+directory.
+
 You can import the data from 'groepen' on the database after base migration 0003:
 
     mysqldump -u root csrdelft \

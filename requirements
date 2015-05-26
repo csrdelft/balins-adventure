@@ -11,4 +11,5 @@ django_extensions
 phpserialize
 ipython
 pyjade
+pytz
 PyYAML
