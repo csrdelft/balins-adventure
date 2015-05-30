@@ -6,6 +6,12 @@
     mysql -u root << "create database csrdelft_django; grant all privileges on `csrdelft_django`.* to csrdelft@localhost identified by 'bl44t';"
     cd src
     ./manage.py migrate
+
+    # You now have a fresh databse
+    # import some data
+    ./manage.py loaddata dev.yaml
+
+    # You should be good to go...
     ./manage.py runserver
 
 ### Migrating old models
