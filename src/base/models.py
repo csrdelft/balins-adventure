@@ -116,10 +116,10 @@ class Profiel(Model):
 
 class AbstractGroep(Model):
   naam = CharField(max_length=255)
-  status = CharField(max_length=2)
+  status = CharField(max_length=2, default="ht")
   familie = CharField(max_length=255)
-  samenvatting = TextField(blank=True, null=True)
-  omschrijving = TextField(blank=True, null=True)
+  samenvatting = TextField(blank=True)
+  omschrijving = TextField(blank=True)
   begin_moment = DateTimeField(blank=True, null=True)
   eind_moment = DateTimeField(blank=True, null=True)
   maker_user = ForeignKey(Profiel, db_column='maker_uid', related_name='+')
@@ -142,71 +142,101 @@ class GroepDoodlijnenMixin(Model):
     abstract = True
 
 class Groep(AbstractGroep):
-
   rechten_aanmelden = CharField(max_length=255)
+
+  def __str__(self):
+    return "Groep: %s" % self.naam
 
   class Meta:
     db_table = 'groepen'
 
 class Ketzer(GroepDoodlijnenMixin, AbstractGroep):
 
+  def __str__(self):
+    return "Ketzer: %s" % self.naam
+
   class Meta:
     db_table = 'ketzers'
 
 class Lichting(AbstractGroep):
-
   lidjaar = IntegerField(unique=True)
+
+  def __str__(self):
+    return "Lichting: %s" % self.naam
 
   class Meta:
     db_table = 'lichtingen'
 
 class Ondervereniging(AbstractGroep):
-
   soort = CharField(max_length=1)
+
+  def __str__(self):
+    return "Ondervereniging: %s" % self.naam
 
   class Meta:
     db_table = 'onderverenigingen'
 
 class Verticale(AbstractGroep):
-
   letter = CharField(unique=True, max_length=1)
+
+  def __str__(self):
+    return "Verticale: %s" % self.naam
 
   class Meta:
     db_table = 'verticalen'
 
-class Kring(AbstractGroep):
+class Woonoord(AbstractGroep):
 
+  def __str__(self):
+    return "Woonoord: %s" % self.naam
+
+  class Meta:
+    db_table = 'woonoorden'
+
+class Kring(AbstractGroep):
   verticale = ForeignKey(Verticale, db_column='verticale')
   kring_nummer = IntegerField()
+
+  def __str__(self):
+    return "Kring: %s" % self.naam
 
   class Meta:
     db_table = 'kringen'
 
 class Werkgroep(GroepDoodlijnenMixin, AbstractGroep):
 
+  def __str__(self):
+    return "Werkgroep: %s" % self.naam
+
   class Meta:
     db_table = 'werkgroepen'
 
 class Activiteit(GroepDoodlijnenMixin, AbstractGroep):
-
-  soort = CharField(max_length=15)
+  soort = CharField(max_length=15) # TODO choicefield ??
   rechten_aanmelden = CharField(max_length=255, blank=True)
   locatie = CharField(max_length=255, blank=True)
-  in_agenda = IntegerField()
+  in_agenda = BooleanField()
+
+  def __str__(self):
+    return "Activiteit: %s" % self.naam
 
   class Meta:
     db_table = 'activiteiten'
 
 class Bestuur(AbstractGroep):
-
   bijbeltekst = TextField()
+
+  def __str__(self):
+    return "Bestuur: %s" % self.naam
 
   class Meta:
     db_table = 'besturen'
 
 class Commissie(AbstractGroep):
-
   soort = CharField(max_length=1)
+
+  def __str__(self):
+    return "Commissie: %s" % self.naam
 
   class Meta:
     db_table = 'commissies'
@@ -219,6 +249,9 @@ class AbstractLid(Model):
 
   ## !! IMPORTANT
   ## foreignkey `groep` expected on any child class
+
+  def __str__(self):
+    return "Groepslid: %s" % self.user_id
 
   class Meta:
     unique_together = (('groep', 'user'),)
@@ -254,6 +287,12 @@ class VerticaleLid(AbstractLid):
   class Meta:
     db_table = 'verticale_leden'
 
+class Bewoners(AbstractLid):
+  groep = ForeignKey(Woonoord, related_name="leden")
+
+  class Meta:
+    db_table = 'bewoners'
+
 class LichtingLid(AbstractLid):
   groep = ForeignKey(Lichting, related_name="leden")
 
@@ -283,3 +322,4 @@ class ActiviteitDeelnemer(AbstractLid):
 
   class Meta:
     db_table = 'activiteit_deelnemers'
+

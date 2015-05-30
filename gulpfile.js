@@ -23,5 +23,6 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', function() {
+  gulp.run('compass');
   gulp.run('watch');
 });
