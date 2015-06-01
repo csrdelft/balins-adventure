@@ -3,5 +3,6 @@ node_modules/
 *.pyc
 __pycache__/
 .sass-cache/
+.idea/
 
 src/assets/css/

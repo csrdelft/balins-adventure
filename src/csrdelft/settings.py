@@ -50,10 +50,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_tables2',
     'django_extensions',
+    'rest_framework',
     'permission',
     'base',
     'forum',
-    'legacy'
+    'maaltijden'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -70,6 +71,18 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # default
     'permission.backends.PermissionBackend',
 )
+
+REST_FRAMEWORK = {
+  'DEFAULT_PERMISSION_CLASSES': (
+    'rest_framework.permissions.AllowAny',
+  ),
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+  ),
+  'DEFAULT_FILTER_BACKENDS': (
+    'rest_framework.filters.DjangoFilterBackend',
+  )
+}
 
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
