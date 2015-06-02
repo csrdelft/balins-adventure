@@ -24,6 +24,7 @@
     > mysql -u root -e "create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';"
     > cd /vagrant/src
     > ../.virtualen/bin/python manage.py migrate
+    > ../.virtualen/bin/python manage.py loaddata dev
     > exit
     vagrant reload
 
