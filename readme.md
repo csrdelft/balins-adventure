@@ -18,7 +18,9 @@
 
 #### Vagrant
 
-    vagrant up # will throw error in the end on first go
+    vagrant up --provider viritualbox
+    # django will throw error in the end of first go
+    # because we haven't initialized the database yet
     vagrant ssh
     > mysql_secure_installation
     > mysql -u root -e "create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';"
