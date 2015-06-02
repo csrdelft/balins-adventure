@@ -1,9 +1,11 @@
 ## Getting Started With Development
 
+#### Native
+
     make install && npm install && npm install -g gulp && gem install compass
     gulp
     source .virtualenv/bin/activate
-    mysql -u root << "create database csrdelft_django; grant all privileges on `csrdelft_django`.* to csrdelft@localhost identified by 'bl44t';"
+    mysql -u root -e "create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';"
     cd src
     ./manage.py migrate
 
@@ -13,6 +15,19 @@
 
     # You should be good to go...
     ./manage.py runserver
+
+#### Vagrant
+
+    vagrant up # will throw error in the end on first go
+    vagrant ssh
+    > mysql_secure_installation
+    > mysql -u root -e "create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';"
+    > cd /vagrant/src
+    > ../.virtualen/bin/python manage.py migrate
+    > exit
+    vagrant reload
+
+Next time `vagrant up` should be enough. `vagrant ssh` allows you to migrate and such.
 
 ### Migrating old models
 
