@@ -85,7 +85,7 @@ def forum_draad(request, draad_id):
   fresh_form = ForumPostForm(initial={'draad': draad})
 
   # make sure the user can view the forum draad
-  deny_on_fail(request.user.has_perm('forum.view_forumdeel', draad))
+  deny_on_fail(request.user.has_perm('forum.view_forumdeel', draad.forum))
   can_post = request.user.has_perm('forum.post_in_forumdeel', draad.forum)
 
   if request.method == 'POST':

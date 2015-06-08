@@ -72,6 +72,9 @@ AUTHENTICATION_BACKENDS = (
     'permission.backends.PermissionBackend',
 )
 
+HIJACK_LOGIN_REDIRECT_URL = '/'
+REVERSE_HIJACK_LOGIN_REDIRECT_URL = '/'
+
 REST_FRAMEWORK = {
   'DEFAULT_PERMISSION_CLASSES': (
     'rest_framework.permissions.AllowAny',

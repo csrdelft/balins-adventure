@@ -8,6 +8,7 @@ django-filter
 django-permission
 django-tables2
 django_extensions
+django-hijack
 phpserialize
 ipython
 pyjade
