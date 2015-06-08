@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.shortcuts import render
 from django.template import loader, RequestContext
+import hijack.helpers as hijack
 from .models import *
 import django_tables2 as tables
 
@@ -22,11 +23,15 @@ def render_with_layout(request, template, ctx={}, title=DEFAULT_TITLE):
 def index(request):
   return render_with_layout(request, 'main.jade')
 
+def su(request, uid):
+  user = Profiel.objects.get(pk=uid)
+  return hijack.login_user(request, user.user)
+
+def end_su(request):
+  return hijack.release_hijack(request)
+
 def profiel(request, uid):
-  try:
-    user = Profiel.objects.get(pk=uid)
-  except Profiel.DoesNotExist:
-    raise Http404("Geen gebruiker met lidnummer %s" % uid)
+  user = Profiel.objects.get(pk=uid)
 
   return render_with_layout(request, 'profiel.jade', title=user.full_name(), ctx={
     "user": user,
@@ -94,6 +99,8 @@ commissies_view = make_groep_view(
 urls = patterns('',
   url(r'^$', index, name='index'),
   url(r'^profiel/(.{4})/$', profiel, name='base.profiel'),
+  url(r'^su/(.{4})/$', su, name='base.su'),
+  url(r'^endsu/(.{4})/$', end_su, name='base.end_su'),
   url(r'^groepen/$', groepen_overview, name='base.groepen'),
   url(r'^verticalen/$', verticalen_view, name='base.verticalen'),
   url(r'^lichtingen/$', lichtingen_view, name='base.lichtingen'),

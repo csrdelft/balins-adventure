@@ -18,5 +18,5 @@ urlpatterns = patterns('',
   url(r'^api/', include(api_urls)),
 
   url(r'^admin/', include(admin.site.urls)),
-  url(r'', include(legacy.views.urls))
+  url(r'', include(legacy.views.urls)),
 )

@@ -43,8 +43,8 @@ html
           #whoami.col-xs-6
             img(src="/plaetjes/pasfoto/1337.vierkant.png")
             div.tag
-              p.name Welkom Am. Rouvoet
-              p.uid  1337
+              p.name Welkom {{ user.formal_name }}
+              p.uid  {{ user.profiel.uid }}
 
     #topmenu
       .container
