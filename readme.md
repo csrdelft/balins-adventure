@@ -16,6 +16,28 @@
     # You should be good to go...
     ./manage.py runserver
 
+
+#### Windows
+
+1. Installeer Python (incl. pip), NodeJS en Ruby
+2. Open cmd prompt in de root van je repo clone
+3. Run vervolgens deze commando's 1 voor 1:
+
+    python -m venv .virtualenv
+	.virtualenv\Scripts\activate
+	python -m pip install -r requirements
+	npm install
+	npm install -g gulp
+	gem install compass
+	gem install font-awesome-sass
+    gulp
+	
+    mysql -u root -p -e "create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';"
+    python src\manage.py migrate
+	python src\manage.py loaddata dev.yaml
+	python src\manage.py runserver
+
+
 #### Vagrant
 
     vagrant up --provider viritualbox
