@@ -38,7 +38,7 @@ class Profiel(Model):
   studiejaar = IntegerField(blank=True, null=True)
   lidjaar = IntegerField()
   lidafdatum = DateField(blank=True, null=True)
-  gebdatum = DateField()
+  gebdatum = DateField(blank=True, null=True)
   sterfdatum = DateField(blank=True, null=True)
   bankrekening = CharField(max_length=255, blank=True)
   machtiging = IntegerField()
@@ -133,8 +133,8 @@ class AbstractGroep(Model):
 
 class GroepDoodlijnenMixin(Model):
   aanmeld_limiet = IntegerField(blank=True, null=True)
-  aanmelden_vanaf = DateTimeField()
-  aanmelden_tot = DateTimeField()
+  aanmelden_vanaf = DateTimeField(blank=True, null=True)
+  aanmelden_tot = DateTimeField(blank=True, null=True)
   bewerken_tot = DateTimeField(blank=True, null=True)
   afmelden_tot = DateTimeField(blank=True, null=True)
 
