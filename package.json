@@ -2,7 +2,7 @@
   "private": true,
   "devDependencies": {
     "gulp": "^3.8.8",
-    "gulp-compass": "^2.0.4",
+    "gulp-sass": "^2.0.2",
     "gulp-watch": "^4.2.4"
   }
 }

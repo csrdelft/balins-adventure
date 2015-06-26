@@ -1,16 +1,14 @@
 var gulp = require('gulp'),
-    compass = require('gulp-compass'),
+    sass = require('gulp-sass'),
     path = require('path')
     watch = require('gulp-watch');
 
-gulp.task('compass', function() {
+gulp.task('sass', function() {
   gulp.src('./src/assets/sass/app.sass')
-    .pipe(compass({
-      project: path.join(__dirname, 'src/assets'),
-      css: 'css',
-      sass: 'sass',
-      require: [
-        'font-awesome-sass'
+    .pipe(sass({
+      includePaths : [
+        path.join(__dirname, 'src/assets/sass'), // sass
+        path.join(__dirname, 'src/assets/css')   // css
       ]
     }))
     .pipe(gulp.dest('src/assets/css'));
@@ -18,11 +16,11 @@ gulp.task('compass', function() {
 
 gulp.task('watch', function() {
   watch('./src/assets/sass/**/*.sass', function() {
-    gulp.start('compass');
+    gulp.start('sass');
   });
 });
 
 gulp.task('default', function() {
-  gulp.run('compass');
+  gulp.run('sass');
   gulp.run('watch');
 });
