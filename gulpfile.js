@@ -28,32 +28,35 @@ gulp.task('sass', function() {
 });
 
 function compileScripts(watch) {
-  gutil.log('Starting browserify');
-
   var entryFile = './src/assets/app.jsx';
   es6ify.traceurOverrides = {experimental: true};
 
-  var bundler = browserify(entryFile);
+  var bundler = browserify({
+    entries: [es6ify.runtime, entryFile],
+    debug: true,
+    cache: {}, packageCache: {}, fullPaths: true
+  });
+
   bundler.require('./node_modules/react/react.js');
   bundler.transform(reactify);
   bundler.transform(es6ify.configure(/.jsx/));
 
-  var rebundle = function () {
-    var stream = bundler.bundle();
-
-    stream.on('error', function (err) { console.error(err) });
-    stream = stream.pipe(source(entryFile));
-    stream.pipe(rename('app.js'));
-
-    stream.pipe(gulp.dest(path.join(dist, 'scripts')));
-  }
+  function bundle() {
+    console.log("Bundling scripts...");
+    return bundler
+      .bundle()
+      .on('error', function(err) {console.error(err);})
+      .pipe(source(es6ify.runtime, entryFile))
+      .pipe(rename('app.js'))
+      .pipe(gulp.dest(path.join(dist, 'scripts')));
+  };
 
   if(watch) {
     bundler = watchify(bundler);
-    bundler.on('update', rebundle);
+    bundler.on('update', bundle);
   }
 
-  return rebundle();
+  return bundle();
 }
 
 gulp.task('watch', function() {
@@ -66,8 +69,6 @@ gulp.task('watch', function() {
 
   compileScripts(true);
   initWatch('./src/assets/sass/**/*.sass', 'sass');
-
-  gulp.watch([dist + '/**/*']);
 });
 
 gulp.task('copy', function() {

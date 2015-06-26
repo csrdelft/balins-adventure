@@ -14,5 +14,9 @@
     "rename": "^1.0.3",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.3"
+  },
+  "dependencies": {
+    "jquery": "^2.1.4",
+    "underscore": "^1.8.3"
   }
 }
