@@ -115,7 +115,7 @@ class ForumDraadVolgen(Model):
 
 class ForumPost(Model):
   post_id = AutoField(primary_key=True)
-  draad = ForeignKey(ForumDraad, db_column="draad_id")
+  draad = ForeignKey(ForumDraad, db_column="draad_id", related_name='posts')
   user = ForeignKey(Profiel, db_column='uid')
   tekst = TextField()
   datum_tijd = DateTimeField()

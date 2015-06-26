@@ -124,7 +124,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATICFILES_DIRS = (
-  os.path.join(BASE_DIR, 'assets'),
+  os.path.join(BASE_DIR, '../dist'),
 )
 
 STATIC_URL = '/static/'

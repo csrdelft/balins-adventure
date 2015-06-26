@@ -14,7 +14,7 @@ var gulp = require('gulp'),
 var assets = path.join(__dirname, 'src/assets');
 var fonts = path.join(assets, 'fonts/**/*');
 var images = path.join(assets, 'images/**/*');
-var dist = path.join(assets, 'dist');
+var dist = path.join(__dirname, 'dist');
 
 gulp.task('sass', function() {
   gulp.src('./src/assets/sass/app.sass')

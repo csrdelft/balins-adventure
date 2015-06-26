@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 from django.http import *
 from django.core.urlresolvers import reverse
 from .models import *
+from .serializers import *
+from base.utils import *
+from base.http import *
+
 from datetime import datetime
 import logging
 import json
@@ -18,8 +22,17 @@ def api_most_recent(request):
     .order_by('-laatst_gewijzigd')[:n]\
     .values('titel')
 
-  return HttpResponse(json.dumps(list(queryset), indent=2))
+  return json_response(list(queryset))
+
+def api_forum_draad(request, draad_id):
+  draad = ForumDraad.objects.prefetch_related('forum').get(pk=draad_id)
+
+  # make sure the user can view the forum draad
+  deny_on_fail(request.user.has_perm('forum.view_forumdeel', draad.forum))
+
+  return json_response(ForumDraadSerializer().to_representation(draad))
 
 urls = patterns('',
    url(r'^recent$', api_most_recent, name='forum.api.recent'),
+   url(r'^(\d+)/$', api_forum_draad, name='forum.api.draad')
 )
