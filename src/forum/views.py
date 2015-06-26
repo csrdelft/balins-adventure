@@ -5,16 +5,17 @@ from django.contrib.auth.models import User
 from django import forms
 from django.http import *
 from django.core.urlresolvers import reverse
+import django_tables2 as tables
+from django_tables2.utils import A
 from base.views import render_with_layout
 from base.utils import *
 from .models import *
 
 from datetime import datetime
 import logging
-logger = logging.getLogger(__name__)
+import json
 
-import django_tables2 as tables
-from django_tables2.utils import A
+logger = logging.getLogger(__name__)
 
 class ForumTable(tables.Table):
   class Meta:
