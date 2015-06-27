@@ -12,39 +12,33 @@ var {
   Link,
   RouteHandler } = require('react-router');
 
-// the menu
+// the top menu
+// where we use the Link element from the router to activate different views
 class Menu extends React.Component {
   render() {
     return (
       <ul>
-        <li>
-          <Link to="/">Thuis</Link>
-        </li>
-        <li>
-          <Link to="/groepen">Groepen</Link>
-        </li>
+        <li><Link to="/">Thuis</Link></li>
+        <li><Link to="/groepen">Groepen</Link></li>
         <li>Actueel</li>
-        <li>
-          <Link to="/forum">Reformaforum</Link>
-        </li>
+        <li><Link to="/forum">Reformaforum</Link></li>
       </ul>
     );
   }
 }
 
-lass App extends React.Component {
+// the top level application just wraps the router.
+// The router is in charge of rendering the right child view based on the url.
+class App extends React.Component {
   render() {
     return <div>
-      <div id="topmenu">
-        <Menu />
-      </div>
-      <div id="content">
-        <RouteHandler />
-      </div>
+      <div id="topmenu"><Menu /></div>
+      <div id="content"><RouteHandler /></div>
     </div>;
   }
 }
 
+// simple 404 child view
 class NotFound extends React.Component {
   render() {
     return <div>
@@ -53,7 +47,8 @@ class NotFound extends React.Component {
   }
 }
 
-// the router
+// The actual routing tree.
+// This binds client side routes to views
 var routes = (
   <Route path="/" handler={App}>
     <Route path="" handler={NotFound} />

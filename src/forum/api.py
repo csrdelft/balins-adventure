@@ -15,11 +15,19 @@ import json
 logger = logging.getLogger(__name__)
 
 def most_recent_forum_change(request):
+  """ Cheap check for latest change at the forums.
+  """
+  # Don't take into account user permissions here: too expensive; query wisely
   return ForumDraad.objects.latest("laatst_gewijzigd").laatst_gewijzigd
 
 @condition(last_modified_func=most_recent_forum_change)
 def api_most_recent(request):
+  """ Gets the n forum draadjes that changed most recently.
+      It uses the most_recent_forum_change function to handle if-modified-since
+      correctly.
+  """
   n = int(request.GET.get('n', 10))
+
   # find the forumdelen that may be seen by the user
   delen = list(ForumDeel.get_viewable_by(request.user))
   queryset = ForumDraad.objects\
@@ -27,9 +35,12 @@ def api_most_recent(request):
     .order_by('-laatst_gewijzigd')[:n]\
     .values('titel')
 
+  # render to a json response
   return json_response(list(queryset))
 
 def api_forum_draad(request, draad_id):
+  """ Get the json representation of the draad with the given id
+  """
   draad = ForumDraad.objects.prefetch_related('forum').get(pk=draad_id)
 
   # make sure the user can view the forum draad
