@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "jquery": "^2.1.4",
+    "q": "^1.4.1",
+    "q-xhr": "^0.1.3",
     "underscore": "^1.8.3"
   }
 }

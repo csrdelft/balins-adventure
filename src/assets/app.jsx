@@ -1,35 +1,48 @@
 var React = require("react");
 var $ = require("jquery");
 var _ = require("underscore");
+var api = require("api");
 
 class ForumThreadList extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      threads: [{
-        title: "Initial post"
-      }]
+      threads: []
     };
   }
 
+  update() {
+    api.forum.get_recent()
+      .then(
+        (resp) => this.setState({ threads: resp.data }),
+        (resp) => console.error('Getting recent forum posts failed with status ' + resp.status)
+      );
+  }
+
   componentDidMount() {
-    _.delay(() => {
-      this.state.threads.push({
-        title: 'Awesome!'
-      });
-      this.setState(this.state);
-    }, 2000);
+    // load initial recent forum posts
+    this.update();
+
+    // set the regular update
+    window.setInterval(() => this.update(), this.props.updateInterval);
   }
 
   render() {
     return <div>
       {
         _.map(this.state.threads,
-          (thread, i) => <h3 key={i}>{thread.title}</h3>
+          (thread, i) => <h3 key={i}>{thread.titel}</h3>
         )
       }
       </div>;
   }
 }
 
-React.render(<ForumThreadList />, $('#mount-forum-recent')[0]);
+ForumThreadList.propTypes = { updateInterval: React.PropTypes.number };
+ForumThreadList.defaultProps = { updateInterval: 10000 };
+
+// initiate the forum recent threads list
+var forum_recent = <ForumThreadList />
+
+React.render(forum_recent, $('#mount-forum-recent')[0]);

@@ -55,7 +55,11 @@ class ForumPostForm(forms.ModelForm):
     post.auteur_ip = "" # TODO
     post.wacht_goedkeuring = -1 #TODO
 
-    if commit: post.save()
+    post.draad.laatst_gewijzigd = datetime.now()
+
+    if commit:
+      post.save()
+      post.draad.save()
 
     return post
 

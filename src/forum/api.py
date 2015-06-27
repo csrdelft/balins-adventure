@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.models import User
+from django.views.decorators.http import condition
 from django.http import *
 from django.core.urlresolvers import reverse
 from .models import *
@@ -13,6 +14,10 @@ import json
 
 logger = logging.getLogger(__name__)
 
+def most_recent_forum_change(request):
+  return ForumDraad.objects.latest("laatst_gewijzigd").laatst_gewijzigd
+
+@condition(last_modified_func=most_recent_forum_change)
 def api_most_recent(request):
   n = int(request.GET.get('n', 10))
   # find the forumdelen that may be seen by the user

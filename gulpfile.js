@@ -28,12 +28,13 @@ gulp.task('sass', function() {
 });
 
 function compileScripts(watch) {
-  var entryFile = './src/assets/app.jsx';
+  var entryFile = path.join(assets, 'app.jsx');
   es6ify.traceurOverrides = {experimental: true};
 
   var bundler = browserify({
     entries: [es6ify.runtime, entryFile],
     debug: true,
+    paths: ['./node_modules/', path.join(assets, 'scripts')],
     cache: {}, packageCache: {}, fullPaths: true
   });
 
