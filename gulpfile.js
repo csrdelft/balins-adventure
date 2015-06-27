@@ -35,6 +35,7 @@ function compileScripts(watch) {
     entries: [es6ify.runtime, entryFile],
     debug: true,
     paths: ['./node_modules/', path.join(assets, 'scripts')],
+    extensions: ['.jsx', '.js'],
     cache: {}, packageCache: {}, fullPaths: true
   });
 
