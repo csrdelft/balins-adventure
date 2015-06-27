@@ -5,8 +5,12 @@ var _ = require("underscore");
 var api = require("api");
 var ForumThreadList = require("partials/ForumThreadList");
 
-var HashHistory = require('react-router/lib/HashHistory');
-var { Router, Route, DefaultRoute, Link } = require('react-router');
+var Router = require('react-router');
+var {
+  Route,
+  DefaultRoute,
+  Link,
+  RouteHandler } = require('react-router');
 
 // the menu
 class Menu extends React.Component {
@@ -28,14 +32,14 @@ class Menu extends React.Component {
   }
 }
 
-class App extends React.Component {
+lass App extends React.Component {
   render() {
     return <div>
       <div id="topmenu">
         <Menu />
       </div>
       <div id="content">
-        { this.props.children ? this.props.children : <div><h1>Hi!</h1></div> }
+        <RouteHandler />
       </div>
     </div>;
   }
@@ -50,11 +54,15 @@ class NotFound extends React.Component {
 }
 
 // the router
-var app = <Router history={new HashHistory}>
-  <Route path="/" component={App}>
-    <Route path="forum" component={ForumThreadList} />
-    <Route path="*" component={NotFound} />
+var routes = (
+  <Route path="/" handler={App}>
+    <Route path="" handler={NotFound} />
+    <Route path="forum" handler={ForumThreadList} />
+    <Route path="*" handler={NotFound} />
   </Route>
-</Router>;
+);
 
-React.render(app, $('#mount-app')[0]);
+
+Router.run(routes, function (Handler) {
+  React.render(<Handler />, $('#mount-app')[0]);
+});

@@ -9,7 +9,8 @@ var gulp = require('gulp'),
     es6ify = require('es6ify'),
     reactify = require('reactify'),
     source = require('vinyl-source-stream'),
-    livereload = require('gulp-livereload');
+    livereload = require('gulp-livereload'),
+    notify = require('gulp-notify');
 
 var assets = path.join(__dirname, 'src/assets');
 var fonts = path.join(assets, 'fonts/**/*');
@@ -44,13 +45,20 @@ function compileScripts(watch) {
   bundler.transform(es6ify.configure(/.jsx/));
 
   function bundle() {
-    console.log("Bundling scripts...");
-    return bundler
+    var stream = bundler
       .bundle()
-      .on('error', function(err) {console.error(err);})
+      .on("error", notify.onError({
+          message: "Error: <%= error.message %>",
+          title: "Error building scripts"
+      }))
       .pipe(source(es6ify.runtime, entryFile))
       .pipe(rename('app.js'))
       .pipe(gulp.dest(path.join(dist, 'scripts')));
+
+
+    stream.on('end', function() { gutil.log("Done building scripts"); });
+
+    return stream;
   };
 
   if(watch) {

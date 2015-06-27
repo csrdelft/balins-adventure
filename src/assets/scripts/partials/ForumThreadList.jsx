@@ -10,6 +10,8 @@ class ForumThreadList extends React.Component {
     this.state = {
       threads: []
     };
+
+    this.interval = null;
   }
 
   update() {
@@ -25,7 +27,11 @@ class ForumThreadList extends React.Component {
     this.update();
 
     // set the regular update
-    window.setInterval(() => this.update(), this.props.updateInterval);
+    this.interval = window.setInterval(() => this.update(), this.props.updateInterval);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.interval);
   }
 
   render() {

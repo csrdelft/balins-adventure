@@ -40,23 +40,8 @@ html
               p.name Welkom {{ user.profiel.formal_name }}
               p.uid  {{ user.profiel.uid }}
 
-    #topmenu
-      .container
-        ul
-          li
-            i.fa.fa-home
-            i.fa.fa-cogs
-          li
-            Groepen
-          li
-            Actueel
-          li
-            a(href="{% url 'forum.main' %}")
-              | Reformaforum
-          li Communicatie
-
     #all
-      block content
+      .container-fluid#mount-app
 
   // after the body
   script(src="{% static 'scripts/app.js' %}")
