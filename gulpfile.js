@@ -4,13 +4,12 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     path = require('path'),
     watch = require('gulp-watch'),
-    watchify = require('watchify'),
-    browserify = require('browserify'),
-    es6ify = require('es6ify'),
-    reactify = require('reactify'),
     source = require('vinyl-source-stream'),
     livereload = require('gulp-livereload'),
-    notify = require('gulp-notify');
+    notify = require('gulp-notify'),
+    watchify = require('watchify'),
+    browserify = require('browserify'),
+    babelify = require('babelify');
 
 var assets = path.join(__dirname, 'src/assets');
 var fonts = path.join(assets, 'fonts/**/*');
@@ -28,21 +27,23 @@ gulp.task('sass', function() {
     .pipe(gulp.dest(path.join(dist, 'css')));
 });
 
+// initiates the scripts bundler
 function compileScripts(watch) {
   var entryFile = path.join(assets, 'app.jsx');
-  es6ify.traceurOverrides = {experimental: true};
 
+  // we use browserify to bundle node style modules into a
+  // script ready for the browser
   var bundler = browserify({
-    entries: [es6ify.runtime, entryFile],
+    entries: [entryFile],
     debug: true,
     paths: ['./node_modules/', path.join(assets, 'scripts')],
     extensions: ['.jsx', '.js'],
     cache: {}, packageCache: {}, fullPaths: true
   });
 
-  bundler.require('./node_modules/react/react.js');
-  bundler.transform(reactify);
-  bundler.transform(es6ify.configure(/.jsx/));
+  // we use babel to transpile es6 syntax and the react jsx syntax
+  // down to es5
+  bundler.transform(babelify);
 
   function bundle() {
     var stream = bundler
@@ -51,16 +52,16 @@ function compileScripts(watch) {
           message: "Error: <%= error.message %>",
           title: "Error building scripts"
       }))
-      .pipe(source(es6ify.runtime, entryFile))
+      .pipe(source(entryFile))
       .pipe(rename('app.js'))
       .pipe(gulp.dest(path.join(dist, 'scripts')));
-
 
     stream.on('end', function() { gutil.log("Done building scripts"); });
 
     return stream;
   };
 
+  // use watchify for fast rebuilds using browserify
   if(watch) {
     bundler = watchify(bundler);
     bundler.on('update', bundle);
@@ -69,6 +70,7 @@ function compileScripts(watch) {
   return bundle();
 }
 
+// watch assets and build on changes
 gulp.task('watch', function() {
   livereload.listen();
 
@@ -81,11 +83,13 @@ gulp.task('watch', function() {
   initWatch('./src/assets/sass/**/*.sass', 'sass');
 });
 
+// copy the assets to the dist
 gulp.task('copy', function() {
   return gulp.src([fonts, images], {base: assets})
     .pipe(gulp.dest(dist));
 });
 
+// run the tasks and start watching by default
 gulp.task('default', function() {
   gulp.start('sass');
   gulp.start('copy');
