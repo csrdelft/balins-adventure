@@ -36,7 +36,7 @@ function compileScripts(watch) {
   var bundler = browserify({
     entries: [entryFile],
     debug: true,
-    paths: ['./node_modules/', path.join(assets, 'scripts')],
+    paths: ['./node_modules/', path.join(assets, 'scripts'), path.join(assets)],
     extensions: ['.jsx', '.js'],
     cache: {}, packageCache: {}, fullPaths: true
   });
