@@ -4,6 +4,9 @@ var _ = require("underscore");
 
 class RatingField extends React.Component {
   constructor() {
+    super();
+
+    // initial state
     this.state = {
       rating: 0
     };
@@ -13,12 +16,14 @@ class RatingField extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  // setters
   rating(i) {
     this.setState({
       rating: i
     });
   }
 
+  // handlers
   handleClick(e) {
     this.setState({
       rating: $(e.target).data('value')
