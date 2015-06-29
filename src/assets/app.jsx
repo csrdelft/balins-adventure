@@ -4,6 +4,7 @@ var _ = require("underscore");
 
 var api = require("api");
 var ForumThreadList = require("partials/ForumThreadList");
+var Profiel = require("partials/Profiel");
 
 var Router = require('react-router');
 var {
@@ -22,6 +23,7 @@ class Menu extends React.Component {
         <li><Link to="/groepen">Groepen</Link></li>
         <li>Actueel</li>
         <li><Link to="/forum">Reformaforum</Link></li>
+        <li><Link to="/profiel/1337">Profiel</Link></li>
       </ul>
     );
   }
@@ -33,7 +35,7 @@ class App extends React.Component {
   render() {
     return <div>
       <div id="topmenu"><Menu /></div>
-      <div id="content"><RouteHandler /></div>
+      <div id="content"><RouteHandler {...this.props} /></div>
     </div>;
   }
 }
@@ -53,11 +55,12 @@ var routes = (
   <Route path="/" handler={App}>
     <Route path="" handler={NotFound} />
     <Route path="forum" handler={ForumThreadList} />
+    <Route path="profiel/:uid" handler={Profiel} />
     <Route path="*" handler={NotFound} />
   </Route>
 );
 
 
-Router.run(routes, function (Handler) {
-  React.render(<Handler />, $('#mount-app')[0]);
+Router.run(routes, function (Handler, state) {
+  React.render(<Handler params={state.params} />, $('#mount-app')[0]);
 });

@@ -3,8 +3,8 @@ var $ = require("jquery");
 var _ = require("underscore");
 
 class RatingField extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     // initial state
     this.state = {
