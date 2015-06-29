@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_TITLE = "Civitas Studiosorum Reformatorum"
 
-
 def render_with_layout(request, template, ctx={}, title=DEFAULT_TITLE):
   """ Renders content in the csr layout
   """

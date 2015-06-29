@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-import base.views
+import base.views, base.api
 import forum.views, forum.api
 import maaltijden.views, maaltijden.api
 import legacy.views
@@ -10,7 +10,8 @@ import legacy.views
 import permission; permission.autodiscover()
 
 api_urls = patterns('',
-  url(r'forum/', include(forum.api.urls))
+  url(r'^', include(base.api.urls)),
+  url(r'forum/', include(forum.api.urls)),
 )
 
 urlpatterns = patterns('',
