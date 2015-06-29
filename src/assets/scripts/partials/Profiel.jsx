@@ -27,17 +27,8 @@ class Profiel extends React.Component {
   }
 
   render() {
-    // shortcut to profiel current state
-    let p = this.state.profiel;
-
-    // helper to make setters for profiel attributes
-    let self = this;
-    function setter(attr) {
-      return (v) => console.log(v) && self.setState(_.extend(self.state.profiel, {[attr]: v}));
-    }
-
     if(this.state.profiel) {
-      return template(this.state.profiel, setter);
+      return template(this, this.state.profiel);
     } else {
       return <h1>Loading...</h1>;
     }

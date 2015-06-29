@@ -2,7 +2,13 @@ var InlineInput = require("partials/InlineInput");
 var _ = require("underscore");
 var React = require("react");
 
-function template(p, setter) {
+function template(self, p) {
+  // helper to make setters for profiel attributes
+  function setter(attr) {
+    return (v) => self.setState(_.extend(self.state.profiel, {[attr]: v}));
+  }
+
+  // actual template based on the state
   return (
     <div>
       <h1>
