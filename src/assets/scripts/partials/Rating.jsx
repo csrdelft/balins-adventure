@@ -17,7 +17,7 @@ class RatingField extends React.Component {
   }
 
   // setters
-  rating(i) {
+  rate(i) {
     this.setState({
       rating: i
     });
@@ -25,9 +25,7 @@ class RatingField extends React.Component {
 
   // handlers
   handleClick(e) {
-    this.setState({
-      rating: $(e.target).data('value')
-    });
+    this.rate($(e.target).data('value'));
   }
 
   render() {
