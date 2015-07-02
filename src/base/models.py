@@ -5,7 +5,7 @@ class Profiel(Model):
   class Meta:
     db_table = 'profielen'
 
-  user = OneToOneField(User, null=True)
+  user = OneToOneField(User, null=True, related_name="profiel")
   uid = CharField(primary_key=True, max_length=4)
 
   nickname = CharField(max_length=255)

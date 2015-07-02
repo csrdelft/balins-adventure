@@ -5,8 +5,22 @@ from .models import *
 class MaaltijdAanmeldingSerializer(serializers.ModelSerializer):
   class Meta:
     model = MaaltijdAanmelding
+    fields = ('user', 'aantal_gasten', 'gasten_eetwens', 'maaltijd')
+
+class MaaltijdSerializer(serializers.ModelSerializer):
+
+  aanmeldingen = MaaltijdAanmeldingSerializer(many=True)
+
+  class Meta:
+    model = Maaltijd
     fields = (
-      'maaltijd',
-      'user',
-      'aantal_gasten',
-      'gasten_eetwens')
+      'id',
+      'titel',
+      'datum',
+      'tijd',
+      'prijs',
+      'omschrijving',
+      'gesloten',
+      'aanmeld_limiet',
+      'aanmeldingen'
+    )

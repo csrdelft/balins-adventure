@@ -2,12 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import datetime
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', '0009_cleaning_up_groups'),
+        ('base', '0010_optional_fields_fixes'),
     ]
 
     operations = [
@@ -17,14 +18,14 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(db_column='maaltijd_id', primary_key=True, serialize=False)),
                 ('titel', models.CharField(max_length=255)),
                 ('datum', models.DateField()),
-                ('tijd', models.TimeField()),
-                ('prijs', models.IntegerField()),
-                ('omschrijving', models.CharField(max_length=255, blank=True)),
-                ('verwijderd', models.BooleanField()),
-                ('gesloten', models.BooleanField()),
+                ('tijd', models.TimeField(default=datetime.time(18, 0))),
+                ('prijs', models.IntegerField(default=3)),
+                ('omschrijving', models.CharField(blank=True, max_length=255)),
+                ('gesloten', models.BooleanField(default=False)),
+                ('verwijderd', models.BooleanField(default=False)),
                 ('laatst_gesloten', models.DateTimeField(blank=True, null=True)),
-                ('aanmeld_filter', models.CharField(max_length=255, blank=True)),
-                ('aanmeld_limiet', models.IntegerField()),
+                ('aanmeld_filter', models.CharField(blank=True, max_length=255)),
+                ('aanmeld_limiet', models.IntegerField(default=100)),
             ],
             options={
                 'db_table': 'mlt_maaltijden',
@@ -33,7 +34,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MaaltijdAanmelding',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('aantal_gasten', models.IntegerField()),
                 ('gasten_eetwens', models.CharField(max_length=255)),
                 ('laatst_gewijzigd', models.DateTimeField()),
@@ -45,7 +46,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MaaltijdAbo',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('wanneer_ingeschakeld', models.DateTimeField()),
             ],
             options={
@@ -59,11 +60,11 @@ class Migration(migrations.Migration):
                 ('dag_vd_week', models.IntegerField()),
                 ('periode_in_dagen', models.IntegerField()),
                 ('standaard_titel', models.CharField(max_length=255)),
-                ('standaard_tijd', models.TimeField()),
-                ('standaard_prijs', models.IntegerField()),
+                ('standaard_tijd', models.TimeField(default=datetime.time(18, 0))),
+                ('standaard_prijs', models.IntegerField(default=3)),
                 ('abonneerbaar', models.IntegerField()),
-                ('standaard_limiet', models.IntegerField()),
-                ('abonnement_filter', models.CharField(max_length=255, blank=True)),
+                ('standaard_limiet', models.IntegerField(default=100)),
+                ('abonnement_filter', models.CharField(blank=True, max_length=255)),
             ],
             options={
                 'db_table': 'mlt_repetities',
@@ -71,8 +72,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='maaltijdabo',
-            name='mlt_repetitie',
-            field=models.ForeignKey(to='maaltijden.MaaltijdRepetitie'),
+            name='repetitie',
+            field=models.ForeignKey(db_column='mlt_repetitie_id', to='maaltijden.MaaltijdRepetitie'),
         ),
         migrations.AddField(
             model_name='maaltijdabo',
@@ -82,17 +83,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='maaltijdaanmelding',
             name='door_abonnement',
-            field=models.ForeignKey(blank=True, null=True, to='maaltijden.MaaltijdRepetitie', db_column='door_abonnement'),
+            field=models.ForeignKey(db_column='door_abonnement', null=True, to='maaltijden.MaaltijdRepetitie', blank=True),
         ),
         migrations.AddField(
             model_name='maaltijdaanmelding',
             name='door_user',
-            field=models.ForeignKey(related_name='+', null=True, to='base.Profiel', db_column='door_uid'),
+            field=models.ForeignKey(db_column='door_uid', null=True, to='base.Profiel', related_name='+'),
         ),
         migrations.AddField(
             model_name='maaltijdaanmelding',
             name='maaltijd',
-            field=models.ForeignKey(to='maaltijden.Maaltijd'),
+            field=models.ForeignKey(related_name='aanmeldingen', to='maaltijden.Maaltijd'),
         ),
         migrations.AddField(
             model_name='maaltijdaanmelding',
@@ -102,11 +103,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='maaltijd',
             name='repetitie',
-            field=models.ForeignKey(blank=True, null=True, to='maaltijden.MaaltijdRepetitie', db_column='mlt_repetitie_id'),
+            field=models.ForeignKey(db_column='mlt_repetitie_id', null=True, to='maaltijden.MaaltijdRepetitie', blank=True),
         ),
         migrations.AlterUniqueTogether(
             name='maaltijdabo',
-            unique_together=set([('user', 'mlt_repetitie')]),
+            unique_together=set([('user', 'repetitie')]),
         ),
         migrations.AlterUniqueTogether(
             name='maaltijdaanmelding',

@@ -1,19 +1,50 @@
 from django.contrib.auth.models import User
 from django.conf.urls import url, include
+from django.http import *
 
-from rest_framework import routers, viewsets, views, response, permissions
+from rest_framework import views, response, generics, mixins, status
+from rest_framework.response import Response
+from rest_framework.decorators import detail_route, list_route
+from rest_framework import viewsets
 
 from .models import *
 from .serializers import *
+from base.http import *
 
-class MaaltijdAanmeldingViewSet(viewsets.ModelViewSet):
-  queryset = MaaltijdAanmelding.objects.all()
+from datetime import datetime, timedelta
 
-  serializer_class = MaaltijdAanmeldingSerializer
+class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
 
-router = routers.DefaultRouter()
-router.register(r'aanmeldingen', MaaltijdAanmeldingViewSet)
+  serializer_class = MaaltijdSerializer
 
-urls = [
-  url(r'^', include(router.urls)),
-]
+  def get_queryset(self):
+    # TODO permissions
+
+    return Maaltijd.objects\
+      .prefetch_related("aanmeldingen")
+
+  def list(self, *args, **kwargs):
+    at = self.request.query_params.get('at')
+    if at is not None:
+      at = datetime.fromtimestamp(int(at))
+    else:
+      at = datetime.now()
+
+    mlten = self.get_queryset()\
+      .filter(datum__gt=at)\
+      .filter(datum__lt=at + timedelta(days=21))
+
+    serializer = self.get_serializer(mlten, many=True)
+    return Response(serializer.data)
+
+  @detail_route(methods=['post'])
+  def aanmelden(self, request, pk):
+    request.data['user'] = request.profiel.pk
+    request.data['maaltijd'] = pk
+
+    serializer = MaaltijdAanmeldingSerializer(data=request.data)
+    if serializer.is_valid():
+      serializer.save(laatst_gewijzigd=datetime.now())
+      return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

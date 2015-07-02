@@ -6,11 +6,17 @@ import forum.views, forum.api
 import maaltijden.views, maaltijden.api
 import legacy.views
 
+from rest_framework.routers import DefaultRouter
+
 # apply the permission logics
 import permission; permission.autodiscover()
 
+router = DefaultRouter()
+router.register('maaltijden', maaltijden.api.MaaltijdViewSet, base_name="maaltijd")
+
 api_urls = patterns('',
   url(r'^', include(base.api.urls)),
+  url(r'^', include(router.urls)),
   url(r'forum/', include(forum.api.urls)),
 )
 

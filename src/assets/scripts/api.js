@@ -3,7 +3,7 @@ var Q = require('q-xhr')(window.XMLHttpRequest, require('q'));
 var api = 'http://localhost:8000/api/v1';
 
 // api functions
-module.exports = {
+var api_obj = {
 
   // the forum resource
   forum: {
@@ -12,7 +12,7 @@ module.exports = {
     get_recent : (n=5) => {
       return Q.xhr
         .get(api + '/forum/recent', {
-          params: { 'n': n }
+          params: { n: n }
         });
     }
 
@@ -26,5 +26,28 @@ module.exports = {
         .get(api + "/profiel/" + id);
     }
 
+  },
+
+  maaltijden: {
+
+    get_upcoming: (at) => {
+      return Q.xhr
+        .get(api + "/maaltijden/", {
+          params: { at: at }
+        });
+    },
+
+    aanmelden: (id, gasten=0, gasten_eetwens="") => {
+      return Q.xhr
+        .post(api + "/maaltijden/" + id + "/aanmelden/", {
+           aantal_gasten: gasten,
+           gasten_eetwens: gasten_eetwens
+        });
+    }
   }
 };
+
+// make api available globally
+window.api = api_obj;
+
+module.exports = api_obj;
