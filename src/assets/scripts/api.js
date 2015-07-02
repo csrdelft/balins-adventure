@@ -43,7 +43,12 @@ var api_obj = {
            aantal_gasten: gasten,
            gasten_eetwens: gasten_eetwens
         });
-    }
+    },
+
+    afmelden: (id) => {
+      return Q.xhr
+        .post(api + "/maaltijden/" + id + "/afmelden/");
+    },
   }
 };
 

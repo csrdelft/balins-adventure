@@ -52,3 +52,16 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
       return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+  @detail_route(methods=['post'])
+  def afmelden(self, request, pk):
+    # make sure the maaltijd isn't closed
+    if self.get_object().gesloten:
+      return Response({"details": "Maaltijd closed"}, status=status.HTTP_400_BAD_REQUEST)
+
+    aanmelding = MaaltijdAanmelding.object\
+      .get(maaltijd_id=pk, user=request.profiel)
+
+    aanmelding.delete()
+
+    return Response({'details': 'Succesfully deleted'})
