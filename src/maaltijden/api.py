@@ -2,10 +2,10 @@ from django.contrib.auth.models import User
 from django.conf.urls import url, include
 from django.http import *
 
-from rest_framework import views, response, generics, mixins, status
+from rest_framework import views, response, generics, mixins, status, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route, list_route
-from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from .models import *
 from .serializers import *
@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 
 class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
 
+  permission_classes = [IsAuthenticated]
   serializer_class = MaaltijdSerializer
 
   def get_queryset(self):
