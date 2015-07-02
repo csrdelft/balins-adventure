@@ -9,6 +9,7 @@ django-permission
 django-tables2
 django_extensions
 django-hijack
+django-rest-swagger
 phpserialize
 ipython
 pyjade

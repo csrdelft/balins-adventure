@@ -23,6 +23,14 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
       .prefetch_related("aanmeldingen")
 
   def list(self, *args, **kwargs):
+    """ Maaltijd upcoming list
+        ---
+        parameters:
+          - name: at
+            paramType: query
+            description: Give the upcoming list for `at` timestamp
+            type: integer
+    """
     at = self.request.query_params.get('at')
     if at is not None:
       at = datetime.fromtimestamp(int(at))
@@ -41,6 +49,21 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
 
   @detail_route(methods=['post'])
   def aanmelden(self, request, pk):
+    """ Maaltijd aanmelden
+        ---
+        parameters_strategy: replace
+        parameters:
+          - name: aantal_gasten
+            required: true
+            type: integer
+          - name: gasten_eetwens
+            required: true
+            type: string
+        responseMessages:
+          - code: 200
+            message: Succesfully aangemeld
+        serializer: MaaltijdAanmeldingSerializer
+    """
     mlt = self.get_object()
 
     # make sure the maaltijd isn't closed
@@ -62,13 +85,25 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
 
   @detail_route(methods=['post'])
   def afmelden(self, request, pk):
+    """ Maaltijd afmelden
+        ---
+        omit_serializer: true
+        parameters_strategy: replace
+        parameters: []
+        responseMessages:
+          - code: 200
+            message: Succesfully afgemeld
+          - code: 400
+            message: Maaltijd closed
+        type: {}
+    """
     # make sure the maaltijd isn't closed
     if self.get_object().gesloten:
-      return Response({"details": "Maaltijd closed"}, status=status.HTTP_400_BAD_REQUEST)
+      return Response({"message": "Maaltijd closed"}, status=status.HTTP_400_BAD_REQUEST)
 
     aanmelding = MaaltijdAanmelding.object\
       .get(maaltijd_id=pk, user=request.profiel)
 
     aanmelding.delete()
 
-    return Response({'details': 'Succesfully deleted'})
+    return Response({})

@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django_tables2',
     'django_extensions',
     'rest_framework',
+    'rest_framework_swagger',
     'permission',
     'base',
     'forum',
