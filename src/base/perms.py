@@ -52,13 +52,17 @@ class DynamicConditionLogic(PermissionLogic):
     return False
 
   def check_dynamic_condition(self, user, condition):
+    # empty conditions are easy
+    if condition == "":
+      return True
+
     try:
       cond, value = condition.split(':', 1)
 
       if cond == 'lidjaar':
         return user.profiel.lidjaar == int(value)
       elif cond == 'verticale':
-        return user.profiel.verticale.upper() == value.upper()
+        return user.profiel.verticale().naam.upper() == value.upper()
 
       return False
     except Exception as e:

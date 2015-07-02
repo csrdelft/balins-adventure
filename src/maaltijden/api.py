@@ -19,8 +19,6 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
   serializer_class = MaaltijdSerializer
 
   def get_queryset(self):
-    # TODO permissions
-
     return Maaltijd.objects\
       .prefetch_related("aanmeldingen")
 
@@ -35,14 +33,22 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
       .filter(datum__gt=at)\
       .filter(datum__lt=at + timedelta(days=21))
 
+    # only show those that fall within the permissions filter
+    mlten = filter(lambda m: self.request.user.has_perm('maaltijden.view_maaltijd', m), mlten)
+
     serializer = self.get_serializer(mlten, many=True)
     return Response(serializer.data)
 
   @detail_route(methods=['post'])
   def aanmelden(self, request, pk):
+    mlt = self.get_object()
+
     # make sure the maaltijd isn't closed
-    if self.get_object().gesloten:
+    if mlt.gesloten:
       return Response({"details": "Maaltijd closed"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # check that the user can sign in on this one
+    deny_on_fail(request.user.has_perm('maaltijden.view_maaltijd', mlt))
 
     request.data['user'] = request.profiel.pk
     request.data['maaltijd'] = pk
