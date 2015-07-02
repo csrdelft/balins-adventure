@@ -39,6 +39,10 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
 
   @detail_route(methods=['post'])
   def aanmelden(self, request, pk):
+    # make sure the maaltijd isn't closed
+    if self.get_object().gesloten:
+      return Response({"details": "Maaltijd closed"}, status=status.HTTP_400_BAD_REQUEST)
+
     request.data['user'] = request.profiel.pk
     request.data['maaltijd'] = pk
 

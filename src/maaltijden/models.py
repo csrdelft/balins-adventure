@@ -31,7 +31,6 @@ class Maaltijd(LiveModel):
   omschrijving = CharField(max_length=255, blank=True)
 
   gesloten = BooleanField(default=False)
-  verwijderd = BooleanField(default=False)
   laatst_gesloten = DateTimeField(blank=True, null=True)
 
   aanmeld_filter = CharField(max_length=255, blank=True) # permissions specifier
