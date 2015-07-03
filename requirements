@@ -10,6 +10,8 @@ django-tables2
 django_extensions
 django-hijack
 django-rest-swagger
+django-redis-sessions
+redis
 phpserialize
 ipython
 pyjade
