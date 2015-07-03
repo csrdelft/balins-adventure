@@ -26,6 +26,18 @@ class GroepSerializer(serializers.ModelSerializer):
   class Meta:
     model = Groep
 
+
+class ShortProfielSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Profiel
+    fields = (
+      'user',
+      'uid',
+      'voornaam',
+      'achternaam'
+    )
+
 class ProfielSerializer(serializers.ModelSerializer):
   kring = KringSerializer()
   verticale = VerticaleSerializer()

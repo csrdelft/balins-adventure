@@ -38,6 +38,7 @@ class ForumDeel(Model):
     default_permissions = ('add', 'change', 'delete', 'moderate', 'post_in')
 
 class ForumDraad(LiveModel):
+
   draad_id = AutoField(primary_key=True)
   forum = ForeignKey(ForumDeel, db_column="forum_id")
   gedeeld_met = IntegerField(blank=True, null=True)
@@ -56,6 +57,9 @@ class ForumDraad(LiveModel):
   # TODO verwijderen? anders in services opnemen
   laatste_post_id = IntegerField(blank=True, null=True)
   pagina_per_post = IntegerField()
+
+  # reverse relations:
+  #   - subscribers (ForumDraadVolgen)
 
   def __str__(self):
     return self.titel
@@ -106,7 +110,7 @@ class ForumDraadVerbergen(Model):
 
 class ForumDraadVolgen(Model):
   id = AutoField(primary_key=True)
-  draad = ForeignKey(ForumDraad, db_column="draad_id")
+  draad = ForeignKey(ForumDraad, db_column="draad_id", related_name="subscribers")
   user = ForeignKey(Profiel, db_column='uid')
 
   def __str__(self):

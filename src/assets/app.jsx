@@ -5,6 +5,7 @@ var _ = require("underscore");
 var api = require("api");
 var ForumThreadList = require("partials/ForumThreadList");
 var Profiel = require("partials/Profiel");
+var io = require('socket.io-client');
 
 var Router = require('react-router');
 var {
@@ -16,13 +17,46 @@ var {
 // the top menu
 // where we use the Link element from the router to activate different views
 class Menu extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      forum_notifications: 0
+    };
+
+    this.socket = null;
+  }
+
+  componentDidMount() {
+    // pick up notifications
+    this.socket = io('http://localhost:3000/notifications');
+
+    this.socket.on('connect', function() {
+      console.log("Connected to notification server");
+    });
+
+    this.socket.on('message', function(msg) {
+      console.log("Message:", msg);
+    });
+
+    this.socket.on('disconnect', function() {
+      console.warn("Disconnected from notifications server");
+    });
+  }
+
+  componentWillUnmount() {
+    this.socket.close();
+    this.socket = null;
+  }
+
   render() {
     return (
       <ul>
         <li><Link to="/">Thuis</Link></li>
         <li><Link to="/groepen">Groepen</Link></li>
         <li>Actueel</li>
-        <li><Link to="/forum">Reformaforum</Link></li>
+        <li><Link to="/forum">Reformaforum ({ this.state.forum_notifications })</Link></li>
         <li><Link to="/profiel/1337">Profiel</Link></li>
       </ul>
     );

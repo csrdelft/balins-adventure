@@ -3,6 +3,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SECRET_KEY = 'nw_-0v1gumzd=w1l+fc8ji)5%7624%!mb0ha9i1i+iwdcrqg#!'
 
+NOTIFICATION_REDIS_HOST = 'localhost'
+NOTIFICATION_REDIS_PORT = 6379
+NOTIFICATION_REDIS_DB = 0
+
 SESSION_ENGINE = 'redis_sessions.session'
 SESSION_REDIS_HOST = 'localhost'
 SESSION_REDIS_PORT = 6379

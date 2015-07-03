@@ -19,4 +19,8 @@ class Migration(migrations.Migration):
             model_name='forumpost',
             name='verwijderd',
         ),
+        migrations.AlterModelOptions(
+            name='forumdeel',
+            options={'default_permissions': ('add', 'change', 'delete', 'moderate', 'post_in')},
+        ),
     ]

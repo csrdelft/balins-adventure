@@ -1,7 +1,6 @@
-from django.contrib.auth.models import User
 from django.views.decorators.http import condition
 from django.utils.decorators import method_decorator
-from django.http import *
+from django.conf import settings
 
 from rest_framework import views, response, generics, mixins, status, viewsets
 from rest_framework.response import Response
@@ -10,14 +9,16 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import *
 from .serializers import *
-from base.utils import *
-from base.http import *
+from base.utils import notification_client, deny_on_fail
+from base.serializers import *
 
 from datetime import datetime
 import logging
 import json
+import redis
 
 logger = logging.getLogger(__name__)
+redis = notification_client()
 
 def most_recent_forum_change(request):
   """ Cheap check for latest change at the forums.
@@ -25,9 +26,27 @@ def most_recent_forum_change(request):
   # Don't take into account user permissions here: too expensive; query wisely
   return ForumDraad.objects.latest("laatst_gewijzigd").laatst_gewijzigd
 
+def notify_subscribers(draad, post):
+  """ Given a ForumDraad instance `draad`, notify all subscribers of `post`
+  """
+
+  for profiel_id, auth_id in draad.subscribers.all().values_list('user__pk', 'user__user__pk'):
+    # don't notify the poster
+    if profiel_id == post.user.pk: continue
+
+    # push the event into the user's notification channel on the redis cluster
+    key = "notifications:" + str(auth_id)
+    redis.publish(key, {
+      'draad': ShortForumDraadSerializer(draad).data,
+      'post': {
+        'user': ShortProfielSerializer(post.user).data,
+        'tekst': post.tekst
+      }
+    })
+
 class ForumDraadViewSet(viewsets.GenericViewSet):
 
-  serializer_class = ForumDraadSerializer
+  serializer_class = EntireForumDraadSerializer
   queryset = ForumDraad.objects\
     .prefetch_related("posts", "forum")
 
@@ -46,7 +65,7 @@ class ForumDraadViewSet(viewsets.GenericViewSet):
       .filter(forum__in=delen)\
       .order_by('-laatst_gewijzigd')[:n]
 
-    return Response(ShortForumDraadSerializer(queryset, many=True).data)
+    return Response(ForumDraadSerializer(queryset, many=True).data)
 
   @detail_route(methods=['get'])
   def get(self, request, pk):
@@ -86,15 +105,23 @@ class ForumDraadViewSet(viewsets.GenericViewSet):
       'auteur_ip': ""
     })
 
+    # check if we can validly deserialize the json data
     serializer = ForumPostSerializer(data=request.data)
     if serializer.is_valid():
-      inst = serializer.save()
+      # create the post
+      post = serializer.save()
 
       # update the draad
       draad.laatst_gewijzigd = request.data['laatst_gewijzigd']
       draad.laatste_wijziging_user_id = request.profiel.pk
-      draad.laatste_post_id = inst.pk
+      draad.laatste_post_id = post.pk
       draad.save()
+
+      # subscribe to the draad
+      ForumDraadVolgen.objects.get_or_create(draad=draad, user=request.profiel)
+
+      # notify subscribers of this draad
+      notify_subscribers(draad, post)
 
       return Response(serializer.data, status=status.HTTP_201_CREATED)
 
