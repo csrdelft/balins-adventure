@@ -59,9 +59,6 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
           - name: gasten_eetwens
             required: true
             type: string
-        responseMessages:
-          - code: 200
-            message: Succesfully aangemeld
         serializer: MaaltijdAanmeldingSerializer
     """
     mlt = self.get_object()
@@ -91,8 +88,6 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
         parameters_strategy: replace
         parameters: []
         responseMessages:
-          - code: 200
-            message: Succesfully afgemeld
           - code: 400
             message: Maaltijd closed
         type: {}

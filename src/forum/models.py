@@ -1,5 +1,6 @@
 from django.db.models import *
 from base.models import Profiel
+from livefield import LiveModel
 
 class ForumCategorie(Model):
   categorie_id = AutoField(primary_key=True)
@@ -36,22 +37,24 @@ class ForumDeel(Model):
     db_table = 'forum_delen'
     default_permissions = ('add', 'change', 'delete', 'moderate', 'post_in')
 
-class ForumDraad(Model):
+class ForumDraad(LiveModel):
   draad_id = AutoField(primary_key=True)
   forum = ForeignKey(ForumDeel, db_column="forum_id")
   gedeeld_met = IntegerField(blank=True, null=True)
   user = ForeignKey(Profiel, db_column='uid')
   titel = CharField(max_length=255)
   datum_tijd = DateTimeField()
-  laatst_gewijzigd = DateTimeField(blank=True, null=True)
-  laatste_post_id = IntegerField(blank=True, null=True)
-  laatste_wijziging_user = ForeignKey(Profiel, blank=True, related_name='+', db_column="laatste_wijziging_uid")
   belangrijk = CharField(max_length=255, blank=True)
-  gesloten = IntegerField()
-  verwijderd = IntegerField()
-  wacht_goedkeuring = IntegerField()
-  plakkerig = IntegerField()
-  eerste_post_plakkerig = IntegerField()
+  gesloten = BooleanField(default=False)
+  wacht_goedkeuring = IntegerField(default=False)
+  plakkerig = IntegerField(default=False)
+  eerste_post_plakkerig = IntegerField(default=True)
+
+  laatst_gewijzigd = DateTimeField(blank=True, null=True)
+  laatste_wijziging_user = ForeignKey(Profiel, blank=True, related_name='+', db_column="laatste_wijziging_uid")
+
+  # TODO verwijderen? anders in services opnemen
+  laatste_post_id = IntegerField(blank=True, null=True)
   pagina_per_post = IntegerField()
 
   def __str__(self):
@@ -113,7 +116,7 @@ class ForumDraadVolgen(Model):
     unique_together = (('draad', 'user'),)
     db_table = 'forum_draden_volgen'
 
-class ForumPost(Model):
+class ForumPost(LiveModel):
   post_id = AutoField(primary_key=True)
   draad = ForeignKey(ForumDraad, db_column="draad_id", related_name='posts')
   user = ForeignKey(Profiel, db_column='uid')
@@ -121,9 +124,8 @@ class ForumPost(Model):
   datum_tijd = DateTimeField()
   laatst_gewijzigd = DateTimeField()
   bewerkt_tekst = TextField(blank=True)
-  verwijderd = IntegerField()
-  auteur_ip = CharField(max_length=255)
-  wacht_goedkeuring = IntegerField()
+  auteur_ip = CharField(max_length=255, blank=True)
+  wacht_goedkeuring = BooleanField(default=False)
 
   def __str__(self):
     return self.tekst[:50]

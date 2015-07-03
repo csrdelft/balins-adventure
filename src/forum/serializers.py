@@ -6,7 +6,7 @@ class ForumPostSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumPost
 
-class ForumDraadSerializer(serializers.ModelSerializer):
+class ShortForumDraadSerializer(serializers.ModelSerializer):
   posts = ForumPostSerializer(many=True)
 
   class Meta:
@@ -20,5 +20,11 @@ class ForumDraadSerializer(serializers.ModelSerializer):
       'datum_tijd',
       'gesloten',
       'plakkerig',
-      'eerste_post_plakkerig',
-      'posts')
+      'eerste_post_plakkerig')
+
+class ForumDraadSerializer(serializers.ModelSerializer):
+  posts = ForumPostSerializer(many=True)
+
+  class Meta:
+    model = ForumDraad
+    fields = ShortForumDraadSerializer.Meta.fields + ('posts',)
