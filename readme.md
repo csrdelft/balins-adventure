@@ -19,25 +19,40 @@
 
 #### Windows
 
-1. Installeer Python (incl. pip), NodeJS
-2. Open cmd prompt in de root van je repo clone
-3. Run vervolgens deze commando's 1 voor 1:
+1. Install Python (including pip), NodeJS (including npm)
+2. Open cmd prompt at the root of the repository
+3. Run the following commands
 
+    # create the python sandbox (only first time)
     python -m venv .virtualenv
+    # activate the sandbox (every time)
 	  .virtualenv\Scripts\activate
+
+	  # install the python requirements in the sandbox
 	  python -m pip install -r requirements
+
+	  # install the javascript dependencies (as listed in package.json)
 	  npm install
+	  # globally install gulp (the build tool)
 	  npm install -g gulp
+	  # run the build
     gulp
 
+    # create the database
     mysql -u root -p -e "create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';"
+
+    # run the migrations to get the database schema up to date
     python src\manage.py migrate
     python src\manage.py migrate // yeah 2x
-	  python src\manage.py loaddata dev.yaml
+
+    # run the server
 	  python src\manage.py runserver
 
+4. You should now be able to visit `localhost:8000` (and `localhost:8000/admin/`) in your browser
 
 #### Vagrant
+
+Deprecated:
 
     vagrant up --provider viritualbox
     # django will throw error in the end of first go
