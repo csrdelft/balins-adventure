@@ -91,6 +91,7 @@ gulp.task('copy', function() {
 
 // run the tasks and start watching by default
 gulp.task('default', function() {
+  gutil.log(">> Building & standing watch for changes...");
   gulp.start('sass');
   gulp.start('copy');
   compileScripts(false);
