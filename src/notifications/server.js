@@ -12,12 +12,12 @@ var redis_port = 6379;
 var redis_host = 'localhost';
 var client = redis.createClient(redis_port, redis_host, {});
 
-var { cookieMiddleware, sessionMiddleware, authMiddleware } = require('./middleware');
+var middleware = require('./middleware');
 
-// cookie middleware
-io.use(cookieMiddleware);
-io.use(sessionMiddleware);
-io.use(authMiddleware);
+// middleware pipeline
+io.use(middleware.cookieMiddleware);
+io.use(middleware.sessionMiddleware);
+io.use(middleware.authMiddleware);
 
 // connect the client to appropriate redis channels
 var notifications = io
