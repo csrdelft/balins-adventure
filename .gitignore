@@ -1,8 +1,11 @@
 .virtualenv/
-node_modules/
 *.pyc
 __pycache__/
 .sass-cache/
+.vagrant/
 .idea/
 
-src/assets/css/
+dist/
+
+node_modules/
+npm-debug*
