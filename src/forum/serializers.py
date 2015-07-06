@@ -16,8 +16,6 @@ class ShortForumDraadSerializer(serializers.ModelSerializer):
       'titel')
 
 class ForumDraadSerializer(serializers.ModelSerializer):
-  posts = ForumPostSerializer(many=True)
-
   class Meta:
     model = ForumDraad
     fields = (
