@@ -1,3 +1,6 @@
+var cookie_reader = require('cookie');
+var client = redis.createClient(redis_port, redis_host, {});
+
 module.exports = {
 
   // parse the cookie and make it available on the request object
