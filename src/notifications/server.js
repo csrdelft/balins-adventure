@@ -16,7 +16,7 @@ var middleware = require('./middleware');
 
 // middleware pipeline
 io.use(middleware.cookieMiddleware);
-io.use(middleware.sessionMiddleware);
+io.use(middleware.sessionMiddleware(client, redis_session_prefix));
 io.use(middleware.authMiddleware);
 
 // connect the client to appropriate redis channels

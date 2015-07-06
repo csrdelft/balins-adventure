@@ -1,5 +1,4 @@
 var cookie_reader = require('cookie');
-var client = redis.createClient(redis_port, redis_host, {});
 
 module.exports = {
 
@@ -18,28 +17,30 @@ module.exports = {
 
   // session middleware
   // makes 'session', 'isAuthenticated' available on the request object
-  sessionMiddleware: function(socket, next) {
-    var data = socket.request;
-    data.isAuthenticated = false;
-    data.session = {};
+  sessionMiddleware: function(redisClient, redis_session_prefix) {
+    return  function(socket, next) {
+      var data = socket.request;
+      data.isAuthenticated = false;
+      data.session = {};
 
-    var sessionid = data.cookie.sessionid;
-    if(sessionid) {
-      // get the session data
-      client.get(redis_session_prefix + sessionid, function (err, djangoSessionData) {
-        if (djangoSessionData) {
-          var sessionData = new Buffer(djangoSessionData, 'base64').toString();
-          var sessionObjString = sessionData.substring(sessionData.indexOf(":") + 1);
-          var sessionObjJSON = JSON.parse(sessionObjString);
+      var sessionid = data.cookie.sessionid;
+      if(sessionid) {
+        // get the session data
+        redisClient.get(redis_session_prefix + sessionid, function (err, djangoSessionData) {
+          if (djangoSessionData) {
+            var sessionData = new Buffer(djangoSessionData, 'base64').toString();
+            var sessionObjString = sessionData.substring(sessionData.indexOf(":") + 1);
+            var sessionObjJSON = JSON.parse(sessionObjString);
 
-          // save it on the request
-          data.session = sessionObjJSON;
-          data.isAuthenticated = true;
+            // save it on the request
+            data.session = sessionObjJSON;
+            data.isAuthenticated = true;
 
-          // proceed
-          next();
-        }
-      });
+            // proceed
+            next();
+          }
+        });
+      }
     }
   },
 
