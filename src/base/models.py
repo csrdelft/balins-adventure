@@ -1,80 +1,80 @@
-from django.db.models import *
+from django.db import models
 from django.contrib.auth.models import User
 
-class Profiel(Model):
+class Profiel(models.Model):
   class Meta:
     db_table = 'profielen'
 
-  user = OneToOneField(User, null=True, related_name="profiel")
-  uid = CharField(primary_key=True, max_length=4)
+  user = models.OneToOneField(User, null=True, related_name="profiel")
+  uid = models.CharField(primary_key=True, max_length=4)
 
-  nickname = CharField(max_length=255)
-  duckname = CharField(max_length=255, blank=True)
-  voornaam = CharField(max_length=255)
-  tussenvoegsel = CharField(max_length=255, blank=True)
-  achternaam = CharField(max_length=255)
-  voorletters = CharField(max_length=255)
-  postfix = CharField(max_length=255, blank=True)
-  adres = CharField(max_length=255)
-  postcode = CharField(max_length=255)
-  woonplaats = CharField(max_length=255)
-  land = CharField(max_length=255, blank=True)
-  telefoon = CharField(max_length=255, blank=True)
-  mobiel = CharField(max_length=255, blank=True)
-  geslacht = CharField(max_length=1)
-  voornamen = CharField(max_length=255)
-  echtgenoot = CharField(max_length=4, blank=True)
-  adresseringechtpaar = CharField(max_length=255, blank=True)
-  icq = CharField(max_length=255, blank=True)
-  msn = CharField(max_length=255, blank=True)
-  skype = CharField(max_length=255, blank=True)
-  jid = CharField(max_length=255, blank=True)
-  linkedin = CharField(max_length=255, blank=True)
-  website = CharField(max_length=255, blank=True)
-  beroep = CharField(max_length=255, blank=True)
-  studie = CharField(max_length=255, blank=True)
-  patroon = CharField(max_length=4, blank=True)
-  studienr = IntegerField(blank=True, null=True)
-  studiejaar = IntegerField(blank=True, null=True)
-  lidjaar = IntegerField()
-  lidafdatum = DateField(blank=True, null=True)
-  gebdatum = DateField(blank=True, null=True)
-  sterfdatum = DateField(blank=True, null=True)
-  bankrekening = CharField(max_length=255, blank=True)
-  machtiging = IntegerField()
-  moot = CharField(max_length=1)
-  verticaleleider = IntegerField()
-  kringcoach = CharField(max_length=1, blank=True)
-  o_adres = CharField(max_length=255, blank=True)
-  o_postcode = CharField(max_length=255, blank=True)
-  o_woonplaats = CharField(max_length=255, blank=True)
-  o_land = CharField(max_length=255, blank=True)
-  o_telefoon = CharField(max_length=255, blank=True)
-  email = CharField(max_length=255)
-  kerk = CharField(max_length=255, blank=True)
-  muziek = CharField(max_length=255, blank=True)
-  status = CharField(max_length=11)
-  eetwens = CharField(max_length=255, blank=True)
-  corvee_punten = IntegerField()
-  corvee_punten_bonus = IntegerField()
-  ontvangtcontactueel = CharField(max_length=8)
-  kgb = TextField(blank=True)
-  soccieid = IntegerField(db_column='soccieID')  # Field name made lowercase.
-  createterm = CharField(db_column='createTerm', max_length=255)  # Field name made lowercase.
-  socciesaldo = FloatField(db_column='soccieSaldo')  # Field name made lowercase.
-  maalciesaldo = FloatField(db_column='maalcieSaldo')  # Field name made lowercase.
-  changelog = TextField(blank=True)
-  ovkaart = CharField(max_length=255)
-  zingen = CharField(max_length=255)
-  novitiaat = TextField()
-  lengte = IntegerField()
-  vrienden = TextField()
-  middelbareschool = CharField(db_column='middelbareSchool', max_length=255, blank=True)  # Field name made lowercase.
-  novietsoort = CharField(db_column='novietSoort', max_length=255, blank=True)  # Field name made lowercase.
-  matrixplek = CharField(db_column='matrixPlek', max_length=255)  # Field name made lowercase.
-  startkamp = CharField(max_length=255, blank=True)
-  medisch = TextField(blank=True)
-  novitiaatbijz = TextField(db_column='novitiaatBijz', blank=True)  # Field name made lowercase.
+  nickname = models.CharField(max_length=255)
+  duckname = models.CharField(max_length=255, blank=True)
+  voornaam = models.CharField(max_length=255)
+  tussenvoegsel = models.CharField(max_length=255, blank=True)
+  achternaam = models.CharField(max_length=255)
+  voorletters = models.CharField(max_length=255)
+  postfix = models.CharField(max_length=255, blank=True)
+  adres = models.CharField(max_length=255)
+  postcode = models.CharField(max_length=255)
+  woonplaats = models.CharField(max_length=255)
+  land = models.CharField(max_length=255, blank=True)
+  telefoon = models.CharField(max_length=255, blank=True)
+  mobiel = models.CharField(max_length=255, blank=True)
+  geslacht = models.CharField(max_length=1)
+  voornamen = models.CharField(max_length=255)
+  echtgenoot = models.CharField(max_length=4, blank=True)
+  adresseringechtpaar = models.CharField(max_length=255, blank=True)
+  icq = models.CharField(max_length=255, blank=True)
+  msn = models.CharField(max_length=255, blank=True)
+  skype = models.CharField(max_length=255, blank=True)
+  jid = models.CharField(max_length=255, blank=True)
+  linkedin = models.CharField(max_length=255, blank=True)
+  website = models.CharField(max_length=255, blank=True)
+  beroep = models.CharField(max_length=255, blank=True)
+  studie = models.CharField(max_length=255, blank=True)
+  patroon = models.CharField(max_length=4, blank=True)
+  studienr = models.IntegerField(blank=True, null=True)
+  studiejaar = models.IntegerField(blank=True, null=True)
+  lidjaar = models.IntegerField()
+  lidafdatum = models.DateField(blank=True, null=True)
+  gebdatum = models.DateField(blank=True, null=True)
+  sterfdatum = models.DateField(blank=True, null=True)
+  bankrekening = models.CharField(max_length=255, blank=True)
+  machtiging = models.IntegerField()
+  moot = models.CharField(max_length=1)
+  verticaleleider = models.IntegerField()
+  kringcoach = models.CharField(max_length=1, blank=True)
+  o_adres = models.CharField(max_length=255, blank=True)
+  o_postcode = models.CharField(max_length=255, blank=True)
+  o_woonplaats = models.CharField(max_length=255, blank=True)
+  o_land = models.CharField(max_length=255, blank=True)
+  o_telefoon = models.CharField(max_length=255, blank=True)
+  email = models.CharField(max_length=255)
+  kerk = models.CharField(max_length=255, blank=True)
+  muziek = models.CharField(max_length=255, blank=True)
+  status = models.CharField(max_length=11)
+  eetwens = models.CharField(max_length=255, blank=True)
+  corvee_punten = models.IntegerField()
+  corvee_punten_bonus = models.IntegerField()
+  ontvangtcontactueel = models.CharField(max_length=8)
+  kgb = models.TextField(blank=True)
+  soccieid = models.IntegerField(db_column='soccieID')  # Field name made lowercase.
+  createterm = models.CharField(db_column='createTerm', max_length=255)  # Field name made lowercase.
+  socciesaldo = models.FloatField(db_column='soccieSaldo')  # Field name made lowercase.
+  maalciesaldo = models.FloatField(db_column='maalcieSaldo')  # Field name made lowercase.
+  changelog = models.TextField(blank=True)
+  ovkaart = models.CharField(max_length=255)
+  zingen = models.CharField(max_length=255)
+  novitiaat = models.TextField()
+  lengte = models.IntegerField()
+  vrienden = models.TextField()
+  middelbareschool = models.CharField(db_column='middelbareSchool', max_length=255, blank=True)  # Field name made lowercase.
+  novietsoort = models.CharField(db_column='novietSoort', max_length=255, blank=True)  # Field name made lowercase.
+  matrixplek = models.CharField(db_column='matrixPlek', max_length=255)  # Field name made lowercase.
+  startkamp = models.CharField(max_length=255, blank=True)
+  medisch = models.TextField(blank=True)
+  novitiaatbijz = models.TextField(db_column='novitiaatBijz', blank=True)  # Field name made lowercase.
 
   def commissies(self):
     return map(lambda cl: cl.groep, CommissieLid.objects.filter(user=self))
@@ -114,16 +114,16 @@ class Profiel(Model):
     else:
       return "Ama. %s" % self.achternaam
 
-class AbstractGroep(Model):
-  naam = CharField(max_length=255)
-  status = CharField(max_length=2, default="ht")
-  familie = CharField(max_length=255)
-  samenvatting = TextField(blank=True)
-  omschrijving = TextField(blank=True)
-  begin_moment = DateTimeField(blank=True, null=True)
-  eind_moment = DateTimeField(blank=True, null=True)
-  maker_user = ForeignKey(Profiel, db_column='maker_uid', related_name='+')
-  keuzelijst = CharField(max_length=255, blank=True)
+class AbstractGroep(models.Model):
+  naam = models.CharField(max_length=255)
+  status = models.CharField(max_length=2, default="ht")
+  familie = models.CharField(max_length=255)
+  samenvatting = models.TextField(blank=True)
+  omschrijving = models.TextField(blank=True)
+  begin_moment = models.DateTimeField(blank=True, null=True)
+  eind_moment = models.DateTimeField(blank=True, null=True)
+  maker_user = models.ForeignKey(Profiel, db_column='maker_uid', related_name='+')
+  keuzelijst = models.CharField(max_length=255, blank=True)
 
   ## !! IMPORTANT
   ## abstract related object manager `leden` expected on any child class
@@ -131,18 +131,18 @@ class AbstractGroep(Model):
   class Meta:
     abstract = True
 
-class GroepDoodlijnenMixin(Model):
-  aanmeld_limiet = IntegerField(blank=True, null=True)
-  aanmelden_vanaf = DateTimeField(blank=True, null=True)
-  aanmelden_tot = DateTimeField(blank=True, null=True)
-  bewerken_tot = DateTimeField(blank=True, null=True)
-  afmelden_tot = DateTimeField(blank=True, null=True)
+class GroepDoodlijnenMixin(models.Model):
+  aanmeld_limiet = models.IntegerField(blank=True, null=True)
+  aanmelden_vanaf = models.DateTimeField(blank=True, null=True)
+  aanmelden_tot = models.DateTimeField(blank=True, null=True)
+  bewerken_tot = models.DateTimeField(blank=True, null=True)
+  afmelden_tot = models.DateTimeField(blank=True, null=True)
 
   class Meta:
     abstract = True
 
 class Groep(AbstractGroep):
-  rechten_aanmelden = CharField(max_length=255)
+  rechten_aanmelden = models.CharField(max_length=255)
 
   def __str__(self):
     return "Groep: %s" % self.naam
@@ -159,7 +159,7 @@ class Ketzer(GroepDoodlijnenMixin, AbstractGroep):
     db_table = 'ketzers'
 
 class Lichting(AbstractGroep):
-  lidjaar = IntegerField(unique=True)
+  lidjaar = models.IntegerField(unique=True)
 
   def __str__(self):
     return "Lichting: %s" % self.naam
@@ -168,7 +168,7 @@ class Lichting(AbstractGroep):
     db_table = 'lichtingen'
 
 class Ondervereniging(AbstractGroep):
-  soort = CharField(max_length=1)
+  soort = models.CharField(max_length=1)
 
   def __str__(self):
     return "Ondervereniging: %s" % self.naam
@@ -177,7 +177,7 @@ class Ondervereniging(AbstractGroep):
     db_table = 'onderverenigingen'
 
 class Verticale(AbstractGroep):
-  letter = CharField(unique=True, max_length=1)
+  letter = models.CharField(unique=True, max_length=1)
 
   def __str__(self):
     return "Verticale: %s" % self.naam
@@ -194,8 +194,8 @@ class Woonoord(AbstractGroep):
     db_table = 'woonoorden'
 
 class Kring(AbstractGroep):
-  verticale = ForeignKey(Verticale, db_column='verticale')
-  kring_nummer = IntegerField()
+  verticale = models.ForeignKey(Verticale, db_column='verticale')
+  kring_nummer = models.IntegerField()
 
   def __str__(self):
     return "Kring: %s" % self.naam
@@ -212,10 +212,10 @@ class Werkgroep(GroepDoodlijnenMixin, AbstractGroep):
     db_table = 'werkgroepen'
 
 class Activiteit(GroepDoodlijnenMixin, AbstractGroep):
-  soort = CharField(max_length=15) # TODO choicefield ??
-  rechten_aanmelden = CharField(max_length=255, blank=True)
-  locatie = CharField(max_length=255, blank=True)
-  in_agenda = BooleanField()
+  soort = models.CharField(max_length=15) # TODO choicefield ??
+  rechten_aanmelden = models.CharField(max_length=255, blank=True)
+  locatie = models.CharField(max_length=255, blank=True)
+  in_agenda = models.BooleanField()
 
   def __str__(self):
     return "Activiteit: %s" % self.naam
@@ -224,7 +224,7 @@ class Activiteit(GroepDoodlijnenMixin, AbstractGroep):
     db_table = 'activiteiten'
 
 class Bestuur(AbstractGroep):
-  bijbeltekst = TextField()
+  bijbeltekst = models.TextField()
 
   def __str__(self):
     return "Bestuur: %s" % self.naam
@@ -233,7 +233,7 @@ class Bestuur(AbstractGroep):
     db_table = 'besturen'
 
 class Commissie(AbstractGroep):
-  soort = CharField(max_length=1)
+  soort = models.CharField(max_length=1)
 
   def __str__(self):
     return "Commissie: %s" % self.naam
@@ -241,11 +241,11 @@ class Commissie(AbstractGroep):
   class Meta:
     db_table = 'commissies'
 
-class AbstractLid(Model):
-  user = ForeignKey(Profiel, db_column='uid', related_name='+')
-  opmerking = CharField(max_length=255, blank=True)
-  lid_sinds = DateTimeField()
-  door_user = ForeignKey(Profiel, db_column='door_uid', related_name='+')
+class AbstractLid(models.Model):
+  user = models.ForeignKey(Profiel, db_column='uid', related_name='+')
+  opmerking = models.CharField(max_length=255, blank=True)
+  lid_sinds = models.DateTimeField()
+  door_user = models.ForeignKey(Profiel, db_column='door_uid', related_name='+')
 
   ## !! IMPORTANT
   ## foreignkey `groep` expected on any child class
@@ -258,67 +258,67 @@ class AbstractLid(Model):
     abstract = True
 
 class GroepsLid(AbstractLid):
-  groep = ForeignKey(Groep, related_name="leden")
+  groep = models.ForeignKey(Groep, related_name="leden")
 
   class Meta:
     db_table = 'groep_leden'
 
 class KringLid(AbstractLid):
-  groep = ForeignKey(Kring, related_name="leden")
+  groep = models.ForeignKey(Kring, related_name="leden")
 
   class Meta:
     db_table = 'kring_leden'
 
 class CommissieLid(AbstractLid):
-  groep = ForeignKey(Commissie, related_name="leden")
+  groep = models.ForeignKey(Commissie, related_name="leden")
 
   class Meta:
     db_table = 'commissie_leden'
 
 class BestuursLid(AbstractLid):
-  groep = ForeignKey(Bestuur, related_name="leden")
+  groep = models.ForeignKey(Bestuur, related_name="leden")
 
   class Meta:
     db_table = 'bestuurs_leden'
 
 class VerticaleLid(AbstractLid):
-  groep = ForeignKey(Verticale, related_name="leden")
+  groep = models.ForeignKey(Verticale, related_name="leden")
 
   class Meta:
     db_table = 'verticale_leden'
 
 class Bewoners(AbstractLid):
-  groep = ForeignKey(Woonoord, related_name="leden")
+  groep = models.ForeignKey(Woonoord, related_name="leden")
 
   class Meta:
     db_table = 'bewoners'
 
 class LichtingLid(AbstractLid):
-  groep = ForeignKey(Lichting, related_name="leden")
+  groep = models.ForeignKey(Lichting, related_name="leden")
 
   class Meta:
     db_table = 'lichting_leden'
 
 class OnderverenigingsLid(AbstractLid):
-  groep = ForeignKey(Ondervereniging, related_name="leden")
+  groep = models.ForeignKey(Ondervereniging, related_name="leden")
 
   class Meta:
     db_table = 'ondervereniging_leden'
 
 class KetzerDeelnemer(AbstractLid):
-  groep = ForeignKey(Ketzer, related_name="leden")
+  groep = models.ForeignKey(Ketzer, related_name="leden")
 
   class Meta:
     db_table = 'ketzer_deelnemers'
 
 class WerkgroepDeelnemer(AbstractLid):
-  groep = ForeignKey(Werkgroep, related_name="leden")
+  groep = models.ForeignKey(Werkgroep, related_name="leden")
 
   class Meta:
     db_table = 'werkgroep_deelnemers'
 
 class ActiviteitDeelnemer(AbstractLid):
-  groep = ForeignKey(Activiteit, related_name="leden")
+  groep = models.ForeignKey(Activiteit, related_name="leden")
 
   class Meta:
     db_table = 'activiteit_deelnemers'

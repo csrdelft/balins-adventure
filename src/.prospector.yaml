@@ -1,0 +1,21 @@
+strictness: medium
+
+uses:
+  - django
+
+pyflakes:
+  disable:
+    - F401 # unused import
+pep8:
+  disable:
+    - E114
+pylint:
+  disable:
+    - unused-import
+    - unused-wildcard-import
+    - unused-argument
+  options:
+    indent-string: '  '
+
+mccabe:
+  run: false

@@ -1,5 +1,7 @@
 import hashlib
 import base64
+import os
+
 from django.contrib.auth.hashers import BasePasswordHasher, mask_hash
 from collections import OrderedDict
 from django.utils.translation import ugettext_noop as _

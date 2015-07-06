@@ -1,12 +1,12 @@
-from django.db.models import *
+from django.db import models
 from base.models import Profiel
 from livefield import LiveModel
 
-class ForumCategorie(Model):
-  categorie_id = AutoField(primary_key=True)
-  titel = CharField(max_length=255)
-  rechten_lezen = CharField(max_length=255)
-  volgorde = IntegerField()
+class ForumCategorie(models.Model):
+  categorie_id = models.AutoField(primary_key=True)
+  titel = models.CharField(max_length=255)
+  rechten_lezen = models.CharField(max_length=255)
+  volgorde = models.IntegerField()
 
   def __str__(self):
     return self.titel
@@ -14,15 +14,15 @@ class ForumCategorie(Model):
   class Meta:
     db_table = 'forum_categorien'
 
-class ForumDeel(Model):
-  forum_id = AutoField(primary_key=True)
-  categorie = ForeignKey(ForumCategorie, db_column="categorie_id")
-  titel = CharField(max_length=255)
-  omschrijving = TextField()
-  rechten_lezen = CharField(max_length=255)
-  rechten_posten = CharField(max_length=255)
-  rechten_modereren = CharField(max_length=255)
-  volgorde = IntegerField()
+class ForumDeel(models.Model):
+  forum_id = models.AutoField(primary_key=True)
+  categorie = models.ForeignKey(ForumCategorie, db_column="categorie_id")
+  titel = models.CharField(max_length=255)
+  omschrijving = models.TextField()
+  rechten_lezen = models.CharField(max_length=255)
+  rechten_posten = models.CharField(max_length=255)
+  rechten_modereren = models.CharField(max_length=255)
+  volgorde = models.IntegerField()
 
   @classmethod
   def get_viewable_by(cls, user):
@@ -39,24 +39,24 @@ class ForumDeel(Model):
 
 class ForumDraad(LiveModel):
 
-  draad_id = AutoField(primary_key=True)
-  forum = ForeignKey(ForumDeel, db_column="forum_id")
-  gedeeld_met = IntegerField(blank=True, null=True)
-  user = ForeignKey(Profiel, db_column='uid')
-  titel = CharField(max_length=255)
-  datum_tijd = DateTimeField()
-  belangrijk = CharField(max_length=255, blank=True)
-  gesloten = BooleanField(default=False)
-  wacht_goedkeuring = IntegerField(default=False)
-  plakkerig = IntegerField(default=False)
-  eerste_post_plakkerig = IntegerField(default=True)
+  draad_id = models.AutoField(primary_key=True)
+  forum = models.ForeignKey(ForumDeel, db_column="forum_id")
+  gedeeld_met = models.IntegerField(blank=True, null=True)
+  user = models.ForeignKey(Profiel, db_column='uid')
+  titel = models.CharField(max_length=255)
+  datum_tijd = models.DateTimeField()
+  belangrijk = models.CharField(max_length=255, blank=True)
+  gesloten = models.BooleanField(default=False)
+  wacht_goedkeuring = models.IntegerField(default=False)
+  plakkerig = models.IntegerField(default=False)
+  eerste_post_plakkerig = models.IntegerField(default=True)
 
-  laatst_gewijzigd = DateTimeField(blank=True, null=True)
-  laatste_wijziging_user = ForeignKey(Profiel, blank=True, related_name='+', db_column="laatste_wijziging_uid")
+  laatst_gewijzigd = models.DateTimeField(blank=True, null=True)
+  laatste_wijziging_user = models.ForeignKey(Profiel, blank=True, related_name='+', db_column="laatste_wijziging_uid")
 
   # TODO verwijderen? anders in services opnemen
-  laatste_post_id = IntegerField(blank=True, null=True)
-  pagina_per_post = IntegerField()
+  laatste_post_id = models.IntegerField(blank=True, null=True)
+  pagina_per_post = models.IntegerField()
 
   # reverse relations:
   #   - subscribers (ForumDraadVolgen)
@@ -67,11 +67,11 @@ class ForumDraad(LiveModel):
   class Meta:
     db_table = 'forum_draden'
 
-class ForumDraadGelezen(Model):
-  id = AutoField(primary_key=True)
-  draad = ForeignKey(ForumDraad, db_column="draad_id")
-  user = ForeignKey(Profiel, db_column='uid')
-  datum_tijd = DateTimeField()
+class ForumDraadGelezen(models.Model):
+  id = models.AutoField(primary_key=True)
+  draad = models.ForeignKey(ForumDraad, db_column="draad_id")
+  user = models.ForeignKey(Profiel, db_column='uid')
+  datum_tijd = models.DateTimeField()
 
   def __str__(self):
     return "draad %s gelezen door %s" % (self.draad_id, self.uid_id)
@@ -80,14 +80,14 @@ class ForumDraadGelezen(Model):
     db_table = 'forum_draden_gelezen'
     unique_together = (('draad', 'user'),)
 
-class ForumDraadReageren(Model):
-  id = AutoField(primary_key=True)
-  forum = ForeignKey(ForumDeel, db_column="forum_id")
-  draad = ForeignKey(ForumDraad, db_column="draad_id")
-  user = ForeignKey(Profiel, db_column='uid')
-  datum_tijd = DateTimeField()
-  concept = TextField(blank=True)
-  titel = CharField(max_length=255, blank=True)
+class ForumDraadReageren(models.Model):
+  id = models.AutoField(primary_key=True)
+  forum = models.ForeignKey(ForumDeel, db_column="forum_id")
+  draad = models.ForeignKey(ForumDraad, db_column="draad_id")
+  user = models.ForeignKey(Profiel, db_column='uid')
+  datum_tijd = models.DateTimeField()
+  concept = models.TextField(blank=True)
+  titel = models.CharField(max_length=255, blank=True)
 
   def __str__(self):
     return "forum %s draad %s gelezen door %s" % (self.forum_id, self.draad_id, self.uid_id)
@@ -96,10 +96,10 @@ class ForumDraadReageren(Model):
     db_table = 'forum_draden_reageren'
     unique_together = (('forum', 'draad', 'user'),)
 
-class ForumDraadVerbergen(Model):
-  id = AutoField(primary_key=True)
-  draad = ForeignKey(ForumDraad, db_column="draad_id")
-  user = ForeignKey(Profiel, db_column='uid')
+class ForumDraadVerbergen(models.Model):
+  id = models.AutoField(primary_key=True)
+  draad = models.ForeignKey(ForumDraad, db_column="draad_id")
+  user = models.ForeignKey(Profiel, db_column='uid')
 
   def __str__(self):
     return "draad %s verbergen voor %s" % (self.draad_id, self.uid_id)
@@ -108,10 +108,10 @@ class ForumDraadVerbergen(Model):
     unique_together = (('draad', 'user'),)
     db_table = 'forum_draden_verbergen'
 
-class ForumDraadVolgen(Model):
-  id = AutoField(primary_key=True)
-  draad = ForeignKey(ForumDraad, db_column="draad_id", related_name="subscribers")
-  user = ForeignKey(Profiel, db_column='uid')
+class ForumDraadVolgen(models.Model):
+  id = models.AutoField(primary_key=True)
+  draad = models.ForeignKey(ForumDraad, db_column="draad_id", related_name="subscribers")
+  user = models.ForeignKey(Profiel, db_column='uid')
 
   def __str__(self):
     return "draad %s gevolgd door %s" % (self.draad_id, self.uid_id)
@@ -121,15 +121,15 @@ class ForumDraadVolgen(Model):
     db_table = 'forum_draden_volgen'
 
 class ForumPost(LiveModel):
-  post_id = AutoField(primary_key=True)
-  draad = ForeignKey(ForumDraad, db_column="draad_id", related_name='posts')
-  user = ForeignKey(Profiel, db_column='uid')
-  tekst = TextField()
-  datum_tijd = DateTimeField()
-  laatst_gewijzigd = DateTimeField()
-  bewerkt_tekst = TextField(blank=True)
-  auteur_ip = CharField(max_length=255, blank=True)
-  wacht_goedkeuring = BooleanField(default=False)
+  post_id = models.AutoField(primary_key=True)
+  draad = models.ForeignKey(ForumDraad, db_column="draad_id", related_name='posts')
+  user = models.ForeignKey(Profiel, db_column='uid')
+  tekst = models.TextField()
+  datum_tijd = models.DateTimeField()
+  laatst_gewijzigd = models.DateTimeField()
+  bewerkt_tekst = models.TextField(blank=True)
+  auteur_ip = models.CharField(max_length=255, blank=True)
+  wacht_goedkeuring = models.BooleanField(default=False)
 
   def __str__(self):
     return self.tekst[:50]
