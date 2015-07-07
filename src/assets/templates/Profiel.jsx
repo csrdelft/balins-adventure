@@ -14,6 +14,8 @@ function template(self, p) {
       <h1>
         <InlineInput value={p.voornaam} setter={setter("voornaam")}/>
         &nbsp;
+        <InlineInput value={p.tussenvoegsel} setter={setter("tussenvoegsel")}/>
+        &nbsp;
         <InlineInput value={p.achternaam} setter={setter("achternaam")}/>
       </h1>
       <h3>
