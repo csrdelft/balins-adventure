@@ -1,4 +1,6 @@
 import os
+import sys
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SECRET_KEY = 'nw_-0v1gumzd=w1l+fc8ji)5%7624%!mb0ha9i1i+iwdcrqg#!'
@@ -120,6 +122,10 @@ DATABASES = {
         'PASSWORD': 'bl44t'
     }
 }
+
+# test database: in memory
+if 'test' in sys.argv:
+  DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
 
 LANGUAGE_CODE = 'en-us'
 
