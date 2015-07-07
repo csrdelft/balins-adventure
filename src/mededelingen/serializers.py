@@ -6,6 +6,7 @@ class MededelingenSerializer(serializers.ModelSerializer):
   class Meta:
     model = Mededeling
     fields = (
+      'id',
       'live',
       'datum',
       'vervaltijd',
