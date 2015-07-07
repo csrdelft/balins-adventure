@@ -20,9 +20,5 @@ class Mededeling(LiveModel):
 
   #READ Permissions
 
-  def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-    post = super
-
   def __str__(self):
     return "Mededeling: %s" % self.titel
