@@ -1,7 +1,6 @@
 from django.db import models
 from base.models import Profiel
 
-
 class Mededeling(models.Model):
   datum = models.DateTimeField(blank=True, null=True)
   vervaltijd = models.DateTimeField(blank=True, null=True)
@@ -19,3 +18,6 @@ class Mededeling(models.Model):
 
   class Meta:
     db_table = 'mededeling'
+
+  def __str__(self):
+    return "Mededeling: %s (%s)" % (self.titel,self.user.achternaam)

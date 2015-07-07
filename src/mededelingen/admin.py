@@ -1,3 +1,4 @@
 from django.contrib import admin
+from mededelingen.models import Mededeling
 
-# Register your models here.
+admin.site.register(Mededeling)
