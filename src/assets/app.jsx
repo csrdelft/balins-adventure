@@ -8,6 +8,9 @@ var PostForm = require("forum/PostForm");
 var Profiel = require("partials/Profiel");
 var io = require('socket.io-client');
 
+var Mededeling = require('mededelingen/Mededeling');
+var MededelingList = require('mededelingen/MededelingList');
+
 var Router = require('react-router');
 var {
   Route,
@@ -108,6 +111,9 @@ var routes = (
     <Route path="" handler={NotFound} />
     <Route path="forum" handler={Forum} />
     <Route path="profiel/:uid" handler={Profiel} />
+    <Route path="mededelingen" handler={MededelingList}>
+      <Route name="mededeling-detail" path=":id" handler={Mededeling} />
+    </Route>
     <Route path="*" handler={NotFound} />
   </Route>
 );
