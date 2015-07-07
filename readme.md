@@ -1,3 +1,5 @@
+[![Stories in Ready](https://badge.waffle.io/csrdelft/balins-adventure.svg?label=ready&title=Ready)](http://waffle.io/csrdelft/balins-adventure)[![Build Status](https://travis-ci.org/csrdelft/balins-adventure.svg?branch=master)](https://travis-ci.org/csrdelft/balins-adventure)
+
 ## Getting Started With Development
 
 #### Native
