@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}{% block head %}
+<style>#all {
+  overflow: hidden !important;
+}
+#legacy-embed {
+  padding: 30px;
+}
+
+</style>{% endblock %}{% block content %}
+<iframe id="legacy-embed" src="{{ embed_url }}"></iframe>{% endblock %}

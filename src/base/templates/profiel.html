@@ -1,0 +1,27 @@
+<h1>{{ user.full_name }}</h1>
+<div class="gegevens">
+  <table class="table table-bordered">
+    <tr>
+      <td>Verticale</td>
+      <td>{{ verticale.naam }}</td>
+    </tr>
+    <tr>
+      <td>Kring</td>
+      <td>{{ kring.naam }}</td>
+    </tr>
+  </table>
+</div>
+<div class="commissies">
+  <h2>Commissies</h2>
+  <ul>{% for comm in commissies %}
+    <li>{{ comm.naam }}</li>{% endfor %}
+  </ul>
+  <h2>Werkgroepen</h2>
+  <ul>{% for wg in werkgroepen %}
+    <li>{{ wg.naam }}</li>{% endfor %}
+  </ul>
+  <h2>Overige Groepen</h2>
+  <ul>{% for g in groepen %}
+    <li>{{ g.naam }}</li>{% endfor %}
+  </ul>
+</div>

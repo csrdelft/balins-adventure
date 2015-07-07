@@ -1,0 +1,16 @@
+{% for post in posts %}
+<div class="forum-post">
+  <div class="tag">{{ post.user.formal_name }}
+({{ post.datum_tijd|timesince }} geleden)
+  </div>
+  <div class="text">
+    <p></p>{{ post.tekst }}
+  </div>
+</div>{% endfor %}
+{% if  can_post %}
+<div id="new-forum-post">
+  <form method="post" action="{% url 'forum.draad' draad.pk %}">{%  csrf_token %}{{ new_post_form }}
+
+    <input type="submit"/>
+  </form>
+</div>{% endif %}

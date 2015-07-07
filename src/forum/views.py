@@ -80,7 +80,7 @@ def forum_root(request):
 
   cats = grouped_dict(map(lambda d: (d.categorie, d), delen))
 
-  return render_with_layout(request, 'forum_main.jade', title=titel, ctx={
+  return render_with_layout(request, 'forum_main.html', title=titel, ctx={
     'categories': cats,
     'posts': table
   })
@@ -112,7 +112,7 @@ def forum_draad(request, draad_id):
     .filter(draad_id=draad_id)\
     .order_by('datum_tijd')
 
-  return render_with_layout(request, 'forum_draad.jade', title="Forum draad %s" % draad.titel, ctx={
+  return render_with_layout(request, 'forum_draad.html', title="Forum draad %s" % draad.titel, ctx={
     'draad': draad,
     'posts': posts,
     'new_post_form': form,

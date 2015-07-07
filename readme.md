@@ -134,9 +134,6 @@ django. The one difference being the id columns on the following tables, which w
 
 ### Setting up
 
-#### pyjade has some trouble with django 1.8
-This might fix it: `pip install --upgrade git+https://github.com/syrusakbary/pyjade.git`
-
 #### How do I django???
 Django has EXCELLENT documentation: https://docs.djangoproject.com/en/1.8/
 

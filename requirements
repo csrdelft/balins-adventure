@@ -14,7 +14,6 @@ django-redis-sessions
 redis
 phpserialize
 ipython
-pyjade
 pytz
 PyYAML
 prospector

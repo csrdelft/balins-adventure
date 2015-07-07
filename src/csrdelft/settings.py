@@ -31,12 +31,10 @@ TEMPLATES = [
         'django.contrib.messages.context_processors.messages',
         'django.template.context_processors.request',
       ],
-      'loaders': [
-        ('pyjade.ext.django.Loader', (
-          'django.template.loaders.filesystem.Loader',
-          'django.template.loaders.app_directories.Loader',
-        )),
-      ]
+      'loaders':
+        ('django.template.loaders.filesystem.Loader',
+         'django.template.loaders.app_directories.Loader')
+
     },
   },
 ]

@@ -17,10 +17,10 @@ def render_with_layout(request, template, ctx={}, title=DEFAULT_TITLE):
   t = loader.get_template(template)
   r = t.render(ctx, request)
 
-  return render(request, 'index.jade', {"content": r, "title": title})
+  return render(request, 'index.html', {"content": r, "title": title})
 
 def index(request):
-  return render_with_layout(request, 'main.jade')
+  return render_with_layout(request, 'main.html')
 
 def su(request, uid):
   user = Profiel.objects.get(pk=uid)
@@ -32,7 +32,7 @@ def end_su(request):
 def profiel(request, uid):
   user = Profiel.objects.get(pk=uid)
 
-  return render_with_layout(request, 'profiel.jade', title=user.full_name(), ctx={
+  return render_with_layout(request, 'profiel.html', title=user.full_name(), ctx={
     "user": user,
     "kring": user.kring(),
     "verticale": user.verticale(),
@@ -53,7 +53,7 @@ class GroepenTable(tables.Table):
     order_by = ('naam',)
 
 def groepen_overview(request):
-  return render_with_layout(request, 'groepen_overview.jade', title="CSR Groepen", ctx={
+  return render_with_layout(request, 'groepen_overview.html', title="CSR Groepen", ctx={
     "verticalen": GroepenTable(Verticale.objects.all()),
     "lichtingen": GroepenTable(Lichting.objects.all()),
     "commissies": GroepenTable(Commissie.objects.filter(status="ht")),
@@ -73,7 +73,7 @@ def make_groep_view(groepen_qs, leden_qs, name):
       if groep is not None:
         groep[1].append(lid)
 
-    return render_with_layout(request, 'groep.jade', title=name, ctx={
+    return render_with_layout(request, 'groep.html', title=name, ctx={
       'groepen':groepen,
       'leden'  :leden
     })

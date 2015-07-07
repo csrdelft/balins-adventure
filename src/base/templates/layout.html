@@ -1,0 +1,46 @@
+<!DOCTYPE html>{%  load staticfiles %}
+<html>
+  <head>
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">{% block head %}{% endblock %}
+  </head>
+  <body>
+    <div id="topbar">
+      <div id="topbar-poly">
+        <svg preserveAspectRatio="none" viewbox="0 0 100 100">
+          <path id="topbar-shard" d="M0 0 L50 0 L55 100 L0 100 z"></path>
+          <style type="text/css">path#topbar-shard {
+  fill: black;
+  opacity: 0.4;
+}
+</style>
+          <defs>
+            <linearGradient id="bg-gradient">
+              <stop offset="5%" stop-color="#C63D0F"></stop>
+              <stop offset="95%" stop-color="#DB5021"></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div id="logo" class="col-xs-1"><a href="{% url 'index' %}"><img src="{% static 'images/beeldmerk.svg' %}"></a>
+          </div>
+          <div id="search" class="col-xs-5">
+            <input type="text" placeholder="Search">
+          </div>
+          <div id="whoami" class="col-xs-6"><img src="/plaetjes/pasfoto/1337.vierkant.png">
+            <div class="tag">
+              <p class="name">Welkom {{ user.profiel.formal_name }}</p>
+              <p class="uid">{{ user.profiel.uid }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="all">
+      <div id="mount-app" class="container-fluid"></div>
+    </div>
+  </body>
+  <!-- after the body-->
+  <script src="{% static 'scripts/app.js' %}"></script>
+</html>

@@ -1,0 +1,12 @@
+{%  load django_tables2 %}
+<div class="dropdown">
+  <button id="forum-delen" type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Fora<span class="caret"></span>
+  </button>
+  <ul aria-labelledby="forum-delen" class="dropdown-menu">{% for cat,delen in categories.items %}
+    <li><strong>{{ cat.titel }}</strong>
+    </li>{% for deel in delen %}
+    <li><a href="?forum={{ deel.forum_id }}" role="menuitem">{{ deel.titel }}</a>
+    </li>{% endfor %}{% endfor %}
+  </ul>
+</div>
+{%  render_table posts %}

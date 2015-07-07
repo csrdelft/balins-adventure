@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 def embed(embed_path, title=""):
   def view_func(request, *args, **kwargs):
-    return render(request, 'legacy.jade', {
+    return render(request, 'legacy.html', {
       'embed_url' : os.path.join(settings.LEGACY_HOST, embed_path)
     })
 
