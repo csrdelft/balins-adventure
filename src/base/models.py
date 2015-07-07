@@ -106,7 +106,7 @@ class Profiel(models.Model):
     return "%s (%s)" % (self.formal_name(), self.uid)
 
   def full_name(self):
-    return "%s %s" % (self.voornaam, self.achternaam)
+    return "%s %s %s" % (self.voornaam,self.tussenvoegsel,self.achternaam)
 
   def formal_name(self):
     if self.geslacht == 'm':
