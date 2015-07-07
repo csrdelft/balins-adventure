@@ -9,7 +9,7 @@ class MaaltijdRepetitie(models.Model):
   periode_in_dagen = models.IntegerField()
   standaard_titel = models.CharField(max_length=255)
   standaard_tijd = models.TimeField(default=time(hour=18))
-  standaard_prijs = models.IntegerField(default=3)
+  standaard_prijs = models.IntegerField(default=300)
   abonneerbaar = models.IntegerField()
   standaard_limiet = models.IntegerField(default=100)
   abonnement_filter = models.CharField(max_length=255, blank=True)
@@ -27,7 +27,7 @@ class Maaltijd(LiveModel):
   titel = models.CharField(max_length=255)
   datum = models.DateField()
   tijd = models.TimeField(default=time(hour=18))
-  prijs = models.IntegerField(default=3)
+  prijs = models.IntegerField(default=300)
   omschrijving = models.CharField(max_length=255, blank=True)
 
   gesloten = models.BooleanField(default=False)
