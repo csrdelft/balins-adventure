@@ -49,6 +49,18 @@ var api_obj = {
       return Q.xhr
         .post(api + "/maaltijden/" + id + "/afmelden/");
     },
+  },
+
+  mededelingen: {
+    get_list: () => {
+      return Q.xhr
+        .get(api + "/mededelingen/");
+    },
+
+    get_mededeling: (id) => {
+      return Q.xhr
+        .get(api + "/mededelingen/" + id);
+    }
   }
 };
 
