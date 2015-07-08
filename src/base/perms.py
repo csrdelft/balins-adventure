@@ -7,6 +7,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 class InGroupPermissionLogic(PermissionLogic):
+  """ Non-object specific permission that grants permission if the user
+      is in a given stek group (Bestuur/Kring/...)
+
+      `get_group` should be a getter for said group that returns None on error.
+      If the group is None, no permission is granted.
+  """
 
   def __init__(self, grants, get_group):
     self.get_group = get_group
@@ -15,12 +21,12 @@ class InGroupPermissionLogic(PermissionLogic):
   def has_perm(self, user, perm, obj=None):
     group = self.get_group()
 
-    if not user.is_authenticated() or perm not in self.grants:
+    if not user.is_authenticated() or perm not in self.grants or group is None:
       return False
 
-    if obj is None:
-      return True
-    elif user.is_active and group.leden.filter(user__user__pk=user.pk).exists():
+    # check if lid in group
+    in_group = group.leden.filter(user__user__pk=user.pk).exists()
+    if obj is None and in_group:
       return True
 
     return False
