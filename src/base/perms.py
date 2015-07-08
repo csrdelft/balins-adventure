@@ -6,6 +6,25 @@ from django.core.exceptions import PermissionDenied
 import logging
 logger = logging.getLogger(__name__)
 
+class InGroupPermissionLogic(PermissionLogic):
+
+  def __init__(self, grants, get_group):
+    self.get_group = get_group
+    self.grants = grants
+
+  def has_perm(self, user, perm, obj=None):
+    group = self.get_group()
+
+    if not user.is_authenticated() or perm not in self.grants:
+      return False
+
+    if obj is None:
+      return True
+    elif user.is_active and group.leden.filter(user__user__pk=user.pk).exists():
+      return True
+
+    return False
+
 class MatchFieldPermissionLogic(PermissionLogic):
   """ Permission logic focussed around granting view-, change- and/or delete permissions.
       Based on a user attribute that should match an object attribute
@@ -24,7 +43,7 @@ class MatchFieldPermissionLogic(PermissionLogic):
     self.obj_attr = obj_attr
 
   def has_perm(self, user, perm, obj=None):
-    if not user.is_authenticated() or perm not in grants:
+    if not user.is_authenticated() or perm not in self.grants:
       return False
 
     if obj is None:
