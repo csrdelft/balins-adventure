@@ -77,6 +77,14 @@ that is compatible with it, migrate the existing data as exampled below and take
 
 ## Apps
 
+### Mededelingen
+
+We have never had a state where every field of the existing database exists in the new model.
+Just migrate to 0001, clone the table `mededeling` and remove all columns that are not in the
+new database at that state.
+Than dump the data from the cloned table and insert them into the new one.
+The migrations take care of the rest.
+
 ### Base
 
 You can import the data from 'profielen' on the database after migration 0001 (or 0002)

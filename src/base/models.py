@@ -1,9 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
+from enum import Enum
+
+from base.utils import Choices
 
 class Profiel(models.Model):
   class Meta:
     db_table = 'profielen'
+
+  STATUS = Choices(
+    OVERLEDEN='OVE',
+    OUDLID='OUD',
+    NOVIET='NOV',
+    NOBODY='NOB',
+    LID='LID',
+    KRINGEL='KRI',
+    GASTLID='GAS',
+    EXLID='EXL',
+    ERELID='ERE',
+    COMMISSIE='CIE' # backwards compatibility, use is highly discouraged...
+  )
 
   user = models.OneToOneField(User, null=True, related_name="profiel")
   uid = models.CharField(primary_key=True, max_length=4)

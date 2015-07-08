@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Q
 from livefield import LiveModel
 from base.models import Profiel
+from base.utils import Choices
 
 class Mededeling(LiveModel):
 
@@ -16,19 +17,32 @@ class Mededeling(LiveModel):
   prive = models.CharField(max_length=1)
   prioriteit = models.IntegerField()
   user = models.ForeignKey(Profiel, max_length=4, db_column="uid")
-  doelgroep = models.CharField(max_length=10)
   plaatje = models.CharField(max_length=255)
+
+  AUDIENCE = Choices(
+    PUBLIC="PUB",
+    LEDEN="LID",
+    OUDLEDEN="OUD"
+  )
+  audience = models.CharField(max_length=3, choices=AUDIENCE.choices(), default=AUDIENCE.LEDEN)
 
   @classmethod
   def get_viewable_by(cls, user):
-    #Filter to find public announcements
-    #Return only public or both public and 'doelgroep' for user within 'doelgroep'
+    """ Find all announcements viewable by the given user.
+        Permissions are granted in the publiek < oudlid < lid hierarchy
+    """
+    q = Q(audience=cls.AUDIENCE.PUBLIC)
 
-    public_filter = cls.objects.filter(Q(doelgroep='PUBLIEK'))
-    if not user.is_authenticated():
-      return public_filter
-    else:
-      return public_filter | cls.objects.filter(Q(doelgroep=user.profiel.status))
+    # authenticated users see more
+    if user.is_authenticated():
+      # ... depending on there status
+      status = user.profiel.status
+      if status == Profiel.STATUS.OUDLEDEN or status == Profiel.STATUS.LID:
+        q |= Q(audience=cls.AUDIENCE.OUDLEDEN)
+      if status == Profiel.STATUS.LID:
+        q |= Q(audience=cls.AUDIENCE.LID)
+
+    return cls.objects.filter(q)
 
   def __str__(self):
     return "Mededeling: %s" % self.titel
