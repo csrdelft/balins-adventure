@@ -38,11 +38,18 @@ class MatchFieldPermissionLogic(PermissionLogic):
       Based on a user attribute that should match an object attribute
 
       example (match verticales to grant view rights on somemodel):
-        MatchAttributePermissionLogic(
+        MatchFieldPermissionLogic(
           grants=['somemodel.view'],
           user_attr='verticale',
           obj_attr='verticale',
         )
+
+      IMPORTANT NOTE: this logic can easily be replaced by a (much more efficient) query that
+      filters based on the field match, e.g:
+      This is preferable and can e.g. be implemented on the model as:
+
+      def get_viewable_by(self, user):
+        return SomeModel.objects.filter(verticale=request.user.profiel.verticale)
   """
 
   def __init__(self, grants, user_attr, obj_attr):
