@@ -1,12 +1,14 @@
-from django.conf.urls import patterns, include, url
 from django.contrib.auth.models import User
 from django.views.decorators.http import condition
-from django.http import *
-from django.core.urlresolvers import reverse
 from .models import *
 from .serializers import *
 from base.utils import *
-from base.http import *
+
+from rest_framework import views, response, generics, mixins, status, viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.routers import DefaultRouter
 
 from datetime import datetime
 import logging
@@ -14,11 +16,39 @@ import json
 
 logger = logging.getLogger(__name__)
 
-def api_profiel(request, uid):
-  prof = Profiel.objects.get(pk=uid)
+class ProfielApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
-  return json_response(ProfielSerializer().to_representation(prof))
+  permission_classes = [IsAuthenticated]
+  serializer_class = ProfielSerializer
 
-urls = patterns('',
-  url(r'^profiel/(\d+)$', api_profiel, name='base.api.profiel'),
-)
+  def get_queryset(self):
+    return Profiel.objects\
+      .prefetch_related(
+        "kring",
+        "verticale",
+        "commissies",
+        "werkgroepen",
+        "onderverenigingen",
+        "overige_groepen")\
+      .all()
+
+class LichtingApi(viewsets.GenericViewSet):
+
+  permission_classes = [IsAuthenticated]
+  serializer_class = LichtingSerializer
+
+  def get_queryset(self):
+    return Lichting.objects.all();
+
+  @list_route(methods=["get"])
+  def demooiste(self, request):
+    """ Returns de unaniem besloten mooiste lichting
+        ---
+        omit_serializer: true
+    """
+    return Response({ 'de_mooiste_lichting': 2013 })
+
+router = DefaultRouter()
+router.register("lichtingen", LichtingApi, base_name="lichtingen")
+router.register("profiel", ProfielApi, base_name="profiel")
+urls = router.urls

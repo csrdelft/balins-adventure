@@ -2,6 +2,10 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from .models import *
 
+class LichtingSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Lichting
+
 class KringSerializer(serializers.ModelSerializer):
   class Meta:
     model = Kring
