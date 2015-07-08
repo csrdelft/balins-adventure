@@ -6,6 +6,7 @@ from rest_framework import views, response, generics, mixins, status, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.routers import DefaultRouter
 
 from .models import *
 from .serializers import *
@@ -44,9 +45,16 @@ def notify_subscribers(draad, post):
       }
     })
 
-class ForumDraadViewSet(viewsets.GenericViewSet):
+class ForumViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
-  serializer_class = EntireForumDraadSerializer
+  serializer_class = ForumDeelSerializer
+
+  def get_queryset(self):
+    return ForumDeel.get_viewable_by(self.request.user)
+
+class ForumDraadViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+
+  serializer_class = ForumDraadSerializer
   queryset = ForumDraad.objects\
     .prefetch_related("posts", "forum")
 
@@ -65,16 +73,15 @@ class ForumDraadViewSet(viewsets.GenericViewSet):
       .filter(forum__in=delen)\
       .order_by('-laatst_gewijzigd')[:n]
 
-    return Response(ForumDraadSerializer(queryset, many=True).data)
+    return Response(self.get_serializer(queryset, many=True).data)
 
-  @detail_route(methods=['get'])
   def get(self, request, pk):
     draad = self.get_object()
 
     # make sure the user can view the forum draad
     deny_on_fail(request.user.has_perm('forum.view_forumdeel', draad.forum))
 
-    return Response(self.get_serializer(draad).data)
+    return Response(self.EntireForumDraadSerializer(draad).data)
 
   @detail_route(methods=['post'])
   def post(self, request, pk):
@@ -126,3 +133,8 @@ class ForumDraadViewSet(viewsets.GenericViewSet):
       return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+router = DefaultRouter()
+router.register('forum', ForumViewSet, base_name="forum")
+router.register('draad', ForumDraadViewSet, base_name="forumdraad")
+urls = router.urls

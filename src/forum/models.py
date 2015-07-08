@@ -40,7 +40,7 @@ class ForumDeel(models.Model):
 class ForumDraad(LiveModel):
 
   draad_id = models.AutoField(primary_key=True)
-  forum = models.ForeignKey(ForumDeel, db_column="forum_id")
+  forum = models.ForeignKey(ForumDeel, db_column="forum_id", related_name="draden")
   gedeeld_met = models.IntegerField(blank=True, null=True)
   user = models.ForeignKey(Profiel, db_column='uid')
   titel = models.CharField(max_length=255)
