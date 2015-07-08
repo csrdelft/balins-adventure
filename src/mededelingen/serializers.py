@@ -15,6 +15,6 @@ class MededelingenSerializer(serializers.ModelSerializer):
       'prive',
       'prioriteit',
       'user',
-      'doelgroep',
-      'plaatje'
+      'plaatje',
+      'audience'
     )

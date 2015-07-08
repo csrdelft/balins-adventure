@@ -37,7 +37,7 @@ class Mededeling(LiveModel):
     if user.is_authenticated():
       # ... depending on there status
       status = user.profiel.status
-      if status == Profiel.STATUS.OUDLEDEN or status == Profiel.STATUS.LID:
+      if status == Profiel.STATUS.OUDLID or status == Profiel.STATUS.LID:
         q |= Q(audience=cls.AUDIENCE.OUDLEDEN)
       if status == Profiel.STATUS.LID:
         q |= Q(audience=cls.AUDIENCE.LID)
