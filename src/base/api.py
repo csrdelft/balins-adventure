@@ -32,7 +32,7 @@ class ProfielApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         "overige_groepen")\
       .all()
 
-class LichtingApi(viewsets.GenericViewSet):
+class LichtingApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
   permission_classes = [IsAuthenticated]
   serializer_class = LichtingSerializer
@@ -46,7 +46,8 @@ class LichtingApi(viewsets.GenericViewSet):
         ---
         omit_serializer: true
     """
-    return Response({ 'de_mooiste_lichting': 2013 })
+    # throws mooiste lichting not found when 2013 is missing
+    return Response(self.get_serializer(Lichting.objects.get(lidjaar=2013)).data)
 
 router = DefaultRouter()
 router.register("lichtingen", LichtingApi, base_name="lichtingen")
