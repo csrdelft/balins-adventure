@@ -8,7 +8,8 @@ logger = logging.getLogger(__name__)
 
 class InGroupPermissionLogic(PermissionLogic):
   """ Non-object specific permission that grants permission if the user
-      is in a given stek group (Bestuur/Kring/...)
+      is in a given stek group (Bestuur/Kring/...) regardless of the object passed.
+      So ONLY apply this logic to a model if the logic applies to every instance of this model.
 
       `get_group` should be a getter for said group that returns None on error.
       If the group is None, no permission is granted.
@@ -25,8 +26,9 @@ class InGroupPermissionLogic(PermissionLogic):
       return False
 
     # check if lid in group
+    # if user is in group this logic grants permission for any passed object
     in_group = group.leden.filter(user__user__pk=user.pk).exists()
-    if obj is None and in_group:
+    if in_group:
       return True
 
     return False
