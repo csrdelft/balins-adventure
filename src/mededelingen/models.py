@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.db import models
+from django.db.models import Q
 from livefield import LiveModel
 from base.models import Profiel
 
@@ -18,7 +19,16 @@ class Mededeling(LiveModel):
   doelgroep = models.CharField(max_length=10)
   plaatje = models.CharField(max_length=255)
 
-  #READ Permissions
+  @classmethod
+  def get_viewable_by(cls, user):
+    #Filter to find public announcements
+    #Return only public or both public and 'doelgroep' for user within 'doelgroep'
+
+    public_filter = cls.objects.filter(Q(doelgroep='PUBLIEK'))
+    if not user.is_authenticated():
+      return public_filter
+    else:
+      return public_filter | cls.objects.filter(Q(doelgroep=user.profiel.status))
 
   def __str__(self):
     return "Mededeling: %s" % self.titel
