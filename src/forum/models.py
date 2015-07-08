@@ -25,10 +25,13 @@ class ForumDeel(models.Model):
   volgorde = models.IntegerField()
 
   @classmethod
-  def get_viewable_by(cls, user):
+  def get_viewable_by(cls, user, qs=None):
+    if qs is None:
+      qs = cls.objects.all()
+
     return filter(
       lambda d: user.has_perm('forum.view_forumdeel', d),
-      cls.objects.all().prefetch_related('categorie'))
+      qs.prefetch_related('categorie'))
 
   def __str__(self):
     return self.titel

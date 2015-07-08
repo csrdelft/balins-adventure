@@ -50,7 +50,20 @@ class ForumViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Ge
   serializer_class = ForumDeelSerializer
 
   def get_queryset(self):
-    return ForumDeel.get_viewable_by(self.request.user)
+    return ForumDeel.objects.all()
+
+  def list(self, request):
+    delen = ForumDeel.get_viewable_by(self.request.user)
+
+    return Response(self.get_serializer(delen, many=True).data)
+
+  def retrieve(self, request, pk):
+    deel = self.get_object()
+
+    # permission check
+    deny_on_fail(request.user.has_perm('forum.view_forumdeel', deel))
+
+    return Response(EntireForumDeelSerializer(deel).data)
 
 class ForumDraadViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
@@ -75,7 +88,7 @@ class ForumDraadViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
     return Response(self.get_serializer(queryset, many=True).data)
 
-  def get(self, request, pk):
+  def retrieve(self, request, pk):
     draad = self.get_object()
 
     # make sure the user can view the forum draad
