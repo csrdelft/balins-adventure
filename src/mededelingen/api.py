@@ -13,7 +13,8 @@ class MededelingenViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixi
 
   def destroy(self, request, *args, **kwargs):
     deny_on_fail(request.user.has_perm('mededelingen.destroy', self.get_object()))
-    super(request, *args, **kwargs)
+
+    return super().destroy(request, *args, **kwargs)
 
   def create(self, request, *args, **kwargs):
     print('-----------get object--------------')
@@ -21,4 +22,4 @@ class MededelingenViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixi
     print('-----------entered-----------------')
     deny_on_fail(request.user.has_perm('mededelingen.create', instance))
     print('-----------not failed--------------')
-    super()
+    return super().create(request, *args, **kwargs)

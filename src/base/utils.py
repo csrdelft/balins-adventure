@@ -18,7 +18,7 @@ class Choices(object):
   def choices(self):
     """ Get list of database choices to be used on a database field
     """
-    return ((k, v) for k, v in self._choices.items())
+    return ((v, k) for k, v in self._choices.items())
 
 def accessor(fieldname):
   """ returns an accessor function for fieldname
