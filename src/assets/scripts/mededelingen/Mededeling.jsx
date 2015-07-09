@@ -4,27 +4,21 @@ var _ = require("underscore");
 var api = require("api");
 
 class Mededeling extends React.Component {
-
   constructor(props) {
     super(props);
 
     // initial state
     this.state = {
-      threads: []
+      mededeling: {}
     };
-
-    this.interval = null;
   }
 
   update() {
-    // use the api to get most recent forum threads
-    // this returns a promise that we can register our success and error callbacks on
-    // at success we simply update the state of the component
-    api.mededelingen.get_mededeling(0)
+    api.mededelingen.get_mededeling(this.props.params.id)
       .then(
-        (resp) => this.setState({ threads: resp.data }),
-        (resp) => console.error('Getting recent forum posts failed with status ' + resp.status)
-      );
+      (resp) => this.setState({mededeling: resp.data}),
+      (resp) => console.error('Getting mededeling failed with status ' + resp.status)
+    );
   }
 
   componentDidMount() {
@@ -39,19 +33,15 @@ class Mededeling extends React.Component {
   }
 
   render() {
-    // map the state to HTML
-    return <div>
-      {
-        _.map(this.state.threads,
-          (thread, i) => <h3 key={i}>{thread.titel}</h3>
-        )
-      }
-      </div>;
+    let mededeling = this.state.mededeling;
+    return (
+      <div>
+        <h1>{mededeling.titel}</h1>
+
+        <p>{mededeling.tekst}</p>
+      </div>
+    );
   }
 }
-
-// the component takes an attribute to manipulate the update interval
-Mededeling.propTypes = { updateInterval: React.PropTypes.number };
-Mededeling.defaultProps = { updateInterval: 60000 };
 
 module.exports = Mededeling;
