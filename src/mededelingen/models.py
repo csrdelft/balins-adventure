@@ -39,7 +39,7 @@ class Mededeling(LiveModel):
       if status == Profiel.STATUS.OUDLID or status == Profiel.STATUS.LID:
         q |= Q(audience=cls.AUDIENCE.OUDLEDEN)
       if status == Profiel.STATUS.LID:
-        q |= Q(audience=cls.AUDIENCE.LID)
+        q |= Q(audience=cls.AUDIENCE.LEDEN)
 
     return cls.objects.filter(q)
 

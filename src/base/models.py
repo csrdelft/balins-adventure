@@ -69,7 +69,7 @@ class Profiel(models.Model):
   email = models.CharField(max_length=255)
   kerk = models.CharField(max_length=255, blank=True)
   muziek = models.CharField(max_length=255, blank=True)
-  status = models.CharField(max_length=11)
+  status = models.CharField(max_length=11, choices=STATUS.choices(), default=STATUS.NOBODY)
   eetwens = models.CharField(max_length=255, blank=True)
   corvee_punten = models.IntegerField()
   corvee_punten_bonus = models.IntegerField()
