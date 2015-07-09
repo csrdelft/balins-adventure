@@ -22,6 +22,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='mededeling',
             name='audience',
-            field=models.CharField(max_length=3, default='LID', choices=[('P', 'U'), ('L', 'E'), ('O', 'U')]),
+            field=models.CharField(max_length=3, default='LID', choices=[('LEDEN', 'LID'), ('PUBLIC', 'PUB'), ('OUDLEDEN', 'OUD')]),
         ),
     ]
