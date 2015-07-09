@@ -7,5 +7,5 @@ from base.models import Bestuur
 def get_ht_bestuur(): return Bestuur.objects.get(status='ht')
 
 PERMISSION_LOGICS = [(
-  (Mededeling, InGroupPermissionLogic(['mededelingen.create', 'mededelingen.destroy'],get_ht_bestuur))
+  (Mededeling, InGroupPermissionLogic(['mededelingen.add_mededeling','mededelingen.delete_mededeling'],get_ht_bestuur))
 )]

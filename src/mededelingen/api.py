@@ -12,14 +12,9 @@ class MededelingenViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixi
     return Mededeling.get_viewable_by(self.request.user)
 
   def destroy(self, request, *args, **kwargs):
-    deny_on_fail(request.user.has_perm('mededelingen.destroy', self.get_object()))
-
+    deny_on_fail(request.user.has_perm('mededelingen.delete_mededeling', self.get_object))
     return super().destroy(request, *args, **kwargs)
 
   def create(self, request, *args, **kwargs):
-    print('-----------get object--------------')
-    instance = self.get_object()
-    print('-----------entered-----------------')
-    deny_on_fail(request.user.has_perm('mededelingen.create', instance))
-    print('-----------not failed--------------')
+    deny_on_fail(request.user.has_perm('mededelingen.add_mededeling', self.get_object))
     return super().create(request, *args, **kwargs)
