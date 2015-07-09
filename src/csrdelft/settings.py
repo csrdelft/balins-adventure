@@ -1,4 +1,6 @@
 import os
+import sys
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SECRET_KEY = 'nw_-0v1gumzd=w1l+fc8ji)5%7624%!mb0ha9i1i+iwdcrqg#!'
@@ -60,7 +62,8 @@ INSTALLED_APPS = (
     'base',
     'forum',
     'maaltijden',
-    'mededelingen'
+    'mededelingen',
+    'autofixture'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -121,6 +124,12 @@ DATABASES = {
     }
 }
 
+# test database: in memory
+if 'test' in sys.argv:
+  DATABASES = {
+    'default': {'ENGINE': 'django.db.backends.sqlite3'}
+  }
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -129,7 +138,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 STATICFILES_DIRS = (
   os.path.join(BASE_DIR, '../dist'),

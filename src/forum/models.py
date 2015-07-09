@@ -25,10 +25,13 @@ class ForumDeel(models.Model):
   volgorde = models.IntegerField()
 
   @classmethod
-  def get_viewable_by(cls, user):
+  def get_viewable_by(cls, user, qs=None):
+    if qs is None:
+      qs = cls.objects.all()
+
     return filter(
       lambda d: user.has_perm('forum.view_forumdeel', d),
-      cls.objects.all().prefetch_related('categorie'))
+      qs.prefetch_related('categorie'))
 
   def __str__(self):
     return self.titel
@@ -40,7 +43,7 @@ class ForumDeel(models.Model):
 class ForumDraad(LiveModel):
 
   draad_id = models.AutoField(primary_key=True)
-  forum = models.ForeignKey(ForumDeel, db_column="forum_id")
+  forum = models.ForeignKey(ForumDeel, db_column="forum_id", related_name="draden")
   gedeeld_met = models.IntegerField(blank=True, null=True)
   user = models.ForeignKey(Profiel, db_column='uid')
   titel = models.CharField(max_length=255)

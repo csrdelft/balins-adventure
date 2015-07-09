@@ -12,9 +12,8 @@ class MededelingenSerializer(serializers.ModelSerializer):
       'vervaltijd',
       'titel',
       'tekst',
-      'prive',
       'prioriteit',
       'user',
-      'doelgroep',
-      'plaatje'
+      'plaatje',
+      'audience'
     )
