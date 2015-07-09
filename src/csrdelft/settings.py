@@ -125,7 +125,9 @@ DATABASES = {
 
 # test database: in memory
 if 'test' in sys.argv:
-  DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
+  DATABASES = {
+    'default': {'ENGINE': 'django.db.backends.sqlite3'}
+  }
 
 LANGUAGE_CODE = 'en-us'
 

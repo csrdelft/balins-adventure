@@ -1,28 +1,19 @@
-from datetime import datetime
 from django.test import TestCase
-import null
+from django.contrib.auth.models import User
 from rest_framework.test import APIRequestFactory
 from mededelingen.models import Mededeling
+from autofixture import AutoFixture
+from datetime import datetime
 
-# Create your tests here.
 class MededelingTest(TestCase):
 
   def setUp(self):
-    Mededeling.objects.create(
-      id='1',
-      live=True,
-      datum=datetime.now,
-      vervaltijd=null,
-      titel='Test',
-      tekst='Test text',
-      prioriteit='1',
-      user='1414',
-      plaatje='groen',
-      audience='LID'
-    )
+    mededelingen = AutoFixture(Mededeling, generate_fk=True, field_values={
+      'titel': 'Nice day today'
+    }).create(1)
 
   def titelTest(self):
-    alpha = Mededeling.objects.get(id='1')
-    self.assertEqual(alpha.id,'1')
-
+    alpha = Mededeling.objects.get(pk=1)
+    self.assertEqual(alpha.pk, 1)
+    self.assertEqual(alpha.titel, 'Nice day today')
 
