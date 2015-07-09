@@ -1,7 +1,5 @@
 from permission.logics import PermissionLogic
 from permission.utils.field_lookup import field_lookup
-from base.utils import accessor
-from django.core.exceptions import PermissionDenied
 
 import logging
 logger = logging.getLogger(__name__)
@@ -56,7 +54,7 @@ class MatchFieldPermissionLogic(PermissionLogic):
 
     if obj is None:
       return True
-    elif user.is_active and lookup_field(user, self.user_attr) == lookup_field(obj, self.obj_attr):
+    elif user.is_active and field_lookup(user, self.user_attr) == field_lookup(obj, self.obj_attr):
       return True
 
     return False
