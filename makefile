@@ -1,4 +1,3 @@
-
 mkenv:
 	pyvenv-3.4 .virtualenv
 
@@ -7,4 +6,4 @@ install:
 	. .virtualenv/bin/activate; pip install -r requirements
 
 test:
-   	. .virtualenv/bin/activate; cd src && python manage.py runserver
+	. .virtualenv/bin/activate; cd src && python manage.py test
