@@ -27,7 +27,7 @@ class MededelingList extends React.Component {
   }
 
   go(event) {
-    var id = $(event.target).data('id');
+    let id = $(event.target).data('id');
     this.context.router.transitionTo("mededeling-detail", {id: id});
   }
 
@@ -61,10 +61,10 @@ class MededelingList extends React.Component {
   render() {
     // map the state to HTML
     return <div>
-      <h1>Hello</h1>
+      <h1>Mededelingen</h1>
       <ul>
         {
-          _.map(this.state.mededelingen, (mededeling, i) =>  {
+          _.map(this.state.mededelingen, (mededeling, i) => {
             return <li>
               <a data-id={mededeling.id} onClick={this.go}>{mededeling.titel}</a>
             </li>
