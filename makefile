@@ -5,3 +5,6 @@ mkenv:
 install:
 	test -d .virtualenv || ${MAKE} mkenv
 	. .virtualenv/bin/activate; pip install -r requirements
+
+test:
+   	. .virtualenv/bin/activate; cd src && python manage.py runserver
