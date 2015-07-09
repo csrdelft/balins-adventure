@@ -8,8 +8,7 @@ var PostForm = require("forum/PostForm");
 var Profiel = require("partials/Profiel");
 var io = require('socket.io-client');
 
-var Mededeling = require('mededelingen/Mededeling');
-var MededelingList = require('mededelingen/MededelingList');
+var MededelingRouter = require('mededelingen/MededelingRouter');
 
 var Router = require('react-router');
 var {
@@ -67,6 +66,7 @@ class Menu extends React.Component {
         <li>Actueel</li>
         <li><Link to="/forum">Reformaforum ({ this.state.forum_notifications })</Link></li>
         <li><Link to="/profiel/1337">Profiel</Link></li>
+        <li><Link to="/mededelingen">Mededelingen</Link></li>
       </ul>
     );
   }
@@ -111,13 +111,10 @@ var routes = (
     <Route path="" handler={NotFound} />
     <Route path="forum" handler={Forum} />
     <Route path="profiel/:uid" handler={Profiel} />
-    <Route path="mededelingen" handler={MededelingList}>
-      <Route name="mededeling-detail" path=":id" handler={Mededeling} />
-    </Route>
+    <Route path="mededelingen">{MededelingRouter}</Route>
     <Route path="*" handler={NotFound} />
   </Route>
 );
-
 
 Router.run(routes, function (Handler, state) {
   React.render(<Handler params={state.params} />, $('#mount-app')[0]);
