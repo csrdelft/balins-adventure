@@ -6,3 +6,7 @@ install: "make install"
 
 # command to run tests
 script: "make test"
+
+# setting the notification level to none
+notifications:
+  email: false
