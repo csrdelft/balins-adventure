@@ -3,9 +3,6 @@ var $ = require("jquery");
 var _ = require("underscore");
 var api = require("api");
 
-
-var mixin = require('es6-react-mixins');
-
 var PropTypes = require('react-router').PropTypes;
 
 class MededelingList extends React.Component {
