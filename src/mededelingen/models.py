@@ -14,7 +14,6 @@ class Mededeling(LiveModel):
   vervaltijd = models.DateTimeField(blank=True, null=True)
   titel = models.TextField()
   tekst = models.TextField()
-  prive = models.CharField(max_length=1)
   prioriteit = models.IntegerField()
   user = models.ForeignKey(Profiel, max_length=4, db_column="uid")
   plaatje = models.CharField(max_length=255)

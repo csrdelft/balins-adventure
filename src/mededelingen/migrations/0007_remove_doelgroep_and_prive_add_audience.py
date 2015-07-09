@@ -15,9 +15,13 @@ class Migration(migrations.Migration):
             model_name='mededeling',
             name='doelgroep',
         ),
+        migrations.RemoveField(
+            model_name='mededeling',
+            name='prive',
+        ),
         migrations.AlterField(
             model_name='mededeling',
             name='audience',
-            field=models.CharField(choices=[('L', 'E'), ('P', 'U'), ('O', 'U')], default='LID', max_length=3),
+            field=models.CharField(max_length=3, default='LID', choices=[('P', 'U'), ('L', 'E'), ('O', 'U')]),
         ),
     ]

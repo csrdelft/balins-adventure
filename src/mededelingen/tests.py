@@ -15,11 +15,10 @@ class MededelingTest(TestCase):
       vervaltijd=null,
       titel='Test',
       tekst='Test text',
-      prive='0',
       prioriteit='1',
       user='1414',
-      doelgroep='leden',
-      plaatje='groen'
+      plaatje='groen',
+      audience='LID'
     )
 
   def titelTest(self):
