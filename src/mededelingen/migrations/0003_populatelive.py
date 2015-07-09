@@ -6,7 +6,7 @@ from django.db import models, migrations
 def set_live(apps, schema_editor):
   Mededeling = apps.get_model("mededelingen", "Mededeling")
   for m in Mededeling.objects.all():
-    m.live = not m.verwijderd and not m.verborgen
+    m.live = (m.verwijderd == '0') and (m.verborgen == '0')
     m.save()
 
 class Migration(migrations.Migration):
