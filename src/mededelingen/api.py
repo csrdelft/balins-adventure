@@ -18,3 +18,7 @@ class MededelingenViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixi
   def create(self, request, *args, **kwargs):
     deny_on_fail(request.user.has_perm('mededelingen.add_mededeling', self.get_object))
     return super().create(request, *args, **kwargs)
+
+  def update(self, request, *args, **kwargs):
+    deny_on_fail(request.user.has_perm('mededelingen.change_mededeling', self.get_object))
+    return super().update(request, *args, **kwargs)
