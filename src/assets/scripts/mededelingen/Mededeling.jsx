@@ -26,12 +26,6 @@ class Mededeling extends React.Component {
     this.update();
   }
 
-  componentWillUnmount() {
-    // make sure we unset the update at interval
-    // at the end of the component lifecycle
-    window.clearInterval(this.interval);
-  }
-
   render() {
     let mededeling = this.state.mededeling;
     return (
