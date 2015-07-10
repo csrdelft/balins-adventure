@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.db import models
 from django.db.models import Q
+from django.contrib.auth.models import AnonymousUser
 from livefield import LiveModel
 from base.models import Profiel
 from base.utils import Choices
@@ -26,16 +27,18 @@ class Mededeling(LiveModel):
   audience = models.CharField(max_length=3, choices=AUDIENCE.choices(), default=AUDIENCE.LEDEN)
 
   @classmethod
-  def get_viewable_by(cls, user):
+  def get_viewable_by(cls, profiel):
     """ Find all announcements viewable by the given user.
         Permissions are granted in the publiek < oudlid < lid hierarchy
     """
     q = Q(audience=cls.AUDIENCE.PUBLIC)
 
     # authenticated users see more
-    if user.is_authenticated():
+    # isinstance is because of the fact the anonymous user (== profiel in this case) doenst
+    #   have a user attribute
+    if not isinstance(profiel, AnonymousUser) and profiel.user.is_authenticated():
       # ... depending on there status
-      status = user.profiel.status
+      status = profiel.status
       if status == Profiel.STATUS.OUDLID or status == Profiel.STATUS.LID:
         q |= Q(audience=cls.AUDIENCE.OUDLEDEN)
       if status == Profiel.STATUS.LID:
