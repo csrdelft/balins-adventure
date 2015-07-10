@@ -1,9 +1,14 @@
 from django.test import TestCase
+from django.test.client import ClientHandler
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.test import APIRequestFactory, APITestCase, APIClient
+from base.middleware import ProfielMiddleware
 from base.models import Profiel
+from mededelingen.api import MededelingenViewSet
 from mededelingen.models import Mededeling
 from autofixture import AutoFixture
+from mock import Mock
 
 class MededelingTest(APITestCase, TestCase):
 
@@ -28,32 +33,24 @@ class MededelingTest(APITestCase, TestCase):
       'status': 'NOB'
     }).create(1)
 
+    self.factory = APIRequestFactory()
+    self.client = APIClient(self.factory)
+    self.user = Profiel.objects.get(uid='0001')
+
   def test_public_get_public(self):
-    factory = APIRequestFactory()
-    client = APIClient(factory)
-    client.force_authenticate(user=None)
-    response = client.get('http://testserver/api/v1/mededelingen/1/')
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    requestPUB = self.client.get('/api/v1/mededelingen/1/')
+    self.assertEqual(requestPUB.status_code, status.HTTP_200_OK)
 
   def test_public_get_lid(self):
-    factory = APIRequestFactory()
-    client = APIClient(factory)
-    client.force_authenticate(user=None)
-    response = client.get('http://testserver/api/v1/mededelingen/2/')
-    self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    requestLID = self.client.get('/api/v1/mededelingen/2/')
+    self.assertEqual(requestLID.status_code, status.HTTP_404_NOT_FOUND)
 
   def test_lid_get_lid(self):
-    factory = APIRequestFactory()
-    client = APIClient(factory)
-    user = Profiel.objects.get(uid='0001')
-    client.force_authenticate(user=user)
-    response = client.get('http://testserver/api/v1/mededelingen/2/')
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.client.force_authenticate(user=self.user)
+    requestLID = self.client.get('/api/v1/mededelingen/2/')
+    self.assertEqual(requestLID.status_code, status.HTTP_200_OK)
 
   def test_lid_get_public(self):
-    factory = APIRequestFactory()
-    client = APIClient(factory)
-    user = Profiel.objects.get(uid='0001')
-    client.force_authenticate(user=user)
-    response = client.get('http://testserver/api/v1/mededelingen/1/')
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.client.force_authenticate(user=self.user)
+    requestPUB = self.client.get('/api/v1/mededelingen/1/')
+    self.assertEqual(requestPUB.status_code, status.HTTP_200_OK)
