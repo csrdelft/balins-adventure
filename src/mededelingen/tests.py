@@ -1,51 +1,49 @@
-from django.test import TestCase
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from rest_framework import status
-from rest_framework.test import APIRequestFactory, APITestCase, APIClient
+from rest_framework.test import APITransactionTestCase
 from base.models import Profiel
 from mededelingen.models import Mededeling
 from autofixture import AutoFixture
 
-class MededelingTest(APITestCase, TestCase):
-
+class MededelingTests(APITransactionTestCase):
   def setUp(self):
+    print(User.objects.all())
+    liduser = User.objects.create_user(username="Lid", password="Lid")
+    AutoFixture(Profiel, field_values={
+      'naam': 'LID',
+      'status': Profiel.STATUS.LID,
+      'user_id': liduser.pk
+    }).create(1)
+
     AutoFixture(Mededeling, generate_fk=True, field_values={
+      'pk': 1,
       'titel': 'A',
-      'audience': 'PUB'
+      'audience': Mededeling.AUDIENCE.PUBLIC
     }).create(1)
 
     AutoFixture(Mededeling, generate_fk=True, field_values={
+      'pk': 2,
       'titel': 'B',
-      'audience': 'LID'
+      'audience': Mededeling.AUDIENCE.LEDEN
     }).create(1)
 
-    AutoFixture(Profiel, generate_fk=True, field_values={
-      'uid': '0001',
-      'status': 'LID'
-    }).create(1)
+  def test_get_public_unauthed(self):
+    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}), {})
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.data['titel'], 'A')
 
-    AutoFixture(Profiel, generate_fk=True, field_values={
-      'uid': 'x999',
-      'status': 'NOB'
-    }).create(1)
+  def test_get_public_authed(self):
+    self.client.login(username="Lid", password="Lid")
+    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}), {})
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    self.factory = APIRequestFactory()
-    self.client = APIClient(self.factory)
-    self.user = Profiel.objects.get(uid='0001')
+  def test_get_lid_unauthed(self):
+    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}), {})
+    self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-  def test_public_get_public(self):
-    requestPUB = self.client.get('/api/v1/mededelingen/1/')
-    self.assertEqual(requestPUB.status_code, status.HTTP_200_OK)
+  def test_get_lid_authed(self):
+    self.client.login(username="Lid", password="Lid")
+    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}), {})
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-  def test_public_get_lid(self):
-    requestLID = self.client.get('/api/v1/mededelingen/2/')
-    self.assertEqual(requestLID.status_code, status.HTTP_404_NOT_FOUND)
-
-  def test_lid_get_lid(self):
-    self.client.force_authenticate(user=self.user)
-    requestLID = self.client.get('/api/v1/mededelingen/2/')
-    self.assertEqual(requestLID.status_code, status.HTTP_200_OK)
-
-  def test_lid_get_public(self):
-    self.client.force_authenticate(user=self.user)
-    requestPUB = self.client.get('/api/v1/mededelingen/1/')
-    self.assertEqual(requestPUB.status_code, status.HTTP_200_OK)

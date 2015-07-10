@@ -27,18 +27,16 @@ class Mededeling(LiveModel):
   audience = models.CharField(max_length=3, choices=AUDIENCE.choices(), default=AUDIENCE.LEDEN)
 
   @classmethod
-  def get_viewable_by(cls, profiel):
+  def get_viewable_by(cls, user):
     """ Find all announcements viewable by the given user.
         Permissions are granted in the publiek < oudlid < lid hierarchy
     """
     q = Q(audience=cls.AUDIENCE.PUBLIC)
 
     # authenticated users see more
-    # isinstance is because of the fact the anonymous user (== profiel in this case) doenst
-    #   have a user attribute
-    if not isinstance(profiel, AnonymousUser) and profiel.user.is_authenticated():
+    if user.is_authenticated():
       # ... depending on there status
-      status = profiel.status
+      status = user.profiel.status
       if status == Profiel.STATUS.OUDLID or status == Profiel.STATUS.LID:
         q |= Q(audience=cls.AUDIENCE.OUDLEDEN)
       if status == Profiel.STATUS.LID:
