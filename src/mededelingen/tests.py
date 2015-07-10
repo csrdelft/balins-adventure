@@ -23,7 +23,6 @@ class MededelingTests(APITestCase):
       'status': Profiel.STATUS.OUDLID,
       'user': ouduser
     }).create(1)
-    print(Profiel.objects.all().values('pk', 'user_id', 'status'))
 
     AutoFixture(Mededeling, generate_fk=True, field_values={
       'pk': 1,
@@ -45,8 +44,6 @@ class MededelingTests(APITestCase):
       'audience': Mededeling.AUDIENCE.OUDLEDEN,
       'live': True
     }).create(1)
-
-    print(Mededeling.objects.all().values('pk', 'live', 'audience'))
 
   def test_public_gets_public(self):
     self.fixture()
@@ -106,4 +103,3 @@ class MededelingTests(APITestCase):
     response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 3}))
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.data['titel'], 'C')
-
