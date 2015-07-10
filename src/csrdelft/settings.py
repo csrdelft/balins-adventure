@@ -165,7 +165,12 @@ LOGGING = {
 if 'test' in sys.argv:
   # test database: in memory
   DATABASES = {
-    'default': {'ENGINE': 'django.db.backends.sqlite3'}
+    'default': {
+      'ENGINE': 'django.db.backends.sqlite3',
+      'TEST': {
+        'NAME': os.path.join(BASE_DIR, '../testdb.sqlite'),
+      }
+    }
   }
 
   # no redis cache
