@@ -6,9 +6,8 @@ import redis
 class Choices(object):
 
   def __init__(self, **choices):
-    # verify that all keys and values only appear once
-    assert(len(set(choices.keys())) == len(choices), "Provided non-unique choice names")
-    assert(len(set(choices.values())) == len(choices), "Provided non-unique choice names")
+    # verify that all values only appear once
+    assert len(set(choices.values())) == len(choices), "Provided non-unique choice names"
 
     self._choices = choices
     for k, v in choices.items():
