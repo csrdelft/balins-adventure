@@ -18,7 +18,6 @@ def createX999(apps, schema_editor):
       'status': 'ht'
     })
 
-    print("Creating x999")
     x999 = Profiel.objects.create(
       uid='x999',
       user=None, # anonymous user has no auth account

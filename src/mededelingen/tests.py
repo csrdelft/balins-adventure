@@ -1,14 +1,13 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from rest_framework import status
-from rest_framework.test import APITransactionTestCase
+from rest_framework.test import APITestCase
 from base.models import Profiel
 from mededelingen.models import Mededeling
 from autofixture import AutoFixture
 
-class MededelingTests(APITransactionTestCase):
+class MededelingTests(APITestCase):
   def setUp(self):
-    print(User.objects.all())
     liduser = User.objects.create_user(username="Lid", password="Lid")
     AutoFixture(Profiel, field_values={
       'naam': 'LID',
