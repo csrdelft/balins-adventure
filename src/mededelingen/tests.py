@@ -1,14 +1,9 @@
 from django.test import TestCase
-from django.test.client import ClientHandler
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework.test import APIRequestFactory, APITestCase, APIClient
-from base.middleware import ProfielMiddleware
 from base.models import Profiel
-from mededelingen.api import MededelingenViewSet
 from mededelingen.models import Mededeling
 from autofixture import AutoFixture
-from mock import Mock
 
 class MededelingTest(APITestCase, TestCase):
 
