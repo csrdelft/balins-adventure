@@ -2,10 +2,10 @@ language: python
 python: "3.4"
 
 # command to install dependencies
-install: "make install"
+install: "make travis-install"
 
 # command to run tests
-script: "make test"
+script: "make travis-test"
 
 # setting the notification level to none
 notifications:

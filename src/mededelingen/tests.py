@@ -7,7 +7,8 @@ from mededelingen.models import Mededeling
 from autofixture import AutoFixture
 
 class MededelingTests(APITestCase):
-  def setUp(self):
+
+  def fixture(self):
     liduser = User.objects.create_user(username="Lid", password="Lid")
     AutoFixture(Profiel, field_values={
       'naam': 'LID',
@@ -28,20 +29,24 @@ class MededelingTests(APITestCase):
     }).create(1)
 
   def test_get_public_unauthed(self):
+    self.fixture()
     response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}), {})
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.data['titel'], 'A')
 
   def test_get_public_authed(self):
+    self.fixture()
     self.client.login(username="Lid", password="Lid")
     response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}), {})
     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
   def test_get_lid_unauthed(self):
+    self.fixture()
     response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}), {})
     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
   def test_get_lid_authed(self):
+    self.fixture()
     self.client.login(username="Lid", password="Lid")
     response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}), {})
     self.assertEqual(response.status_code, status.HTTP_200_OK)

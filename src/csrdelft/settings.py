@@ -9,6 +9,7 @@ NOTIFICATION_REDIS_HOST = 'localhost'
 NOTIFICATION_REDIS_PORT = 6379
 NOTIFICATION_REDIS_DB = 0
 
+NO_REDIS = False
 SESSION_ENGINE = 'redis_sessions.session'
 SESSION_REDIS_HOST = 'localhost'
 SESSION_REDIS_PORT = 6379
@@ -124,12 +125,6 @@ DATABASES = {
     }
 }
 
-# test database: in memory
-if 'test' in sys.argv:
-  DATABASES = {
-    'default': {'ENGINE': 'django.db.backends.sqlite3'}
-  }
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -165,3 +160,16 @@ LOGGING = {
     },
   },
 }
+
+# test settings
+if 'test' in sys.argv:
+  # test database: in memory
+  DATABASES = {
+    'default': {'ENGINE': 'django.db.backends.sqlite3'}
+  }
+
+  # no redis cache
+  SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+  # disable redis
+  NO_REDIS = True

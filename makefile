@@ -7,3 +7,9 @@ install:
 
 test:
 	. .virtualenv/bin/activate; cd src && python manage.py test
+
+travis-install:
+	pip install -r requirements
+
+travis-test:
+	cd src && python manage.py test
