@@ -12,7 +12,6 @@ class MededelingTests(APITestCase):
     liduser = User.objects.create_user(username='Lid', password='Lid')
     ouduser = User.objects.create_user(username='OudLid', password='OudLid')
     bestuuruser = User.objects.create_user(username='Bestuur', password='Bestuur')
-    superuser = User.objects.create_superuser(username='Superman', email='pubcie@csrdelft.nl', password='Superman')
 
     AutoFixture(Profiel, field_values={
       'voornaam': 'LID',
@@ -29,17 +28,10 @@ class MededelingTests(APITestCase):
     }).create(1)
 
     AutoFixture(Profiel, field_values={
-      'voornaam': 'SUPER',
-      'status': Profiel.STATUS.LID,
-      'user': superuser,
-      'uid': '0003'
-    }).create(1)
-
-    AutoFixture(Profiel, field_values={
       'voornaam': 'BESTUURSLID',
       'status': Profiel.STATUS.LID,
       'user': bestuuruser,
-      'uid': '0004'
+      'uid': '0003'
     }).create(1)
 
     AutoFixture(Bestuur, field_values={
@@ -48,7 +40,7 @@ class MededelingTests(APITestCase):
     }).create(1)
 
     AutoFixture(BestuursLid, field_values={
-      'user': Profiel.objects.get(uid='0004'),
+      'user': Profiel.objects.get(uid='0003'),
       'opmerking': 'Praeses van Heukelum',
       'groep_id': Bestuur.objects.get(status='ht')
     }).create(1)
@@ -78,7 +70,7 @@ class MededelingTests(APITestCase):
       'titel': 'E',
       'tekst': 'Newly posted Announcement',
       'prioriteit': '0',
-      'user': '0004',
+      'user': '0003',
       'plaatje': 'NULL',
     }
 
@@ -142,21 +134,6 @@ class MededelingTests(APITestCase):
     self.assertEqual('C', response.data['titel'])
 
 
-  def test_superuser_patch(self):
-    self.fixture()
-    self.client.login(username='Superman', password='Superman')
-
-    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
-    self.assertEqual(status.HTTP_200_OK, response.status_code)
-    self.assertEqual('A', response.data['titel'])
-
-    response_2 = self.client.patch(reverse('mededeling-detail', kwargs={'pk': 1}), {'titel':'D'})
-    self.assertEqual(status.HTTP_200_OK, response_2.status_code)
-
-    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
-    self.assertEqual(status.HTTP_200_OK, response_3.status_code)
-    self.assertEqual('D', response_3.data['titel'])
-
   def test_lid_patch(self):
     self.fixture()
     self.client.login(username='Lid', password='Lid')
@@ -202,20 +179,6 @@ class MededelingTests(APITestCase):
     self.assertEqual('D', response_3.data['titel'])
 
 
-  def test_superuser_delete(self):
-    self.fixture()
-    self.client.login(username='Superman', password='Superman')
-
-    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
-    self.assertEqual(status.HTTP_200_OK, response.status_code)
-    self.assertEqual('A', response.data['titel'])
-
-    response_2 = self.client.delete(reverse('mededeling-detail', kwargs={'pk': 1}))
-    self.assertEqual(status.HTTP_204_NO_CONTENT, response_2.status_code)
-
-    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
-    self.assertEqual(status.HTTP_404_NOT_FOUND, response_3.status_code)
-
   def test_bestuur_delete(self):
     self.fixture()
     self.client.login(username='Bestuur', password='Bestuur')
@@ -259,20 +222,6 @@ class MededelingTests(APITestCase):
     self.assertEqual(status.HTTP_200_OK, response_3.status_code)
     self.assertEqual('A', response_3.data['titel'])
 
-
-  def test_superuser_post(self):
-    self.fixture()
-    self.client.login(username='Superman', password='Superman')
-
-    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 4}))
-    self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
-
-    response_2 = self.client.post(reverse('mededeling-list'), self.data, format='json')
-    self.assertEqual(status.HTTP_201_CREATED, response_2.status_code)
-
-    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 4}))
-    self.assertEqual(status.HTTP_200_OK, response_3.status_code)
-    self.assertEqual('E', response_3.data['titel'])
 
   def test_bestuur_post(self):
     self.fixture()
