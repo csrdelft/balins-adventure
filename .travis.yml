@@ -1,0 +1,15 @@
+language: python
+python: "3.4"
+
+# command to install dependencies
+install: "make travis-install"
+
+# command to run tests
+script: "make travis-test"
+
+# cache deps
+cache: pip
+
+# setting the notification level to none
+notifications:
+  email: false

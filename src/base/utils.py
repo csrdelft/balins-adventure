@@ -6,9 +6,8 @@ import redis
 class Choices(object):
 
   def __init__(self, **choices):
-    # verify that all keys and values only appear once
-    assert(len(set(choices.keys())) == len(choices), "Provided non-unique choice names")
-    assert(len(set(choices.values())) == len(choices), "Provided non-unique choice names")
+    # verify that all values only appear once
+    assert len(set(choices.values())) == len(choices), "Provided non-unique choice names"
 
     self._choices = choices
     for k, v in choices.items():
@@ -42,7 +41,12 @@ def deny_on_fail(test):
     raise PermissionDenied()
 
 def notification_client():
-  return redis.StrictRedis(
-    host=settings.NOTIFICATION_REDIS_HOST,
-    port=settings.NOTIFICATION_REDIS_PORT,
-    db=settings.NOTIFICATION_REDIS_DB)
+  """ Returns a redis client using the settings or None if NO_REDIS is configured to True
+  """
+  if not settings.NO_REDIS:
+    return redis.StrictRedis(
+      host=settings.NOTIFICATION_REDIS_HOST,
+      port=settings.NOTIFICATION_REDIS_PORT,
+      db=settings.NOTIFICATION_REDIS_DB)
+  else:
+    return None

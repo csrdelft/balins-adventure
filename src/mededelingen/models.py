@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.db import models
 from django.db.models import Q
+from django.contrib.auth.models import AnonymousUser
 from livefield import LiveModel
 from base.models import Profiel
 from base.utils import Choices

@@ -15,7 +15,6 @@ from base.serializers import *
 
 from datetime import datetime
 import logging
-import json
 import redis
 
 logger = logging.getLogger(__name__)
@@ -30,6 +29,8 @@ def most_recent_forum_change(request):
 def notify_subscribers(draad, post):
   """ Given a ForumDraad instance `draad`, notify all subscribers of `post`
   """
+  # skip if redis is disabled
+  if settings.NO_REDIS: return
 
   for profiel_id, auth_id in draad.subscribers.all().values_list('user__pk', 'user__user__pk'):
     # don't notify the poster
