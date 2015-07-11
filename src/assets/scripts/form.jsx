@@ -1,11 +1,38 @@
-var React = require('react');
-var _ = require('underscore');
+let React = require('react');
+let _ = require('underscore');
 
-var mui = require('material-ui');
-var { RaisedButton, Styles } = mui;
-window.Styles = Styles;
+let mui = require('material-ui');
+let { RaisedButton, Styles } = mui;
+let mixin = require('object-assign');
 
-class ModernUIForm extends React.Component {
+let validators = {
+  compose(...validators) {
+    return (val) => {
+      return _ .chain(validators)
+        .map((validator) => validator(val))
+        .flatten()
+        .value();
+    };
+  },
+
+  minLength: (min) => (val) => {
+    if(val.trim().length < min) {
+      return [`Moet minstens ${min} tekens bevatten`];
+    } else {
+      return [];
+    }
+  },
+
+  maxLength: (max) => (val) => {
+    if(val.trim().length > max) {
+      return [`Mag maximaal ${max} tekens bevatten`];
+    } else {
+      return [];
+    }
+  },
+};
+
+class ModernUIForm extends mixin(React.Component, React.addons.LinkedStateMixin) {
 
   static get childContextTypes() {
     return { muiTheme: React.PropTypes.object }
@@ -15,8 +42,15 @@ class ModernUIForm extends React.Component {
     return { fields: React.PropTypes.object }
   }
 
-  static get getDefaultProps() {
-    return { fields: [] }
+  static get defaultProps() {
+    return { fields: {} }
+  }
+
+  getChildContext() {
+    return {
+      // set the mui theme on the children through the context
+      muiTheme: Styles.ThemeManager().getCurrentTheme()
+    };
   }
 
   /**
@@ -32,40 +66,60 @@ class ModernUIForm extends React.Component {
    *   }
    * }
    */
-  constructor(props) {
+  constructor(props, fields) {
     super(props);
-    this.fields = props.fields;
+    this.fields = _.extend(props.fields, fields);
     this.state = {
       // set default error to empty string
       error_text: _.mapObject(this.fields, (v, k) => "")
     };
+    debugger;
   }
 
-  getChildContext() {
-    return {
-      // set the mui theme on the children through the context
-      muiTheme: Styles.ThemeManager().getCurrentTheme()
-    };
+  /**
+   * Set the error text for the field named name
+   */
+  set_error(name, error_text) {
+    this.setState({
+      error_text: _.extend(this.state.error_text, {
+        [ name ]: error_text
+      })
+    });
   }
 
+  /**
+   * Convert the field specification into a React component value.
+   */
   field_to_widget(name, field) {
+    let props = _.extend(field.widget_props || {}, {
+      floatingLabelText: field.label,
+      label: field.label,
+      errorText: this.state.error_text[name],
+      onChange: (e) => {
+        if(field.validator) {
+          // call validator
+          let errors = field.validator(e.target.value);
+          this.set_error(name, _.first(errors) || "");
+
+          // call custom handlers
+          let handler = this[`handle_${name}_change`];
+          if(handler) {
+            handler.bind(this)(e);
+          }
+        }
+      }
+    });
+
     if(field.widget) {
       // dynamically crate the react component using a factory
       // (basically desugared jsx)
-      return React.createFactory(mui[field.widget])(_.extend(field.widget_props, {
-        floatingLabelText: field.label,
-        label: field.label
-      }));
+      return React.createFactory(mui[field.widget])(props);
     } else if(field.type == 'string') {
-      return <mui.TextField
-        {...field.widget_props}
-        fullWidth
-        errorText={this.state.error_text[name]}
-        floatingLabelText={field.label}/>;
+      return <mui.TextField {...props} fullWidth />
     } else if(field.type == 'boolean') {
-      return <mui.Checkbox {...field.widget_props} label={field.label}/>;
+      return <mui.Checkbox {...props} label={field.label}/>;
     } else if(field.type == 'integer') {
-      return <mui.TextField {...field.widget_props} floatingLabelText={field.label}/>;
+      return <mui.TextField {...props} floatingLabelText={field.label}/>;
     }
 
     throw Error(`Unknown field type: ${field.type}`);
@@ -76,11 +130,11 @@ class ModernUIForm extends React.Component {
       <form>
         {
           _ .chain(this.fields)
-            .filter((f) => !f.read_only)
+            .pick((field, name) => !field.read_only)
             .map((field, name) =>
-            <div key={name}>
-              { this.field_to_widget(name, field) }
-            </div>
+              <div key={name}>
+                { this.field_to_widget(name, field) }
+              </div>
             )
             .value()
         }
@@ -90,5 +144,6 @@ class ModernUIForm extends React.Component {
 }
 
 module.exports = {
-  ModernUIForm: ModernUIForm
+  ModernUIForm: ModernUIForm,
+  validators: validators
 };

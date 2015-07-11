@@ -1,36 +1,38 @@
-let { ModernUIForm } = require('form');
+let { ModernUIForm, validators } = require('form');
 var mui = require('material-ui');
 var { SelectField } = mui;
 let React = require("react");
 let _ = require('underscore');
-let mixin = require('object-assign');
 
-class DraadForm extends mixin(ModernUIForm, React.addons.LinkedStateMixin) {
+class DraadForm extends ModernUIForm {
 
   constructor(props) {
-    super(_.extend(props, {
-      fields: {
-        "titel": {
-          "type": "string",
-          "required": true,
-          "read_only": false,
-          "label": "Titel",
-          "max_length": 255
-        },
-        "gesloten": {
-          "type": "boolean",
-          "required": false,
-          "read_only": false,
-          "label": "Gesloten"
-        },
-        "plakkerig": {
-          "type": "boolean",
-          "required": false,
-          "read_only": false,
-          "label": "Plakkerig",
-        }
+    let formfields = {
+      titel: {
+        type: "string",
+        required: true,
+        read_only: false,
+        label: "Titel",
+        validator: validators.compose(
+          validators.minLength(15),
+          validators.maxLength(255)
+        )
+      },
+      gesloten: {
+        type: "boolean",
+        required: false,
+        read_only: false,
+        label: "Gesloten"
+      },
+      plakkerig: {
+        type: "boolean",
+        required: false,
+        read_only: false,
+        label: "Plakkerig",
       }
-    }));
+    };
+
+    super(props, formfields);
   }
 }
 
