@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse, resolve
+from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from base.models import Profiel, Bestuur, BestuursLid
@@ -42,7 +42,7 @@ class MededelingTests(APITestCase):
       'uid': '0004'
     }).create(1)
 
-    AutoFixture(Bestuur, generate_fk=True, field_values={
+    AutoFixture(Bestuur, field_values={
       'naam': 'van Heukelum',
       'status': 'ht'
     }).create(1)
