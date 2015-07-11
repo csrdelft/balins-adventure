@@ -18,6 +18,7 @@
     "start": "echo 'Starting notifications server' && cd ./src/notifications/ && npm start"
   },
   "dependencies": {
+    "cookies-js": "^1.2.1",
     "jquery": "^2.1.4",
     "material-ui": "^0.10.0",
     "nanoscope": "^2.2.0",

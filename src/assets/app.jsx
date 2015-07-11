@@ -98,7 +98,7 @@ class Forum extends React.Component {
       <div>
         <h1>Forum</h1>
         <ForumThreadList />
-        <PostForm />
+        <PostForm forum={1} />
       </div>
     );
   }

@@ -1,4 +1,5 @@
 var Q = require('q-xhr')(window.XMLHttpRequest, require('q'));
+var Cookies = require('cookies-js');
 
 var api = '/api/v1';
 
@@ -8,20 +9,30 @@ var api_obj = {
   // the forum resource
   forum: {
 
-    // query the n most recent forum posts
-    get_recent: (n = 5) => {
-      return Q.xhr
-        .get(`${api}/forum/draad/recent`, {
-          params: {n: n}
-        });
-    },
+    threads : {
+      // query the n most recent forum posts
+      get_recent: (n = 5) => {
+        return Q.xhr
+          .get(`${api}/forum/threads/recent`, {
+            params: {n: n}
+          });
+      },
 
-    draad : {
+      // create a new forum draadje
+      create: (data) => {
+        return Q.xhr
+          .post(`${api}/forum/threads/`, data, {
+            headers: {
+              'X-CSRFToken': Cookies.get('csrftoken')
+            }
+          });
+      },
+
       // get the metadata for the draad endpoint
       metadata : (pk) => {
         return Q.xhr({
           method: 'options',
-          url: api + '/forum/draad/' + pk + '/'
+          url: api + '/forum/threads/' + pk + '/'
         });
       }
     }

@@ -20,7 +20,7 @@ class ForumThreadList extends React.Component {
     // use the api to get most recent forum threads
     // this returns a promise that we can register our success and error callbacks on
     // at success we simply update the state of the component
-    api.forum.get_recent()
+    api.forum.threads.get_recent()
       .then(
         (resp) => this.setState({ threads: resp.data }),
         (resp) => console.error('Getting recent forum posts failed with status ' + resp.status)

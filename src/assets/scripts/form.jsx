@@ -149,6 +149,8 @@ class ModernUIForm extends React.Component {
     throw Error(`Unknown field type: ${field.type}`);
   }
 
+  handleSubmit() { }
+
   render() {
     return (
       <form>
@@ -162,6 +164,7 @@ class ModernUIForm extends React.Component {
             )
             .value()
         }
+        <RaisedButton label="OK" onClick={this.handleSubmit.bind(this)}/>
       </form>
     );
   }

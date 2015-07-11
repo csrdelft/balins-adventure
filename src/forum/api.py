@@ -2,13 +2,11 @@ from django.views.decorators.http import condition
 from django.utils.decorators import method_decorator
 from django.conf import settings
 
-from rest_framework import views, response, generics, mixins, status, viewsets
+from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route, list_route
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.routers import DefaultRouter
 
-from .models import *
 from .serializers import *
 from base.utils import notification_client, deny_on_fail
 from base.serializers import *
@@ -53,12 +51,12 @@ class ForumViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Ge
   def get_queryset(self):
     return ForumDeel.objects.all()
 
-  def list(self, request):
+  def list(self, request, *args, **kwargs):
     delen = ForumDeel.get_viewable_by(self.request.user)
 
     return Response(self.get_serializer(delen, many=True).data)
 
-  def retrieve(self, request, pk):
+  def retrieve(self, request, *args, **kwargs):
     deel = self.get_object()
 
     # permission check
@@ -92,7 +90,20 @@ class ForumDraadViewSet(
 
     return Response(self.get_serializer(queryset, many=True).data)
 
-  def retrieve(self, request, pk):
+  def create(self, request, *args, **kwargs):
+    serializer = self.get_serializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    forum = serializer.validated_data['forum']
+
+    # check that the user can create a draadje in this forum
+    deny_on_fail(request.user.has_perm('forum.post_in_forumdeel', forum))
+
+    # save the forumdeel
+    serializer.save(user=request.profiel, datum_tijd=datetime.now(), laatste_wijziging_user=request.profiel)
+
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+  def retrieve(self, request, *args, **kwargs):
     draad = self.get_object()
 
     # make sure the user can view the forum draad
@@ -100,40 +111,23 @@ class ForumDraadViewSet(
 
     return Response(EntireForumDraadSerializer(draad).data)
 
-  @detail_route(methods=['post'])
-  def post(self, request, pk):
-    """ Forum post in draad
-        ---
-        serializer: ForumPostSerializer
-        parameters_strategy: replace
-        parameters:
-          - name: tekst
-            required: true
-            type: string
-          - name: pk
-            required: true
-            paramType: path
-    """
-    draad = self.get_object()
+class ForumPostViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
-    # make sure the user can post in the forum draad
-    deny_on_fail(request.user.has_perm('forum.post_in_forumdeel', draad.forum))
-    deny_on_fail(not draad.gesloten)
+  serializer_class = ForumPostSerializer
+  queryset = ForumPost.objects.all()
 
-    request.data.update({
-      'draad': draad.pk,
-      'user': request.profiel.pk,
-      'datum_tijd': datetime.now(),
-      'laatst_gewijzigd': datetime.now(),
-      'bewerkt_tekst': "",
-      'auteur_ip': ""
-    })
-
+  def create(self, request, *args, **kwargs):
     # check if we can validly deserialize the json data
     serializer = ForumPostSerializer(data=request.data)
     if serializer.is_valid():
+      draad = ForumDraad.objects.get(serializer.validated_data['draad_id'])
+
+      # make sure the user can post in the forum draad
+      deny_on_fail(request.user.has_perm('forum.post_in_forumdeel', draad.forum))
+      deny_on_fail(not draad.gesloten)
+
       # create the post
-      post = serializer.save()
+      post = serializer.save(datum_tijd=datetime.now(), laatst_gewijzigd=datetime.now())
 
       # update the draad
       draad.laatst_gewijzigd = request.data['laatst_gewijzigd']
@@ -152,6 +146,7 @@ class ForumDraadViewSet(
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 router = DefaultRouter()
-router.register('forum', ForumViewSet, base_name="forum")
-router.register('forum/draad', ForumDraadViewSet, base_name="forumdraad")
+router.register('parts', ForumViewSet, base_name="forum-part")
+router.register('threads', ForumDraadViewSet, base_name="forum-thread")
+router.register('posts', ForumPostViewSet, base_name="forum-post")
 urls = router.urls

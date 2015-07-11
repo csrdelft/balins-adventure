@@ -21,7 +21,7 @@ router.register('mededelingen', mededelingen.api.MededelingenViewSet, base_name=
 api_urls = patterns('',
   url(r'^', include(base.api.urls)),
   url(r'^', include(router.urls)),
-  url(r'^', include(forum.api.urls)),
+  url(r'^forum/', include(forum.api.urls)),
   url(r'^docs/', include('rest_framework_swagger.urls')),
 )
 

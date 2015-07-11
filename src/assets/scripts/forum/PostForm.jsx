@@ -3,8 +3,13 @@ var mui = require('material-ui');
 var { SelectField } = mui;
 let React = require("react");
 let _ = require('underscore');
+let api = require('api');
 
 class DraadForm extends ModernUIForm {
+
+  static get propTypes() {
+    return { forum: React.PropTypes.number.isRequired };
+  };
 
   constructor(props) {
     let formfields = {
@@ -33,6 +38,19 @@ class DraadForm extends ModernUIForm {
     };
 
     super(props, formfields);
+
+    this.forum = props.forum;
+  }
+
+  handleSubmit() {
+    let data = _.extend(this.state.values, {
+      forum: this.forum
+    });
+
+    api.forum.threads.create(data).then(
+      (resp) => console.log("SUCCESS!", resp),
+      (resp) => _.each(resp.data, (errs, name) => this.set_error(name, errs[0]))
+    );
   }
 }
 
