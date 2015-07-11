@@ -3,7 +3,8 @@ var $ = require("jquery");
 var _ = require("underscore");
 
 var api = require("api");
-var ForumThreadList = require("partials/ForumThreadList");
+var ForumThreadList = require("forum/ForumThreadList");
+var PostForm = require("forum/PostForm");
 var Profiel = require("partials/Profiel");
 var io = require('socket.io-client');
 
@@ -13,6 +14,11 @@ var {
   DefaultRoute,
   Link,
   RouteHandler } = require('react-router');
+
+// set the modern ui theme
+var mui = require('material-ui');
+var ThemeManager = new mui.Styles.ThemeManager();
+ThemeManager.setTheme(ThemeManager.types.LIGHT);
 
 // the top menu
 // where we use the Link element from the router to activate different views
@@ -83,12 +89,24 @@ class NotFound extends React.Component {
   }
 }
 
+class Forum extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Forum</h1>
+        <ForumThreadList />
+        <PostForm />
+      </div>
+    );
+  }
+}
+
 // The actual routing tree.
 // This binds client side routes to views
 var routes = (
   <Route path="/" handler={App}>
     <Route path="" handler={NotFound} />
-    <Route path="forum" handler={ForumThreadList} />
+    <Route path="forum" handler={Forum} />
     <Route path="profiel/:uid" handler={Profiel} />
     <Route path="*" handler={NotFound} />
   </Route>

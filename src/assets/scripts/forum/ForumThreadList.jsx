@@ -44,6 +44,7 @@ class ForumThreadList extends React.Component {
   render() {
     // map the state to HTML
     return <div>
+      <h2>Recent gewijzigde forum draadjes</h2>
       {
         _.map(this.state.threads,
           (thread, i) => <h3 key={i}>{thread.titel}</h3>

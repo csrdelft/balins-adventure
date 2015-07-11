@@ -65,7 +65,10 @@ class ForumViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Ge
 
     return Response(EntireForumDeelSerializer(deel).data)
 
-class ForumDraadViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class ForumDraadViewSet(
+  mixins.CreateModelMixin,
+  mixins.RetrieveModelMixin,
+  viewsets.GenericViewSet):
 
   serializer_class = ForumDraadSerializer
   queryset = ForumDraad.objects\
@@ -94,7 +97,7 @@ class ForumDraadViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     # make sure the user can view the forum draad
     deny_on_fail(request.user.has_perm('forum.view_forumdeel', draad.forum))
 
-    return Response(self.EntireForumDraadSerializer(draad).data)
+    return Response(EntireForumDraadSerializer(draad).data)
 
   @detail_route(methods=['post'])
   def post(self, request, pk):
@@ -149,5 +152,5 @@ class ForumDraadViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
 router = DefaultRouter()
 router.register('forum', ForumViewSet, base_name="forum")
-router.register('draad', ForumDraadViewSet, base_name="forumdraad")
+router.register('forum/draad', ForumDraadViewSet, base_name="forumdraad")
 urls = router.urls

@@ -52,6 +52,8 @@ class ForumDraad(LiveModel):
   gesloten = models.BooleanField(default=False)
   wacht_goedkeuring = models.IntegerField(default=False)
   plakkerig = models.IntegerField(default=False)
+
+  # TODO freeze this to true and delete the field
   eerste_post_plakkerig = models.IntegerField(default=True)
 
   laatst_gewijzigd = models.DateTimeField(blank=True, null=True)

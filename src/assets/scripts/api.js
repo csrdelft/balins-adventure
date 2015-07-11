@@ -11,11 +11,20 @@ var api_obj = {
     // query the n most recent forum posts
     get_recent : (n=5) => {
       return Q.xhr
-        .get(api + '/forum/recent', {
+        .get(api + '/forum/draad/recent', {
           params: { n: n }
         });
-    }
+    },
 
+    draad : {
+      // get the metadata for the draad endpoint
+      metadata : (pk) => {
+        return Q.xhr({
+          method: 'options',
+          url: api + '/forum/draad/' + pk + '/'
+        });
+      }
+    }
   },
 
   // the auth and base resources

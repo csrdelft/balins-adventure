@@ -36,9 +36,10 @@ function compileScripts(watch) {
   var bundler = browserify({
     entries: [entryFile],
     debug: true,
-    paths: ['./node_modules/', path.join(assets, 'scripts'), path.join(assets)],
+    paths: ['./node_modules/', path.join(assets, 'scripts'), assets],
     extensions: ['.jsx', '.js'],
-    cache: {}, packageCache: {}, fullPaths: true
+    cache: {}, packageCache: {}, fullPaths: true,
+    sourceMaps: true
   });
 
   // we use babel to transpile es6 syntax and the react jsx syntax
