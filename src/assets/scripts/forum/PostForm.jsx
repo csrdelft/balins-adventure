@@ -3,8 +3,9 @@ var mui = require('material-ui');
 var { SelectField } = mui;
 let React = require("react");
 let _ = require('underscore');
+let mixin = require('object-assign');
 
-class DraadForm extends ModernUIForm {
+class DraadForm extends mixin(ModernUIForm, React.addons.LinkedStateMixin) {
 
   constructor(props) {
     super(_.extend(props, {
