@@ -3,9 +3,13 @@ let _ = require('underscore');
 
 let mui = require('material-ui');
 let { RaisedButton, Styles } = mui;
-let mixin = require('object-assign');
 
+/**
+ * Validation functions
+ */
 let validators = {
+  /* Composes all passed validators into a single validator
+   */
   compose(...validators) {
     return (val) => {
       return _ .chain(validators)
@@ -15,6 +19,8 @@ let validators = {
     };
   },
 
+  /* Checks that val has minimum length `min`
+   */
   minLength: (min) => (val) => {
     if(val.trim().length < min) {
       return [`Moet minstens ${min} tekens bevatten`];
@@ -23,16 +29,18 @@ let validators = {
     }
   },
 
+  /* Checks that val has maximum length `max`
+   */
   maxLength: (max) => (val) => {
     if(val.trim().length > max) {
       return [`Mag maximaal ${max} tekens bevatten`];
     } else {
       return [];
     }
-  },
+  }
 };
 
-class ModernUIForm extends mixin(React.Component, React.addons.LinkedStateMixin) {
+class ModernUIForm extends React.Component {
 
   static get childContextTypes() {
     return { muiTheme: React.PropTypes.object }
@@ -54,7 +62,7 @@ class ModernUIForm extends mixin(React.Component, React.addons.LinkedStateMixin)
   }
 
   /**
-   * Where form fields is an object that describes the form
+   * `fields` is an object that describes the form
    *
    * form_fields = {
    *   fieldname: {
@@ -66,14 +74,19 @@ class ModernUIForm extends mixin(React.Component, React.addons.LinkedStateMixin)
    *   }
    * }
    */
-  constructor(props, fields) {
+  constructor(props, fields, initial_values={}) {
     super(props);
     this.fields = _.extend(props.fields, fields);
     this.state = {
       // set default error to empty string
-      error_text: _.mapObject(this.fields, (v, k) => "")
+      error_text:
+        _.mapObject(this.fields, (v, k) => ""),
+      values:
+        _ .chain(this.fields)
+          .mapObject((v, k) => undefined)
+          .extend(initial_values)
+          .value()
     };
-    debugger;
   }
 
   /**
@@ -95,10 +108,21 @@ class ModernUIForm extends mixin(React.Component, React.addons.LinkedStateMixin)
       floatingLabelText: field.label,
       label: field.label,
       errorText: this.state.error_text[name],
-      onChange: (e) => {
+      value: this.state.values[name],
+      onChange: ((e) => {
+        let val = e.target.value;
+
+        // update the state
+        this.setState({
+          values: _.extend(this.state.values, {
+            [ name ]: val
+          })
+        });
+
+        // validation
         if(field.validator) {
           // call validator
-          let errors = field.validator(e.target.value);
+          let errors = field.validator(val);
           this.set_error(name, _.first(errors) || "");
 
           // call custom handlers
@@ -107,7 +131,7 @@ class ModernUIForm extends mixin(React.Component, React.addons.LinkedStateMixin)
             handler.bind(this)(e);
           }
         }
-      }
+      }).bind(this)
     });
 
     if(field.widget) {

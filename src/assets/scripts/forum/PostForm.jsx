@@ -32,7 +32,7 @@ class DraadForm extends ModernUIForm {
       }
     };
 
-    super(props, formfields);
+    super(props, formfields, {gesloten: true});
   }
 }
 
