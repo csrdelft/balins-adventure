@@ -136,14 +136,14 @@ class MededelingTests(APITestCase):
     self.fixture()
     self.client.login(username='Superman', password='Superman')
 
-    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_200_OK, response.status_code)
-    self.assertEqual('B', response.data['titel'])
+    self.assertEqual('A', response.data['titel'])
 
-    response_2 = self.client.patch(reverse('mededeling-detail', kwargs={'pk': 2}), {'titel':'D'})
+    response_2 = self.client.patch(reverse('mededeling-detail', kwargs={'pk': 1}), {'titel':'D'})
     self.assertEqual(status.HTTP_200_OK, response_2.status_code)
 
-    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_200_OK, response_3.status_code)
     self.assertEqual('D', response_3.data['titel'])
 
@@ -151,16 +151,16 @@ class MededelingTests(APITestCase):
     self.fixture()
     self.client.login(username='Lid', password='Lid')
 
-    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_200_OK, response.status_code)
-    self.assertEqual('B', response.data['titel'])
+    self.assertEqual('A', response.data['titel'])
 
-    response_2 = self.client.patch(reverse('mededeling-detail', kwargs={'pk': 2}), {'titel':'D'})
+    response_2 = self.client.patch(reverse('mededeling-detail', kwargs={'pk': 1}), {'titel':'D'})
     self.assertEqual(status.HTTP_403_FORBIDDEN, response_2.status_code)
 
-    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_200_OK, response_3.status_code)
-    self.assertEqual('B', response_3.data['titel'])
+    self.assertEqual('A', response_3.data['titel'])
 
   def test_public_patch(self):
     self.fixture()
@@ -180,14 +180,14 @@ class MededelingTests(APITestCase):
     self.fixture()
     self.client.login(username='Bestuur', password='Bestuur')
 
-    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_200_OK, response.status_code)
-    self.assertEqual('B', response.data['titel'])
+    self.assertEqual('A', response.data['titel'])
 
-    response_2 = self.client.patch(reverse('mededeling-detail', kwargs={'pk': 2}), {'titel':'D'})
+    response_2 = self.client.patch(reverse('mededeling-detail', kwargs={'pk': 1}), {'titel':'D'})
     self.assertEqual(status.HTTP_200_OK, response_2.status_code)
 
-    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_200_OK, response_3.status_code)
     self.assertEqual('D', response_3.data['titel'])
 
@@ -196,44 +196,44 @@ class MededelingTests(APITestCase):
     self.fixture()
     self.client.login(username='Superman', password='Superman')
 
-    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_200_OK, response.status_code)
-    self.assertEqual('B', response.data['titel'])
+    self.assertEqual('A', response.data['titel'])
 
-    response_2 = self.client.delete(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response_2 = self.client.delete(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_204_NO_CONTENT, response_2.status_code)
 
-    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_404_NOT_FOUND, response_3.status_code)
 
   def test_bestuur_delete(self):
     self.fixture()
     self.client.login(username='Bestuur', password='Bestuur')
 
-    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_200_OK, response.status_code)
-    self.assertEqual('B', response.data['titel'])
+    self.assertEqual('A', response.data['titel'])
 
-    response_2 = self.client.delete(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response_2 = self.client.delete(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_204_NO_CONTENT, response_2.status_code)
 
-    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_404_NOT_FOUND, response_3.status_code)
 
   def test_lid_delete(self):
     self.fixture()
     self.client.login(username='Lid', password='Lid')
 
-    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_200_OK, response.status_code)
-    self.assertEqual('B', response.data['titel'])
+    self.assertEqual('A', response.data['titel'])
 
-    response_2 = self.client.delete(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response_2 = self.client.delete(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_403_FORBIDDEN, response_2.status_code)
 
-    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 2}))
+    response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 1}))
     self.assertEqual(status.HTTP_200_OK, response_3.status_code)
-    self.assertEqual('B', response_3.data['titel'])
+    self.assertEqual('A', response_3.data['titel'])
 
   def test_public_patch(self):
     self.fixture()
