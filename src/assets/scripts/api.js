@@ -80,6 +80,15 @@ var api_obj = {
     get_mededeling: (id) => {
       return Q.xhr
         .get(`${api}/mededelingen/${id}/`);
+    },
+
+    remove_mededeling: (id) => {
+      return Q.xhr
+        .delete(`${api}/mededelingen/${id}/`, {
+          headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+          }
+        });
     }
   }
 };
