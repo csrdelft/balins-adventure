@@ -11,7 +11,7 @@ class Choices(object):
 
     self._choices = choices
     for k, v in choices.items():
-      assert(k not in self.__dict__.keys(), "Invalid choice name: %s" % k)
+      assert k not in self.__dict__.keys(), "Invalid choice name: %s" % k
       self.__dict__[k] = v
 
   def choices(self):
