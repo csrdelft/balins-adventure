@@ -22,15 +22,7 @@ class ProfielApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
   serializer_class = ProfielSerializer
 
   def get_queryset(self):
-    return Profiel.objects\
-      .prefetch_related(
-        "kring",
-        "verticale",
-        "commissies",
-        "werkgroepen",
-        "onderverenigingen",
-        "overige_groepen")\
-      .all()
+    return Profiel.objects.all()
 
 class LichtingApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
