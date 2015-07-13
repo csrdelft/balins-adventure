@@ -5,7 +5,7 @@ var _ = require("underscore");
 var api = require("api");
 var ForumThreadList = require("forum/ForumThreadList");
 var PostForm = require("forum/PostForm");
-var Profiel = require("partials/Profiel");
+var Profiel = require("groepen/Profiel");
 var io = require('socket.io-client');
 
 var MededelingRouter = require('mededelingen/MededelingRouter');

@@ -39,15 +39,19 @@ class DraadForm extends ModernUIForm {
 
     super(props, formfields);
 
+    // forum part pk
     this.forum = props.forum;
   }
 
   handleSubmit() {
+    // create the request body
     let data = _.extend(this.state.values, {
       forum: this.forum
     });
 
+    // post the forum thread
     api.forum.threads.create(data).then(
+      // todo
       (resp) => console.log("SUCCESS!", resp),
       (resp) => _.each(resp.data, (errs, name) => this.set_error(name, errs[0]))
     );

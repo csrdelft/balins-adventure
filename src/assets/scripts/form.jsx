@@ -81,6 +81,7 @@ class ModernUIForm extends React.Component {
       // set default error to empty string
       error_text:
         _.mapObject(this.fields, (v, k) => ""),
+      // default values based on initial_values and undefines
       values:
         _ .chain(this.fields)
           .mapObject((v, k) => undefined)
