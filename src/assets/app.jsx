@@ -4,8 +4,11 @@ const _ = require("underscore");
 const marked = require('marked');
 
 class CommentBox extends React.Component {
-  getInitialState() {
-    return {data: []};
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: []
+    };
   }
 
   loadCommentsFromServer() {
