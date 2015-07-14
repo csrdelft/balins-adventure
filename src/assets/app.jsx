@@ -1,13 +1,14 @@
-let React = require("react");
-let $ = require("jquery");
-let _ = require("underscore");
-let marked = require('marked');
+const React = require("react");
+const $ = require("jquery");
+const _ = require("underscore");
+const marked = require('marked');
 
-let CommentBox = React.createClass({
-  getInitialState: function() {
+class CommentBox extends React.Component {
+  getInitialState() {
     return {data: []};
-  },
-  loadCommentsFromServer: function() {
+  }
+
+  loadCommentsFromServer() {
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -19,8 +20,9 @@ let CommentBox = React.createClass({
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
-  },
-  handleCommentSubmit: function(comment) {
+  }
+
+  handleCommentSubmit(comment) {
     var comments = this.state.data;
     var newComments = comments.concat([comment]);
     this.setState({data: newComments});
@@ -36,12 +38,14 @@ let CommentBox = React.createClass({
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
-  },
-  componentDidMount: function() {
+  }
+
+  componentDidMount() {
     this.loadCommentsFromServer();
     setInterval(this.loadCommentsFromServer, this.props.pollInterval);
-  },
-  render: function() {
+  }
+
+  render() {
     return (
       <div className="commentBox">
         <h1>Comments</h1>
@@ -50,9 +54,10 @@ let CommentBox = React.createClass({
       </div>
     );
   }
-});
-let CommentForm = React.createClass({
-  handleSubmit: function(e) {
+}
+
+class CommentForm extends React.Component {
+  handleSubmit(e) {
     e.preventDefault();
     var author = React.findDOMNode(this.refs.author).value.trim();
     var text = React.findDOMNode(this.refs.text).value.trim();
@@ -63,8 +68,9 @@ let CommentForm = React.createClass({
     React.findDOMNode(this.refs.author).value = '';
     React.findDOMNode(this.refs.text).value = '';
     return;
-  },
-  render: function() {
+  }
+
+  render() {
    return (
       <form className="commentForm" onSubmit={this.handleSubmit}>
         <input type="text" placeholder="Your name" ref="author" />
@@ -73,9 +79,10 @@ let CommentForm = React.createClass({
       </form>
     );
   }
-});
-let CommentList = React.createClass({
-  render: function() {
+}
+
+class CommentList extends React.Component {
+  render() {
     let commentNodes = this.props.data.map(function (comment) {
       return (
         <Comment author={comment.author}>
@@ -89,9 +96,10 @@ let CommentList = React.createClass({
       </div>
     );
   }
-});
-let Comment = React.createClass({
-  render: function() {
+}
+
+class Comment extends React.Component {
+  render() {
     let rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return (
       <div className="comment">
@@ -102,7 +110,7 @@ let Comment = React.createClass({
       </div>
     );
   }
-});
+}
 
 React.render(
  <CommentBox url="/api/v1/data.json" pollInterval={2000} />,
