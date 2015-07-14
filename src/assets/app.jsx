@@ -6,9 +6,11 @@ var api = require("api");
 var ForumThreadList = require("forum/ForumThreadList");
 var PostForm = require("forum/PostForm");
 var Profiel = require("groepen/Profiel");
+var ProfielLink = require("groepen/ProfielLink");
 var io = require('socket.io-client');
 
 var MededelingRouter = require('mededelingen/MededelingRouter');
+var ProfielRouter = require('groepen/ProfielRouter');
 
 var Router = require('react-router');
 var {
@@ -58,6 +60,7 @@ class Menu extends React.Component {
     this.socket = null;
   }
 
+  //TODO: uid to profiel should contain the uid of the current user
   render() {
     return (
       <ul>
@@ -65,7 +68,8 @@ class Menu extends React.Component {
         <li><Link to="/groepen">Groepen</Link></li>
         <li>Actueel</li>
         <li><Link to="/forum">Reformaforum ({ this.state.forum_notifications })</Link></li>
-        <li><Link to="/profiel/1337">Profiel</Link></li>
+        <li><Link to='/profiel/1337'>Ontzettende P</Link></li>
+        <li><ProfielLink uid={1414} /></li>
         <li><Link to="/mededelingen">Mededelingen</Link></li>
       </ul>
     );
@@ -110,8 +114,8 @@ var routes = (
   <Route path="/" handler={App}>
     <Route path="" handler={NotFound} />
     <Route path="forum" handler={Forum} />
-    <Route path="profiel/:uid" handler={Profiel} />
     <Route path="mededelingen">{MededelingRouter}</Route>
+    <Route path="profiel">{ProfielRouter}</Route>
     <Route path="*" handler={NotFound} />
   </Route>
 );

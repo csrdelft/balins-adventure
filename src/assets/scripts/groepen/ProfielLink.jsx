@@ -1,8 +1,8 @@
 const React = require("react");
 const $ = require("jquery");
 const _ = require("underscore");
-
-var api = require("api");
+const api = require("api");
+const PropTypes = require('react-router').PropTypes;
 
 class ProfielLink extends React.Component {
 
@@ -13,36 +13,43 @@ class ProfielLink extends React.Component {
 		};
   }
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
+		this.context = context;
+		this.uid = props.uid;
 
-    // initial state
-    this.state = {
-      // TODO uid is not mutable state, it's constant, so no need to be in state
-    	uid: this.props.uid,
-			profiel: undefined,
-			// TODO name is part of profiel, no need to duplicate in state
-			name: undefined
-    };
+		// initial state
+		this.state = {
+			profiel: undefined
+		};
+
+		this.go = this.go.bind(this)
   }
 
 	componentWillMount() {
     // load the profile
-    api.base.get_profiel(this.state.uid)
+    api.base.get_profiel(this.uid)
       .then(
         (resp) => this.setState({profiel: resp.data}),
         (resp) => console.error('Getting profiel failed with status ' + resp.status)
       );
   }
 
+	go(event) {
+		this.context.router.transitionTo('profiel-detail', {uid: this.uid});
+	}
+
 	render() {
 	  if(this.state.profiel) {
-	    // TODO implement go (look at MededelingList.jsx, requires a router in context)
-		  return <a  data-id={this.props.uid} onClick={this.go}>{ this.state.profiel.achternaam }</a>;
+		  return <a data-id={this.props.uid} onClick={this.go}>{ this.state.profiel.full_name }</a>;
 		} else {
 		  return <p>Loading...</p>;
 		}
 	}
 }
+
+ProfielLink.contextTypes = {
+  router: React.PropTypes.func
+};
 
 module.exports = ProfielLink;
