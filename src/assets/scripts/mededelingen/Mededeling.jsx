@@ -3,6 +3,8 @@ var $ = require("jquery");
 var _ = require("underscore");
 var api = require("api");
 
+var ProfielLink = require('../groepen/ProfielLink')
+
 class Mededeling extends React.Component {
   constructor(props) {
     super(props);
@@ -26,12 +28,13 @@ class Mededeling extends React.Component {
     this.update();
   }
 
+  //TODO: mededeling.user doesn't work, somehow it fails to get the right profile link. Now it's hardcoded
   render() {
-    let mededeling = this.state.mededeling;
+    var mededeling = this.state.mededeling;
     return (
       <div>
         <h1>{mededeling.titel}</h1>
-
+        <ProfielLink uid={1414} />
         <p>{mededeling.tekst}</p>
       </div>
     );
