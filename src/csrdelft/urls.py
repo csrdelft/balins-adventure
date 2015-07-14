@@ -9,6 +9,9 @@ import legacy.views
 
 from rest_framework.routers import DefaultRouter
 
+from django.http import HttpResponse
+import json
+
 # apply the permission logics
 import permission;
 
@@ -20,6 +23,12 @@ router.register('mededelingen', mededelingen.api.MededelingenViewSet, base_name=
 
 api_urls = patterns('',
   url(r'^', include(base.api.urls)),
+  # react tutorial data
+  url(r'^data.json$', lambda r: HttpResponse(json.dumps([
+    {"author": "Pete Hunt", "text": "This is one comment"},
+    {"author": "Jordan Walke", "text": "This is *another* comment"}
+  ]))),
+
   url(r'^', include(router.urls)),
   url(r'^forum/', include(forum.api.urls)),
   url(r'^docs/', include('rest_framework_swagger.urls')),

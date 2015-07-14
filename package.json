@@ -20,6 +20,7 @@
   "dependencies": {
     "cookies-js": "^1.2.1",
     "jquery": "^2.1.4",
+    "marked": "^0.3.3",
     "material-ui": "^0.10.0",
     "nanoscope": "^2.2.0",
     "object-assign": "^3.0.0",

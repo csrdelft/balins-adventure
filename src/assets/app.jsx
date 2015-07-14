@@ -1,121 +1,79 @@
-var React = require("react");
-var $ = require("jquery");
-var _ = require("underscore");
+let React = require("react");
+let $ = require("jquery");
+let _ = require("underscore");
+let marked = require('marked');
 
-var api = require("api");
-var ForumThreadList = require("forum/ForumThreadList");
-var PostForm = require("forum/PostForm");
-var Profiel = require("groepen/Profiel");
-var io = require('socket.io-client');
-
-var MededelingRouter = require('mededelingen/MededelingRouter');
-
-var Router = require('react-router');
-var {
-  Route,
-  DefaultRoute,
-  Link,
-  RouteHandler } = require('react-router');
-
-// set the modern ui theme
-var mui = require('material-ui');
-var ThemeManager = new mui.Styles.ThemeManager();
-ThemeManager.setTheme(ThemeManager.types.LIGHT);
-
-// the top menu
-// where we use the Link element from the router to activate different views
-class Menu extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      forum_notifications: 0
-    };
-
-    this.socket = null;
-  }
-
-  componentDidMount() {
-    // pick up notifications
-    this.socket = io('http://localhost:3000/notifications');
-
-    this.socket.on('connect', function() {
-      console.log("Connected to notification server");
+let CommentBox = React.createClass({
+  getInitialState: function() {
+    return {data: []};
+  },
+  loadCommentsFromServer: function() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
     });
-
-    this.socket.on('message', function(msg) {
-      console.log("Message:", msg);
-    });
-
-    this.socket.on('disconnect', function() {
-      console.warn("Disconnected from notifications server");
-    });
-  }
-
-  componentWillUnmount() {
-    this.socket.close();
-    this.socket = null;
-  }
-
-  render() {
+  },
+  componentDidMount: function() {
+    this.loadCommentsFromServer();
+    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+  },
+  render: function() {
     return (
-      <ul>
-        <li><Link to="/">Thuis</Link></li>
-        <li><Link to="/groepen">Groepen</Link></li>
-        <li>Actueel</li>
-        <li><Link to="/forum">Reformaforum ({ this.state.forum_notifications })</Link></li>
-        <li><Link to="/profiel/1337">Profiel</Link></li>
-        <li><Link to="/mededelingen">Mededelingen</Link></li>
-      </ul>
-    );
-  }
-}
-
-// the top level application just wraps the router.
-// The router is in charge of rendering the right child view based on the url.
-class App extends React.Component {
-  render() {
-    return <div>
-      <div id="topmenu"><Menu /></div>
-      <div id="content"><RouteHandler {...this.props} /></div>
-    </div>;
-  }
-}
-
-// simple 404 child view
-class NotFound extends React.Component {
-  render() {
-    return <div>
-      <h1>Niks hier, behalve een 404</h1>
-    </div>;
-  }
-}
-
-class Forum extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Forum</h1>
-        <ForumThreadList />
-        <PostForm forum={1} />
+      <div className="commentBox">
+        <h1>Comments</h1>
+        <CommentList data={this.state.data}/>
+        <CommentForm />
       </div>
     );
   }
-}
-
-// The actual routing tree.
-// This binds client side routes to views
-var routes = (
-  <Route path="/" handler={App}>
-    <Route path="" handler={NotFound} />
-    <Route path="forum" handler={Forum} />
-    <Route path="profiel/:uid" handler={Profiel} />
-    <Route path="mededelingen">{MededelingRouter}</Route>
-    <Route path="*" handler={NotFound} />
-  </Route>
-);
-
-Router.run(routes, function (Handler, state) {
-  React.render(<Handler params={state.params} />, $('#mount-app')[0]);
 });
+let CommentForm = React.createClass({
+  render: function() {
+    return (
+      <div className="commentForm">
+        Hello, world! I am a CommentForm.
+      </div>
+    );
+  }
+});
+let CommentList = React.createClass({
+  render: function() {
+    let commentNodes = this.props.data.map(function (comment) {
+      return (
+        <Comment author={comment.author}>
+          {comment.text}
+        </Comment>
+      );
+    });
+    return (
+      <div className="commentList">
+        {commentNodes}
+      </div>
+    );
+  }
+});
+let Comment = React.createClass({
+  render: function() {
+    let rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+    return (
+      <div className="comment">
+        <h2 className="commentAuthor">
+          {this.props.author}
+        </h2>
+        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+      </div>
+    );
+  }
+});
+
+React.render(
+ <CommentBox url="/api/v1/data.json" pollInterval={2000} />,
+  document.getElementById('box')
+);
