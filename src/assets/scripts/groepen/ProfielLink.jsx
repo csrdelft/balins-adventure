@@ -6,13 +6,22 @@ var api = require("api");
 
 class ProfielLink extends React.Component {
 
+	static get propTypes() {
+    return {
+			uid: React.PropTypes.number.isRequired,
+			name: React.PropTypes.string
+		};
+  }
+
 	constructor(props) {
 		super(props);
 
     // initial state
     this.state = {
-    	uid: this.props.params.uid,
+      // TODO uid is not mutable state, it's constant, so no need to be in state
+    	uid: this.props.uid,
 			profiel: undefined,
+			// TODO name is part of profiel, no need to duplicate in state
 			name: undefined
     };
   }
@@ -24,19 +33,15 @@ class ProfielLink extends React.Component {
         (resp) => this.setState({profiel: resp.data}),
         (resp) => console.error('Getting profiel failed with status ' + resp.status)
       );
-
-		this.setState({name: this.state.profiel.achternaam})
   }
 
-	static get propTypes = () => {
-    return {
-			uid: React.PropTypes.number.isRequired,
-			name: React.PropTypes.string
-		};
-  };
-
 	render() {
-		return <Link to="/profiel/" this.state.uid>this.state.name</Link>
+	  if(this.state.profiel) {
+	    // TODO implement go (look at MededelingList.jsx, requires a router in context)
+		  return <a  data-id={this.props.uid} onClick={this.go}>{ this.state.profiel.achternaam }</a>;
+		} else {
+		  return <p>Loading...</p>;
+		}
 	}
 }
 
