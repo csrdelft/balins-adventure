@@ -4,6 +4,7 @@ const _ = require("underscore");
 const marked = require('marked');
 
 class CommentBox extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,8 +27,8 @@ class CommentBox extends React.Component {
   }
 
   handleCommentSubmit(comment) {
-    var comments = this.state.data;
-    var newComments = comments.concat([comment]);
+    let comments = this.state.data;
+    let newComments = comments.concat([comment]);
     this.setState({data: newComments});
     $.ajax({
       url: this.props.url,
@@ -45,7 +46,7 @@ class CommentBox extends React.Component {
 
   componentDidMount() {
     this.loadCommentsFromServer();
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    setInterval(this.loadCommentsFromServer.bind(this), this.props.pollInterval);
   }
 
   render() {
@@ -53,20 +54,24 @@ class CommentBox extends React.Component {
       <div className="commentBox">
         <h1>Comments</h1>
         <CommentList data={this.state.data}/>
-        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+        <CommentForm onCommentSubmit={this.handleCommentSubmit.bind(this)} />
       </div>
     );
   }
 }
 
 class CommentForm extends React.Component {
+
   handleSubmit(e) {
     e.preventDefault();
-    var author = React.findDOMNode(this.refs.author).value.trim();
-    var text = React.findDOMNode(this.refs.text).value.trim();
+
+    let author = React.findDOMNode(this.refs.author).value.trim();
+    let text = React.findDOMNode(this.refs.text).value.trim();
+
     if (!text || !author) {
       return;
     }
+
     this.props.onCommentSubmit({author: author, text: text});
     React.findDOMNode(this.refs.author).value = '';
     React.findDOMNode(this.refs.text).value = '';
@@ -75,7 +80,7 @@ class CommentForm extends React.Component {
 
   render() {
    return (
-      <form className="commentForm" onSubmit={this.handleSubmit}>
+      <form className="commentForm" onSubmit={this.handleSubmit.bind(this)}>
         <input type="text" placeholder="Your name" ref="author" />
         <input type="text" placeholder="Say something..." ref="text" />
         <input type="submit" value="Post" />
