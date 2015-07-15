@@ -11,7 +11,7 @@ class Mededeling extends React.Component {
 
     // initial state
     this.state = {
-      mededeling: {}
+      mededeling: undefined
     };
   }
 
@@ -23,21 +23,24 @@ class Mededeling extends React.Component {
     );
   }
 
-  componentDidMount() {
+  componentWillMount() {
     // load initial recent forum posts
     this.update();
   }
 
-  //TODO: mededeling.user doesn't work, somehow it fails to get the right profile link. Now it's hardcoded
-  render() {
+ render() {
     var mededeling = this.state.mededeling;
-    return (
-      <div>
-        <h1>{mededeling.titel}</h1>
-        <ProfielLink uid={1414} />
-        <p>{mededeling.tekst}</p>
-      </div>
-    );
+    if(mededeling) {
+      return (
+       <div>
+         <h1>{mededeling.titel}</h1>
+         <ProfielLink uid={mededeling.user}/>
+         <p>{mededeling.tekst}</p>
+       </div>
+      );
+    } else{
+      return (<span></span>);
+    }
   }
 }
 
