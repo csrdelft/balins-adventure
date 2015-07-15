@@ -20,10 +20,11 @@ gulp.task('sass', function() {
   gulp.src('./src/assets/sass/app.sass')
     .pipe(sass({
       includePaths : [
+        path.join(__dirname, 'src/assets/fonts'), // sass
         path.join(__dirname, 'src/assets/sass'), // sass
         path.join(__dirname, 'src/assets/css')   // css
       ]
-    }))
+    }).on('error', sass.logError))
     .pipe(gulp.dest(path.join(dist, 'css')));
 });
 
