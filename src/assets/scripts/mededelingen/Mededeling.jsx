@@ -34,7 +34,7 @@ class Mededeling extends React.Component {
       return (
        <div>
          <h1>{mededeling.titel}</h1>
-         <ProfielLink uid={mededeling.user}/>
+         <ProfielLink uid={parseInt(mededeling.user)}/>
          <p>{mededeling.tekst}</p>
        </div>
       );
