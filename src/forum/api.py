@@ -74,7 +74,8 @@ class ForumDraadViewSet(
 
   serializer_class = ForumDraadSerializer
   queryset = ForumDraad.objects\
-    .prefetch_related("posts", "forum")
+    .prefetch_related("posts", "forum")\
+    .order_by("-datum_tijd")
   filter_fields = ('forum',)
   pagination_class = StekPaginator
 
@@ -117,7 +118,11 @@ class ForumDraadViewSet(
     # we cannot elegantly handle pagination by request parameters
     # of a related object in a serializer
     data = ForumDraadSerializer(draad).data
-    data['posts'] = ForumPostSerializer(StekPaginator().paginate_queryset(draad.posts.all(), request), many=True).data
+    posts_query = draad.posts.all().order_by("datum_tijd")
+    data['posts'] = ForumPostSerializer(
+      StekPaginator().paginate_queryset(posts_query, request),
+      many=True
+    ).data
 
     return Response(data)
 
