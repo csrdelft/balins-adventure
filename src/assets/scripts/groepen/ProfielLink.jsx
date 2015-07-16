@@ -32,7 +32,7 @@ class ProfielLink extends React.Component {
 
 	componentWillMount() {
     // load the profile
-    api.base.get_profiel(this.uid)
+    api.profiel.get(this.uid)
       .then(
         (resp) => this.setState({profiel: resp.data}),
         (resp) => console.error('Getting profiel failed with status ' + resp.status)

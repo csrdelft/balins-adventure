@@ -1,15 +1,16 @@
 @import css3
-@import colors
+@import variables
 
 .profielLinkDiv
   position: relative
 
   .profielLinkHover
     position: absolute
-    border: 1px solid $neutral-medium
+    +box-shadow(0px 0px 10px rgba(black, 0.2))
+    +border-radius(3px)
     background-color: $neutral-ultralight
-    top: -1px
-    left: -1px
+    top: 0px
+    left: 0px
     opacity: 0
     transition: opacity 0.5s
 

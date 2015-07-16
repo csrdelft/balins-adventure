@@ -7,7 +7,7 @@ let { RouteHandler, State } = require('react-router');
 let MededelingList = require('./MededelingList');
 let Layout = require("Layout");
 
-class MededelingenSidemenu extends mixin(React.Component, State) {
+class MededelingenSidemenu extends React.Component {
 
   constructor(props) {
     super(props);

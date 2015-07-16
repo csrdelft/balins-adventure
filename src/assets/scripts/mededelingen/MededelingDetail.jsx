@@ -3,6 +3,8 @@ let $ = require("jquery");
 let _ = require("underscore");
 let api = require("api");
 
+let ProfielLink = require('../groepen/ProfielLink')
+
 class MededelingDetail extends React.Component {
 
   static get propTypes() {
@@ -43,7 +45,7 @@ class MededelingDetail extends React.Component {
     if(mededeling) {
       return <div>
         <h1>{mededeling.titel}</h1>
-
+        <ProfielLink uid={parseInt(mededeling.user)} />
         <p>{mededeling.tekst}</p>
       </div>;
     } else {

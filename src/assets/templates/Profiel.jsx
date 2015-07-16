@@ -39,23 +39,29 @@ function template(self, p) {
       <div className="commissies">
         <h2>Commissies</h2>
         <table className="table table-bordered">
+          <tbody>
           { _.map(p.commissies, (c, i) =>
             <tr key={i}><td>{ c.naam }</td></tr>
           )}
+          </tbody>
         </table>
 
         <h2>Werkgroepen</h2>
         <table className="table table-bordered">
+          <tbody>
           { _.map(p.werkgroepen, (c, i) =>
             <tr key={i}><td>{ c.naam }</td></tr>
           )}
+          </tbody>
         </table>
 
         <h2>Overige Groepen</h2>
         <table className="table table-bordered">
+          <tbody>
           { _.map(p.groepen, (c, i) =>
             <tr key={i}><td>{ c.naam }</td></tr>
           )}
+          </tbody>
         </table>
       </div>
     </div>
