@@ -1,10 +1,8 @@
-
 let React = require("react");
 let $ = require("jquery");
 let _ = require("underscore");
 let api = require("api");
 
-let { Table, Column } = require('fixed-data-table');
 let PostForm = require("forum/PostForm");
 
 class ForumList extends React.Component {
