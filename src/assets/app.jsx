@@ -1,25 +1,21 @@
-var React = require("react");
-var $ = require("jquery");
-var _ = require("underscore");
+let React = require("react");
+let $ = require("jquery");
+let _ = require("underscore");
 
-var api = require("api");
-var ForumThreadList = require("forum/ForumThreadList");
-var PostForm = require("forum/PostForm");
-var Profiel = require("groepen/Profiel");
-var io = require('socket.io-client');
+let api = require("api");
+let Profiel = require("groepen/Profiel");
+let ForumRouter = require("forum/Router");
+let MededelingRouter = require('mededelingen/MededelingRouter');
 
-var MededelingRouter = require('mededelingen/MededelingRouter');
+let Router = require('react-router');
+let { Route, DefaultRoute, Link, RouteHandler } = require('react-router');
 
-var Router = require('react-router');
-var {
-  Route,
-  DefaultRoute,
-  Link,
-  RouteHandler } = require('react-router');
+// sockets yeah
+let io = require('socket.io-client');
 
 // set the modern ui theme
-var mui = require('material-ui');
-var ThemeManager = new mui.Styles.ThemeManager();
+let mui = require('material-ui');
+let ThemeManager = new mui.Styles.ThemeManager();
 ThemeManager.setTheme(ThemeManager.types.LIGHT);
 
 // the top menu
@@ -60,14 +56,15 @@ class Menu extends React.Component {
 
   render() {
     return (
-      <ul>
-        <li><Link to="/">Thuis</Link></li>
-        <li><Link to="/groepen">Groepen</Link></li>
-        <li>Actueel</li>
-        <li><Link to="/forum">Reformaforum ({ this.state.forum_notifications })</Link></li>
-        <li><Link to="/profiel/1337">Profiel</Link></li>
-        <li><Link to="/mededelingen">Mededelingen</Link></li>
-      </ul>
+      <div className="container">
+        <div className="row">
+          <Link to="/">Thuis</Link>
+          <Link to="/groepen">Groepen</Link>
+          <Link to="/mededelingen">Mededelingen</Link>
+          <Link to="/profiel/1337">Profiel</Link>
+          <Link to="/forum">Reformaforum ({ this.state.forum_notifications })</Link>
+        </div>
+      </div>
     );
   }
 }
@@ -76,10 +73,22 @@ class Menu extends React.Component {
 // The router is in charge of rendering the right child view based on the url.
 class App extends React.Component {
   render() {
-    return <div>
-      <div id="topmenu"><Menu /></div>
-      <div id="content"><RouteHandler {...this.props} /></div>
-    </div>;
+    return (
+      <div>
+        <div id="global-nav">
+          <Menu />
+        </div>
+
+        <div id="app">
+          <div id="app-header-fill">
+          </div>
+
+          <div className="container-fluid">
+            <RouteHandler {...this.props} />
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 
@@ -92,24 +101,12 @@ class NotFound extends React.Component {
   }
 }
 
-class Forum extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Forum</h1>
-        <ForumThreadList />
-        <PostForm forum={1} />
-      </div>
-    );
-  }
-}
-
 // The actual routing tree.
 // This binds client side routes to views
-var routes = (
+let routes = (
   <Route path="/" handler={App}>
     <Route path="" handler={NotFound} />
-    <Route path="forum" handler={Forum} />
+    <Route path="forum">{ForumRouter}</Route>
     <Route path="profiel/:uid" handler={Profiel} />
     <Route path="mededelingen">{MededelingRouter}</Route>
     <Route path="*" handler={NotFound} />
@@ -117,5 +114,5 @@ var routes = (
 );
 
 Router.run(routes, function (Handler, state) {
-  React.render(<Handler params={state.params} />, $('#mount-app')[0]);
+  React.render(<Handler {...state.params} />, $('#mount-app')[0]);
 });

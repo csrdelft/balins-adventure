@@ -12,7 +12,7 @@ class Profiel extends React.Component {
 
     // initial state
     this.state = {
-      uid: this.props.params.uid,
+      uid: this.props.uid,
       profiel: undefined
     };
   }
@@ -28,7 +28,11 @@ class Profiel extends React.Component {
 
   render() {
     if(this.state.profiel) {
-      return template(this, this.state.profiel);
+      return (
+        <Layout title="Profiel">
+          template(this, this.state.profiel)
+        </Layout>
+      );
     } else {
       return <h1>Loading...</h1>;
     }

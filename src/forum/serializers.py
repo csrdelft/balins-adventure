@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from base.serializers import ShortProfielSerializer
 
 class ForumCategorieSerializer(serializers.ModelSerializer):
   class Meta:
@@ -43,7 +44,7 @@ class ShortForumDraadSerializer(serializers.ModelSerializer):
 
 class ForumDraadSerializer(serializers.ModelSerializer):
 
-  user = serializers.ReadOnlyField(source="user.pk")
+  user = ShortProfielSerializer(read_only=True)
   laatst_gewijzigd = serializers.ReadOnlyField()
   datum_tijd = serializers.ReadOnlyField()
 
