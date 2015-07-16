@@ -5,11 +5,11 @@ let { Route, DefaultRoute, Link, RouteHandler } = require('react-router');
 
 let Forum = require("forum/Forum");
 let ForumList = require("forum/ForumList");
-let ForumDraad = require("forum/ForumDraad");
+let ForumThread = require("forum/ForumThread");
 
 module.exports = (
   <Route handler={Forum}>
     <Route path=":pk" name="forumthread-list" handler={ForumList}/>
-    <Route path="threads/:pk" name="forum-detail" handler={ForumDraad}/>
+    <Route path="threads/:pk" name="forum-detail" handler={ForumThread}/>
   </Route>
 );

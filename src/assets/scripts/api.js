@@ -18,6 +18,11 @@ var api_obj = {
           });
       },
 
+      get: (pk) => {
+        return Q.xhr
+          .get(`${api}/forum/threads/${pk}`);
+      },
+
       list: (forum=undefined) => {
         return Q.xhr
           .get(`${api}/forum/threads/`, {
