@@ -15,7 +15,8 @@ module.exports = (
     </Route>
 
     <Route path="threads">
-      <Route path=":pk" name="forum-post-detail" handler={ForumThread}/>
+      <Route path=":pk" name="forum-thread-detail" handler={ForumThread}/>
+      <Route path=":pk/:page" name="forum-thread-detail-page" handler={ForumThread}/>
     </Route>
   </Route>
 );

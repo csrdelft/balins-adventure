@@ -29,9 +29,14 @@ var api_obj = {
           });
       },
 
-      get: (pk) => {
+      get: (pk, page=1, page_size=25) => {
         return Q.xhr
-          .get(`${api}/forum/threads/${pk}`);
+          .get(`${api}/forum/threads/${pk}`, {
+            params: {
+              page_size: page_size,
+              page: page
+            }
+          });
       },
 
       list: (forum=undefined, page=1, page_size=25) => {

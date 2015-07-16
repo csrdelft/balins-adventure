@@ -18,7 +18,7 @@ class ForumList extends React.Component {
 
   static get defaultProps() {
     return {
-      page: 1
+      page: "1"
     }
   }
 
@@ -28,8 +28,8 @@ class ForumList extends React.Component {
     }
   }
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     // initial state
     this.state = {
@@ -61,7 +61,7 @@ class ForumList extends React.Component {
 
   render() {
     return (
-      <div id="forum-thread">
+      <div id="forum-thread-list">
         <div id="page-action-menu">
           <ul>
             <li>
@@ -87,7 +87,7 @@ class ForumList extends React.Component {
                   <tr key={thread.pk}>
                     <td>{thread.user.full_name}</td>
                     <td>
-                      <Link to="forum-post-detail" params={{pk: thread.pk}}>
+                      <Link to="forum-thread-detail" params={{pk: thread.pk}}>
                         {thread.titel}
                       </Link>
                     </td>

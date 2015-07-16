@@ -114,7 +114,12 @@ class ForumDraadViewSet(
     # make sure the user can view the forum draad
     deny_on_fail(request.user.has_perm('forum.view_forumdeel', draad.forum))
 
-    return Response(EntireForumDraadSerializer(draad).data)
+    # we cannot elegantly handle pagination by request parameters
+    # of a related object in a serializer
+    data = ForumDraadSerializer(draad).data
+    data['posts'] = ForumPostSerializer(StekPaginator().paginate_queryset(draad.posts.all(), request), many=True).data
+
+    return Response(data)
 
 class ForumPostViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
