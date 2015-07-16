@@ -1,0 +1,17 @@
+@import css3
+@import colors
+
+.profielLinkDiv
+  position: relative
+
+  .profielLinkHover
+    position: absolute
+    border: 1px solid $neutral-medium
+    background-color: $neutral-ultralight
+    top: -1px
+    left: -1px
+    opacity: 0
+    transition: opacity 0.5s
+
+  .profielLinkHover:hover
+    opacity: 1
