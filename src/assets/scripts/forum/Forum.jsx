@@ -22,7 +22,7 @@ class Forum extends React.Component {
   render() {
     return (
       <Layout title="Reformaforum" sidemenu={ForumSideMenu}>
-        <RouteHandler />
+        <RouteHandler {...this.props.params} />
       </Layout>
     );
   }

@@ -9,7 +9,7 @@ let ForumDraad = require("forum/ForumDraad");
 
 module.exports = (
   <Route handler={Forum}>
-    <DefaultRoute name="forum-list" handler={ForumList}/>
-    <Route name="forum-detail" path=":id" handler={ForumDraad}/>
+    <Route path=":pk" name="forumthread-list" handler={ForumList}/>
+    <Route path="threads/:pk" name="forum-detail" handler={ForumDraad}/>
   </Route>
 );

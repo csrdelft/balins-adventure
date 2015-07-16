@@ -18,9 +18,11 @@ var api_obj = {
           });
       },
 
-      list: () => {
+      list: (forum=undefined) => {
         return Q.xhr
-          .get(`${api}/forum/threads/`);
+          .get(`${api}/forum/threads/`, {
+            params: {forum: forum}
+          });
       },
 
       // create a new forum draadje
