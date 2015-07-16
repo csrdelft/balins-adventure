@@ -16,7 +16,7 @@ class Layout extends React.Component {
           </div>
 
           <div id="page-menu">
-            {this.props.sidemenu}
+            <this.props.sidemenu {...this.props.sidemenuProps} />
           </div>
         </div>
       );

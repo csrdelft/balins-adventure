@@ -18,6 +18,11 @@ var api_obj = {
           });
       },
 
+      list: () => {
+        return Q.xhr
+          .get(`${api}/forum/threads/`);
+      },
+
       // create a new forum draadje
       create: (data) => {
         return Q.xhr
@@ -39,11 +44,11 @@ var api_obj = {
   },
 
   // the auth and base resources
-  base: {
+  profiel: {
 
-    get_profiel: (id) => {
+    get: (pk) => {
       return Q.xhr
-        .get(`${api}/profiel/${id}`);
+        .get(`${api}/profiel/${pk}`);
     }
 
   },
@@ -57,29 +62,29 @@ var api_obj = {
         });
     },
 
-    aanmelden: (id, gasten = 0, gasten_eetwens = "") => {
+    aanmelden: (pk, gasten = 0, gasten_eetwens = "") => {
       return Q.xhr
-        .post(`${api}/maaltijden/${id}/aanmelden/`, {
+        .post(`${api}/maaltijden/${pk}/aanmelden/`, {
           aantal_gasten: gasten,
           gasten_eetwens: gasten_eetwens
         });
     },
 
-    afmelden: (id) => {
+    afmelden: (pk) => {
       return Q.xhr
-        .post(`${api}/maaltijden/${id}/afmelden/`);
+        .post(`${api}/maaltijden/${pk}/afmelden/`);
     },
   },
 
   mededelingen: {
-    get_list: () => {
+    list: () => {
       return Q.xhr
         .get(`${api}/mededelingen/`);
     },
 
-    get_mededeling: (id) => {
+    get: (pk) => {
       return Q.xhr
-        .get(`${api}/mededelingen/${id}/`);
+        .get(`${api}/mededelingen/${pk}/`);
     }
   }
 };

@@ -1,11 +1,9 @@
-var React = require('react');
-var { Route, DefaultRoute } = require('react-router');
+let React = require('react');
+let { Route, DefaultRoute } = require('react-router');
 
-var MededelingList = require('./MededelingList');
-var Mededeling = require('./Mededeling');
+let Mededelingen = require('./Mededelingen');
+let MededelingDetail = require('./MededelingDetail');
 
-module.exports =
-  <Route>
-    <DefaultRoute name="mededeling-list" handler={MededelingList}/>
-    <Route name="mededeling-detail" path=":id" handler={Mededeling}/>
-  </Route>;
+module.exports = <Route handler={Mededelingen}>
+  <Route path=":pk" name="mededeling-detail" handler={MededelingDetail} />
+</Route>;

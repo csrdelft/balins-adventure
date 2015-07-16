@@ -66,6 +66,7 @@ class ForumViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Ge
 
 class ForumDraadViewSet(
   mixins.CreateModelMixin,
+  mixins.ListModelMixin,
   mixins.RetrieveModelMixin,
   viewsets.GenericViewSet):
 

@@ -21,7 +21,7 @@ class ForumSideMenu extends React.Component {
 class Forum extends React.Component {
   render() {
     return (
-      <Layout title="Reformaforum" sidemenu={<ForumSideMenu />}>
+      <Layout title="Reformaforum" sidemenu={ForumSideMenu}>
         <RouteHandler />
       </Layout>
     );

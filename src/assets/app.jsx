@@ -107,7 +107,7 @@ let routes = (
   <Route path="/" handler={App}>
     <Route path="" handler={NotFound} />
     <Route path="forum">{ForumRouter}</Route>
-    <Route path="profiel/:uid" handler={Profiel} />
+    <Route path="profiel/:pk" handler={Profiel} />
     <Route path="mededelingen">{MededelingRouter}</Route>
     <Route path="*" handler={NotFound} />
   </Route>

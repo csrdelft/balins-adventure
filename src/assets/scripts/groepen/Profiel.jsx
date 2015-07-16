@@ -1,44 +1,53 @@
-var React = require("react");
-var $ = require("jquery");
-var _ = require("underscore");
+let React = require("react");
+let $ = require("jquery");
+let _ = require("underscore");
+let Layout = require("Layout");
 
-var api = require("api");
-var template = require("templates/Profiel");
+let api = require("api");
+let template = require("templates/Profiel");
 
 class Profiel extends React.Component {
+
+
+  static get propTypes() {
+    return { pk: React.PropTypes.string.isRequired };
+  }
 
   constructor(props) {
     super(props);
 
     // initial state
     this.state = {
-      uid: this.props.uid,
       profiel: undefined
     };
   }
 
-  componentWillMount() {
-    // load the profile
-    api.base.get_profiel(this.state.uid)
+  update(pk) {
+    api.profiel.get(pk)
       .then(
-        (resp) => this.setState({profiel: resp.data}),
-        (resp) => console.error('Getting profiel failed with status ' + resp.status)
-      );
+      (resp) => this.setState({profiel: resp.data}),
+      (resp) => console.error('Getting profiel failed with status ' + resp.status)
+    );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.pk != nextProps.pk) {
+      this.update(nextProps.pk);
+    }
+  }
+
+  componentWillMount() {
+    this.update(this.props.pk);
   }
 
   render() {
-    if(this.state.profiel) {
-      return (
-        <Layout title="Profiel">
-          template(this, this.state.profiel)
-        </Layout>
-      );
-    } else {
-      return <h1>Loading...</h1>;
-    }
+    return <Layout title="Profiel">
+      { this.state.profiel
+          ? template(this, this.state.profiel)
+          : <h1>Loading...</h1>
+      }
+    </Layout>;
   }
 }
-
-Profiel.propTypes = { profiel: React.PropTypes.number };
 
 module.exports = Profiel;

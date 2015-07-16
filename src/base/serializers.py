@@ -37,7 +37,7 @@ class ShortProfielSerializer(serializers.ModelSerializer):
     model = Profiel
     fields = (
       'user',
-      'uid',
+      'pk',
       'voornaam',
       'achternaam',
       'full_name'
