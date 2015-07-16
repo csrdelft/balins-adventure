@@ -9,7 +9,17 @@ let PostForm = require("forum/PostForm");
 class ForumList extends React.Component {
 
   static get propTypes() {
-    return { pk: React.PropTypes.string.isRequired }
+    return {
+      // because passed as route parameter, these are strings
+      pk: React.PropTypes.string.isRequired,
+      page: React.PropTypes.string
+    }
+  }
+
+  static get defaultProps() {
+    return {
+      page: 1
+    }
   }
 
   static get contextTypes() {
@@ -27,11 +37,11 @@ class ForumList extends React.Component {
     };
   }
 
-  update(pk) {
+  update(pk, page=1) {
     // use the api to get most recent forum threads
     // this returns a promise that we can register our success and error callbacks on
     // at success we simply update the state of the component
-    api.forum.threads.list(this.props.pk)
+    api.forum.threads.list(pk, page)
       .then(
         (resp) => this.setState({ threads: resp.data }),
         (resp) => console.error('Getting recent forum posts failed with status ' + resp.status)
@@ -39,8 +49,8 @@ class ForumList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.pk != this.props.pk) {
-      this.update(nextProps.pk);
+    if(nextProps.pk != this.props.pk || nextProps.page != this.props.page) {
+      this.update(nextProps.pk, nextProps.page);
     }
   }
 
@@ -58,6 +68,14 @@ class ForumList extends React.Component {
               <button className="action">
                 + draadje
               </button>
+              <Link className="action" to="forum-thread-list-page"
+                params={{pk: this.props.pk, page: Math.max(1, parseInt(this.props.page) - 1)}} >
+                &lt;
+              </Link>
+              <Link className="action" to="forum-thread-list-page"
+                params={{pk: this.props.pk, page: parseInt(this.props.page) + 1}} >
+                &gt;
+              </Link>
             </li>
           </ul>
         </div>

@@ -9,7 +9,13 @@ let ForumThread = require("forum/ForumThread");
 
 module.exports = (
   <Route handler={Forum}>
-    <Route path=":pk" name="forum-thread-list" handler={ForumList}/>
-    <Route path="threads/:pk" name="forum-post-detail" handler={ForumThread}/>
+    <Route path="parts">
+      <Route path=":pk" name="forum-thread-list" handler={ForumList}/>
+      <Route path=":pk/:page" name="forum-thread-list-page" handler={ForumList}/>
+    </Route>
+
+    <Route path="threads">
+      <Route path=":pk" name="forum-post-detail" handler={ForumThread}/>
+    </Route>
   </Route>
 );

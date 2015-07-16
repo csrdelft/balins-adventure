@@ -10,9 +10,14 @@ var api_obj = {
   forum: {
 
     // get subfora
-    list: () => {
+    list: (page=1, page_size=25) => {
       return Q.xhr
-          .get(`${api}/forum/parts/`);
+          .get(`${api}/forum/parts/`, {
+            params: {
+              page_size: page_size,
+              page: page
+            }
+          });
     },
 
     threads : {
@@ -29,10 +34,14 @@ var api_obj = {
           .get(`${api}/forum/threads/${pk}`);
       },
 
-      list: (forum=undefined) => {
+      list: (forum=undefined, page=1, page_size=25) => {
         return Q.xhr
           .get(`${api}/forum/threads/`, {
-            params: {forum: forum}
+            params: {
+              forum: forum,
+              page_size: page_size,
+              page: page
+            }
           });
       },
 
