@@ -4,15 +4,11 @@
 @import fonts
 @import variables
 @import sidebar
+@import layout
 @import forum
 @import legacy
 @import frontpage
 @import bootstrap.min
-
-$nav-h: 30px
-$nav-c:  #1d64de
-$header-h: 250px
-$header-c: #1d64de
 
 h1, h2, h3
   font-family: Museo
@@ -40,124 +36,3 @@ body
   font-size: $font-default
   font-weight: 300
   overflow: hidden
-
-#global-nav
-  position: fixed
-  width: 100%
-  height: $nav-h
-  background-color: $nav-c
-  z-index: 1000
-  color: white
-  padding: 8px
-  text-align: center
-
-  a
-    font-weight: 300
-    font-size: $font-medium
-    vertical-align: middle
-    margin: 0px
-    color: white
-    font-size: $font-medium
-    font-weight: 300
-    margin:
-      left: 20px
-      right: 20px
-
-div#app
-  position: absolute
-  top: $nav-h
-  width: 100%
-  bottom: 0px
-  z-index: 0
-
-  background-color: #e5e5e5
-
-  .container-fluid, .container
-    height: 100%
-
-  .row
-    height: 100%
-
-  div#app-header-fill
-    position: absolute
-    top: 0px
-    background-color: $header-c
-    height: $header-h
-    width: 100%
-
-  div#side-column
-    margin: 0px
-    padding: 0px
-    height: 100%
-
-    div#side-header-fill
-      background-color: $header-c
-      height: $header-h
-      width: 100%
-
-  #page-menu
-    padding: 30px
-    ul
-      li
-        padding:
-          top: 4px
-          bottom: 4px
-        border:
-          bottom: 1px solid #b4b4b4
-
-  div#content-column
-    position: relative
-    margin: 0px
-    padding: 0px
-    height: 100%
-
-    #header-bg
-      position: absolute
-      z-index: -1
-      height: $header-h
-      top: 0px
-      left: 0px
-      width: 100%
-      background-color: $header-c
-
-    #page-container
-      width: 100%
-      height: 100%
-      padding: 20px
-      padding-top: 40px
-
-      h1
-        color: white
-
-      #page
-        +box-shadow(0px 0px 10px rgba(black, 0.2))
-        +border-radius(2px)
-        background-color: #eeeeee
-        width: 100%
-        margin-top: 30px
-        min-height: 400px
-        font-size: $font-small
-        font-weight: 500
-        color: #263449
-        padding: 15px
-
-        $action-menu-h: 40px
-        #page-action-menu
-          ul
-            width: 100%
-            border-bottom: 1px solid #ddd
-
-            li
-              display: inline
-              vertical-align: middle
-
-            button.action
-              text-transform: uppercase
-              height: $action-menu-h
-              line-height: $action-menu-h
-              background-color: transparent
-              border: none
-                right: 1px solid #ddd
-              padding:
-                left: 15px
-                right: 15px

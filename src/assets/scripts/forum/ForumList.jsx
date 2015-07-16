@@ -44,14 +44,14 @@ class ForumList extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     // load initial recent forum posts
-    this.update(this.props.listEndpoint);
+    this.update(this.props.pk);
   }
 
   render() {
     return (
-      <div>
+      <div id="forum-thread">
         <div id="page-action-menu">
           <ul>
             <li>
@@ -62,12 +62,8 @@ class ForumList extends React.Component {
           </ul>
         </div>
 
-        <div>
+        <div id="page-content">
           <table>
-            <thead>
-              <th>Auteur</th>
-              <th>Titel</th>
-            </thead>
             <tbody>
               { _.map(this.state.threads, (thread) => (
                   <tr key={thread.pk}>
