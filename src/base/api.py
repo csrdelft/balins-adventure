@@ -9,12 +9,21 @@ from rest_framework.response import Response
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.routers import DefaultRouter
+from rest_framework.pagination import PageNumberPagination
 
 from datetime import datetime
 import logging
 import json
 
 logger = logging.getLogger(__name__)
+
+class StekPaginator(PageNumberPagination):
+  page_size = 100
+  page_size_query_param = 'page_size'
+  max_page_size = 1000
+
+  def get_paginated_response(self, data):
+    return Response(data)
 
 class ProfielApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 

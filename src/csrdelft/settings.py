@@ -96,10 +96,7 @@ REST_FRAMEWORK = {
   ),
   'DEFAULT_FILTER_BACKENDS': (
     'rest_framework.filters.DjangoFilterBackend',
-  ),
-
-  # prevent huge responses in the API
-  'PAGE_SIZE': 100
+  )
 }
 
 PASSWORD_HASHERS = (

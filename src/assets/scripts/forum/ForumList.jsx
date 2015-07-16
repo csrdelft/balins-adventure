@@ -2,6 +2,7 @@ let React = require("react");
 let $ = require("jquery");
 let _ = require("underscore");
 let api = require("api");
+let { Link, RouteHandler } = require('react-router');
 
 let PostForm = require("forum/PostForm");
 
@@ -9,6 +10,12 @@ class ForumList extends React.Component {
 
   static get propTypes() {
     return { pk: React.PropTypes.string.isRequired }
+  }
+
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.func.isRequired
+    }
   }
 
   constructor(props) {
@@ -26,7 +33,7 @@ class ForumList extends React.Component {
     // at success we simply update the state of the component
     api.forum.threads.list(this.props.pk)
       .then(
-        (resp) => this.setState({ threads: resp.data.results }),
+        (resp) => this.setState({ threads: resp.data }),
         (resp) => console.error('Getting recent forum posts failed with status ' + resp.status)
       );
   }
@@ -62,12 +69,16 @@ class ForumList extends React.Component {
               <th>Titel</th>
             </thead>
             <tbody>
-              { _.map(this.state.threads, (thread) =>
+              { _.map(this.state.threads, (thread) => (
                   <tr key={thread.pk}>
                     <td>{thread.user.full_name}</td>
-                    <td>{thread.titel}</td>
+                    <td>
+                      <Link to="forum-post-detail" params={{pk: thread.pk}}>
+                        {thread.titel}
+                      </Link>
+                    </td>
                   </tr>
-                )
+                ))
               }
             </tbody>
           </table>

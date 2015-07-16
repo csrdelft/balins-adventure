@@ -7,7 +7,6 @@ let api = require("api");
 
 class ForumThread extends React.Component {
 
-
   static get propTypes() {
     return { pk: React.PropTypes.string.isRequired };
   }

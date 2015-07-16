@@ -6,7 +6,7 @@ class ForumCategorieSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumCategorie
     fields = (
-      'categorie_id',
+      'pk',
       'titel',
       'volgorde',
     )
@@ -17,7 +17,7 @@ class ForumDeelSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumDeel
     fields = (
-      'forum_id',
+      'pk',
       'categorie',
       'titel',
       'omschrijving'
@@ -26,8 +26,8 @@ class ForumDeelSerializer(serializers.ModelSerializer):
 class ForumPostSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumPost
-    fields = ('post_id', 'draad', 'user', 'tekst', 'datum_tijd', 'laatst_gewijzigd')
-    read_only_fields = ('post_id', 'user', 'datum_tijd', 'laatst_gewijzigd')
+    fields = ('pk', 'draad', 'user', 'tekst', 'datum_tijd', 'laatst_gewijzigd')
+    read_only_fields = ('user', 'datum_tijd', 'laatst_gewijzigd')
 
 class ShortForumDraadSerializer(serializers.ModelSerializer):
 
@@ -36,7 +36,7 @@ class ShortForumDraadSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumDraad
     fields = (
-      'draad_id',
+      'pk',
       'forum',
       'titel',
       'user'
@@ -51,7 +51,7 @@ class ForumDraadSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumDraad
     fields = (
-      'draad_id',
+      'pk',
       'user',
       'forum',
       'titel',
@@ -74,7 +74,7 @@ class EntireForumDeelSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumDeel
     fields = (
-      'forum_id',
+      'pk',
       'draden',
       'categorie',
       'titel',

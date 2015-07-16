@@ -9,6 +9,12 @@ var api_obj = {
   // the forum resource
   forum: {
 
+    // get subfora
+    list: () => {
+      return Q.xhr
+          .get(`${api}/forum/parts/`);
+    },
+
     threads : {
       // query the n most recent forum posts
       get_recent: (n = 5) => {

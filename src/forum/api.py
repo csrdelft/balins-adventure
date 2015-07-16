@@ -11,6 +11,7 @@ from rest_framework.pagination import PageNumberPagination
 from .serializers import *
 from base.utils import notification_client, deny_on_fail
 from base.serializers import *
+from base.api import StekPaginator
 
 from datetime import datetime
 import logging
@@ -75,7 +76,7 @@ class ForumDraadViewSet(
   queryset = ForumDraad.objects\
     .prefetch_related("posts", "forum")
   filter_fields = ('forum',)
-  pagination_class = PageNumberPagination
+  pagination_class = StekPaginator
 
   @method_decorator(condition(last_modified_func=most_recent_forum_change))
   @list_route(methods=['get'])

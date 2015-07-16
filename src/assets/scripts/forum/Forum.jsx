@@ -1,18 +1,54 @@
 let React = require("react");
 let $ = require("jquery");
 let _ = require("underscore");
-let { RouteHandler } = require('react-router');
+let { Link, RouteHandler } = require('react-router');
+let api = require("api");
 
 let Layout = require("Layout");
 
 class ForumSideMenu extends React.Component {
+
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.func.isRequired
+    }
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fora: []
+    };
+  }
+
+  update() {
+    api.forum.list()
+      .then(
+        (resp) => this.setState({fora: resp.data}),
+        (resp) => console.error("Failed to get sub fora with status " + resp.status)
+      );
+  }
+
+  componentWillMount() {
+    this.update();
+  }
+
   render() {
+
     return (
       <ul>
-        <li><h3>Algemeen</h3></li>
-        <li><h3>Lichting 2013 (b'vo)</h3></li>
-        <li><h3>Geloofszaken</h3></li>
-        <li><h3>Nonsense</h3></li>
+        {
+          _.map(this.state.fora, (forum) => {
+            return (
+              <li key={forum.pk}>
+                <Link to="forum-thread-list" params={{pk: forum.pk}}>
+                {forum.titel}
+                </Link>
+              </li>
+            );
+          })
+        }
       </ul>
     );
   }
