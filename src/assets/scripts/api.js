@@ -9,12 +9,30 @@ var api_obj = {
   // the forum resource
   forum: {
 
+    // get subfora
+    list: () => {
+      return Q.xhr
+          .get(`${api}/forum/parts/`);
+    },
+
     threads : {
       // query the n most recent forum posts
       get_recent: (n = 5) => {
         return Q.xhr
           .get(`${api}/forum/threads/recent`, {
             params: {n: n}
+          });
+      },
+
+      get: (pk) => {
+        return Q.xhr
+          .get(`${api}/forum/threads/${pk}`);
+      },
+
+      list: (forum=undefined) => {
+        return Q.xhr
+          .get(`${api}/forum/threads/`, {
+            params: {forum: forum}
           });
       },
 
@@ -39,11 +57,11 @@ var api_obj = {
   },
 
   // the auth and base resources
-  base: {
+  profiel: {
 
-    get_profiel: (id) => {
+    get: (pk) => {
       return Q.xhr
-        .get(`${api}/profiel/${id}`);
+        .get(`${api}/profiel/${pk}`);
     }
 
   },
@@ -57,29 +75,29 @@ var api_obj = {
         });
     },
 
-    aanmelden: (id, gasten = 0, gasten_eetwens = "") => {
+    aanmelden: (pk, gasten = 0, gasten_eetwens = "") => {
       return Q.xhr
-        .post(`${api}/maaltijden/${id}/aanmelden/`, {
+        .post(`${api}/maaltijden/${pk}/aanmelden/`, {
           aantal_gasten: gasten,
           gasten_eetwens: gasten_eetwens
         });
     },
 
-    afmelden: (id) => {
+    afmelden: (pk) => {
       return Q.xhr
-        .post(`${api}/maaltijden/${id}/afmelden/`);
+        .post(`${api}/maaltijden/${pk}/afmelden/`);
     },
   },
 
   mededelingen: {
-    get_list: () => {
+    list: () => {
       return Q.xhr
         .get(`${api}/mededelingen/`);
     },
 
-    get_mededeling: (id) => {
+    get: (pk) => {
       return Q.xhr
-        .get(`${api}/mededelingen/${id}/`);
+        .get(`${api}/mededelingen/${pk}/`);
     }
   }
 };

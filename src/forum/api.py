@@ -6,10 +6,12 @@ from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.routers import DefaultRouter
+from rest_framework.pagination import PageNumberPagination
 
 from .serializers import *
 from base.utils import notification_client, deny_on_fail
 from base.serializers import *
+from base.api import StekPaginator
 
 from datetime import datetime
 import logging
@@ -66,12 +68,15 @@ class ForumViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Ge
 
 class ForumDraadViewSet(
   mixins.CreateModelMixin,
+  mixins.ListModelMixin,
   mixins.RetrieveModelMixin,
   viewsets.GenericViewSet):
 
   serializer_class = ForumDraadSerializer
   queryset = ForumDraad.objects\
     .prefetch_related("posts", "forum")
+  filter_fields = ('forum',)
+  pagination_class = StekPaginator
 
   @method_decorator(condition(last_modified_func=most_recent_forum_change))
   @list_route(methods=['get'])

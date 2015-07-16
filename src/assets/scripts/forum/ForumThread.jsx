@@ -4,10 +4,8 @@ let _ = require("underscore");
 let Layout = require("Layout");
 
 let api = require("api");
-let template = require("templates/Profiel");
 
-class Profiel extends React.Component {
-
+class ForumThread extends React.Component {
 
   static get propTypes() {
     return { pk: React.PropTypes.string.isRequired };
@@ -18,15 +16,15 @@ class Profiel extends React.Component {
 
     // initial state
     this.state = {
-      profiel: undefined
+      thread: undefined
     };
   }
 
   update(pk) {
-    api.profiel.get(pk)
+    api.forum.threads.get(pk)
       .then(
-      (resp) => this.setState({profiel: resp.data}),
-      (resp) => console.error('Getting profiel failed with status ' + resp.status)
+      (resp) => this.setState({thread: resp.data}),
+      (resp) => console.error('Getting thread failed with status ' + resp.status)
     );
   }
 
@@ -41,13 +39,16 @@ class Profiel extends React.Component {
   }
 
   render() {
-    return <Layout title="Profiel">
-      { this.state.profiel
-          ? template(this, this.state.profiel)
-          : <h1>Loading...</h1>
-      }
-    </Layout>;
+    if(this.state.thread)
+      return <ul>
+        {_.map(this.state.thread.posts, (p) => {
+          return <li>{p.tekst}</li>;
+        })}
+      </ul>;
+    else
+      return <h1>Loading...</h1>;
   }
 }
 
-module.exports = Profiel;
+module.exports = ForumThread;
+

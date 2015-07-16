@@ -1,7 +1,7 @@
-var React = require("react");
-var $ = require("jquery");
-var _ = require("underscore");
-var api = require("api");
+let React = require("react");
+let $ = require("jquery");
+let _ = require("underscore");
+let api = require("api");
 
 class ForumThreadList extends React.Component {
 

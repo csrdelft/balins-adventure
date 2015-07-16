@@ -20,10 +20,12 @@ gulp.task('sass', function() {
   gulp.src('./src/assets/sass/app.sass')
     .pipe(sass({
       includePaths : [
+        path.join(__dirname, 'src/assets/fonts'),// sass
         path.join(__dirname, 'src/assets/sass'), // sass
-        path.join(__dirname, 'src/assets/css')   // css
+        path.join(__dirname, 'src/assets/css'),  // css
+        path.join(__dirname, 'node_modules/')    // libs
       ]
-    }))
+    }).on('error', sass.logError))
     .pipe(gulp.dest(path.join(dist, 'css')));
 });
 
@@ -81,7 +83,7 @@ gulp.task('watch', function() {
   }
 
   compileScripts(true);
-  initWatch('./src/assets/sass/**/*.sass', 'sass');
+  initWatch(['./src/assets/sass/**/*.sass', './src/assets/sass/**/*.css'], 'sass');
 });
 
 // copy the assets to the dist

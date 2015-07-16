@@ -9,7 +9,9 @@ class MededelingenViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixi
   serializer_class = MededelingenSerializer
 
   def get_queryset(self):
-    return Mededeling.get_viewable_by(self.request.user)
+    return Mededeling\
+      .get_viewable_by(self.request.user)\
+      .order_by('-datum')
 
   def destroy(self, request, *args, **kwargs):
     deny_on_fail(request.user.has_perm('mededelingen.delete_mededeling', self.get_object))

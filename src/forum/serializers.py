@@ -1,11 +1,12 @@
 from rest_framework import serializers
 from .models import *
+from base.serializers import ShortProfielSerializer
 
 class ForumCategorieSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumCategorie
     fields = (
-      'categorie_id',
+      'pk',
       'titel',
       'volgorde',
     )
@@ -16,7 +17,7 @@ class ForumDeelSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumDeel
     fields = (
-      'forum_id',
+      'pk',
       'categorie',
       'titel',
       'omschrijving'
@@ -25,8 +26,8 @@ class ForumDeelSerializer(serializers.ModelSerializer):
 class ForumPostSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumPost
-    fields = ('post_id', 'draad', 'user', 'tekst', 'datum_tijd', 'laatst_gewijzigd')
-    read_only_fields = ('post_id', 'user', 'datum_tijd', 'laatst_gewijzigd')
+    fields = ('pk', 'draad', 'user', 'tekst', 'datum_tijd', 'laatst_gewijzigd')
+    read_only_fields = ('user', 'datum_tijd', 'laatst_gewijzigd')
 
 class ShortForumDraadSerializer(serializers.ModelSerializer):
 
@@ -35,7 +36,7 @@ class ShortForumDraadSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumDraad
     fields = (
-      'draad_id',
+      'pk',
       'forum',
       'titel',
       'user'
@@ -43,14 +44,14 @@ class ShortForumDraadSerializer(serializers.ModelSerializer):
 
 class ForumDraadSerializer(serializers.ModelSerializer):
 
-  user = serializers.ReadOnlyField(source="user.pk")
+  user = ShortProfielSerializer(read_only=True)
   laatst_gewijzigd = serializers.ReadOnlyField()
   datum_tijd = serializers.ReadOnlyField()
 
   class Meta:
     model = ForumDraad
     fields = (
-      'draad_id',
+      'pk',
       'user',
       'forum',
       'titel',
@@ -73,7 +74,7 @@ class EntireForumDeelSerializer(serializers.ModelSerializer):
   class Meta:
     model = ForumDeel
     fields = (
-      'forum_id',
+      'pk',
       'draden',
       'categorie',
       'titel',

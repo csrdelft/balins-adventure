@@ -37,10 +37,12 @@ class ShortProfielSerializer(serializers.ModelSerializer):
     model = Profiel
     fields = (
       'user',
-      'uid',
+      'pk',
       'voornaam',
-      'achternaam'
+      'achternaam',
+      'full_name'
     )
+    read_only_fields = ('full_name', )
 
 class ProfielSerializer(serializers.ModelSerializer):
   kring = KringSerializer()
