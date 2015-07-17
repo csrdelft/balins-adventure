@@ -25,7 +25,7 @@
 
 9. Setup a database by executing the following query (e.g. in the workbench):
 
-    mysql -u root -p -e "create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';"
+    create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';
 
 10. Download and install PyCharm (pro edition, using your TU e-mail account):
 
