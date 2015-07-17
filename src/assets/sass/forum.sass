@@ -1,19 +1,34 @@
 @import css3
 @import variables
 
-.forum-post
-  +clearfix
+// we need to be very specific or the generic layout sass
+// takes over
+#app #page #forum-thread-list
+  #page-action-menu
+    ul
+      border-bottom: 0px
 
-  width: 100%
-  background-color: #EEE
-  padding: 20px
+  #page-content
+    table
+      width: 100%
 
-  border-bottom: 1px solid $accent
+      tr
+        border-bottom: 1px solid #ddd
+        border-top: 1px solid #ddd
+        td
+          padding: 5px
 
-  div.tag
-    float: left
-    width: 20%
+#app #page #forum-thread
+  #page-action-menu
+    ul
+      border-bottom: 0px
 
-  div.text
-    float: left
-    width: 80%
+  #page-content
+    table
+      width: 100%
+
+      tr
+        border-bottom: 1px solid #ddd
+        border-top: 1px solid #ddd
+        td
+          padding: 5px

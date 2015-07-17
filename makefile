@@ -4,6 +4,7 @@ mkenv:
 install:
 	test -d .virtualenv || ${MAKE} mkenv
 	. .virtualenv/bin/activate; pip install -r requirements
+	npm install
 
 test:
 	. .virtualenv/bin/activate; cd src && python manage.py test --keepdb

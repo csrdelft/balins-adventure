@@ -9,7 +9,17 @@ let PostForm = require("forum/PostForm");
 class ForumList extends React.Component {
 
   static get propTypes() {
-    return { pk: React.PropTypes.string.isRequired }
+    return {
+      // because passed as route parameter, these are strings
+      pk: React.PropTypes.string.isRequired,
+      page: React.PropTypes.string
+    }
+  }
+
+  static get defaultProps() {
+    return {
+      page: "1"
+    }
   }
 
   static get contextTypes() {
@@ -18,8 +28,8 @@ class ForumList extends React.Component {
     }
   }
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     // initial state
     this.state = {
@@ -27,11 +37,11 @@ class ForumList extends React.Component {
     };
   }
 
-  update(pk) {
+  update(pk, page=1) {
     // use the api to get most recent forum threads
     // this returns a promise that we can register our success and error callbacks on
     // at success we simply update the state of the component
-    api.forum.threads.list(this.props.pk)
+    api.forum.threads.list(pk, page)
       .then(
         (resp) => this.setState({ threads: resp.data }),
         (resp) => console.error('Getting recent forum posts failed with status ' + resp.status)
@@ -39,41 +49,45 @@ class ForumList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.pk != this.props.pk) {
-      this.update(nextProps.pk);
+    if(nextProps.pk != this.props.pk || nextProps.page != this.props.page) {
+      this.update(nextProps.pk, nextProps.page);
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     // load initial recent forum posts
-    this.update(this.props.listEndpoint);
+    this.update(this.props.pk);
   }
 
   render() {
     return (
-      <div>
+      <div id="forum-thread-list">
         <div id="page-action-menu">
           <ul>
             <li>
               <button className="action">
                 + draadje
               </button>
+              <Link className="action" to="forum-thread-list-page"
+                params={{pk: this.props.pk, page: Math.max(1, parseInt(this.props.page) - 1)}} >
+                &lt;
+              </Link>
+              <Link className="action" to="forum-thread-list-page"
+                params={{pk: this.props.pk, page: parseInt(this.props.page) + 1}} >
+                &gt;
+              </Link>
             </li>
           </ul>
         </div>
 
-        <div>
+        <div id="page-content">
           <table>
-            <thead>
-              <th>Auteur</th>
-              <th>Titel</th>
-            </thead>
             <tbody>
               { _.map(this.state.threads, (thread) => (
                   <tr key={thread.pk}>
                     <td>{thread.user.full_name}</td>
                     <td>
-                      <Link to="forum-post-detail" params={{pk: thread.pk}}>
+                      <Link to="forum-thread-detail" params={{pk: thread.pk}}>
                         {thread.titel}
                       </Link>
                     </td>
