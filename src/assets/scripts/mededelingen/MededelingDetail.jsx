@@ -45,7 +45,7 @@ class MededelingDetail extends React.Component {
     if(mededeling) {
       return <div>
         <h1>{mededeling.titel}</h1>
-        <ProfielLink uid={parseInt(mededeling.user)} />
+        <ProfielLink pk={mededeling.user} />
         <p>{mededeling.tekst}</p>
       </div>;
     } else {

@@ -16,7 +16,7 @@ class ForumPost extends React.Component {
     let post = this.props.post;
     return (
       <tr key={post.pk}>
-        <td>{post.user.full_name}</td>
+        <th><ProfielLink pk={post.user.pk}/></th>
         <td>{post.tekst}</td>
       </tr>
     );

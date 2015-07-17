@@ -59,7 +59,6 @@ class Menu extends React.Component {
     this.socket = null;
   }
 
-  //TODO: uid to profiel should contain the uid of the current user
   render() {
     return (
       <div className="container">
@@ -67,7 +66,7 @@ class Menu extends React.Component {
           <Link to="/">Thuis</Link>
           <Link to="/groepen">Groepen</Link>
           <Link to="/mededelingen">Mededelingen</Link>
-          <Link to="/profiel/1337">Profiel</Link>
+          <Link to="profiel-detail" params={{pk: 1337}}>Profiel</Link>
           <Link to="/forum">Reformaforum ({ this.state.forum_notifications })</Link>
         </div>
       </div>
@@ -113,7 +112,6 @@ let routes = (
   <Route path="/" handler={App}>
     <Route path="" handler={NotFound} />
     <Route path="forum">{ForumRouter}</Route>
-    <Route path="profiel/:pk" handler={Profiel} />
     <Route path="mededelingen">{MededelingRouter}</Route>
     <Route path="profiel">{ProfielRouter}</Route>
     <Route path="*" handler={NotFound} />

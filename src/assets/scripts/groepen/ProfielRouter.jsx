@@ -5,6 +5,6 @@ var Profiel = require('./Profiel');
 var ProfielLink = require('./ProfielLink.jsx');
 
 module.exports =
-	<Route>
-		<Route name='profiel-detail' path=":uid" handler={Profiel}/>
-	</Route>;
+ <Route>
+   <Route name='profiel-detail' path=":pk" handler={Profiel}/>
+ </Route>;

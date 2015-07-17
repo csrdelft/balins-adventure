@@ -2,25 +2,27 @@ var React = require("react");
 var $ = require("jquery");
 var _ = require("underscore");
 
+let Link = require('react-router');
+
 class Civikaartje extends React.Component {
 
-  constructor(props, context) {
-    super(props);
-    this.profiel = props.profiel;
-    this.context = context;
-
-    this.go = this.go.bind(this)
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.func.isRequired
+    }
   }
 
-  go(event) {
-    this.context.router.transitionTo('profiel-detail', {uid: this.profiel.uid});
+  constructor(props, context) {
+    super(props, context);
+    this.profiel = props.profiel;
+
   }
 
   render() {
     if(this.profiel) {
       return (
        <div className='civikaartje'>
-         <a onClick={this.go}>{this.profiel.full_name} ({this.profiel.uid})</a>
+         <Link to="profiel-detail" params={{pk: this.profiel.pk}}>{this.profiel.full_name} ({this.profiel.pk})</Link>
          <p>{this.profiel.adres}</p>
          <p>{this.profiel.postcode} {this.profiel.woonplaats}</p>
          <p>{this.profiel.mobiel}</p>
@@ -30,11 +32,6 @@ class Civikaartje extends React.Component {
       return <p>Loading...</p>;
     }
   }
-
 }
-
-Civikaartje.contextTypes = {
-  router: React.PropTypes.func
-};
 
 module.exports = Civikaartje;
