@@ -1,35 +1,60 @@
-var React = require("react");
-var $ = require("jquery");
-var _ = require("underscore");
+let React = require("react");
+let $ = require("jquery");
+let _ = require("underscore");
+let api = require("api");
+let PropTypes = require('react-router').PropTypes;
 
-let Link = require('react-router');
+let {Link} = require('react-router');
 
 class Civikaartje extends React.Component {
 
-  static get contextTypes() {
+  static get propTypes() {
     return {
-      router: React.PropTypes.func.isRequired
+      pk: React.PropTypes.string.isRequired,
+      name: React.PropTypes.string
+    };
+  }
+
+  constructor(props) {
+    super(props);
+    this.pk = props.pk;
+
+    this.state = {
+      profiel: undefined
+    }
+
+  }
+
+   update(pk) {
+    api.profiel.get(pk)
+      .then(
+      (resp) => this.setState({profiel: resp.data}),
+      (resp) => console.error('Getting profiel failed with status ' + resp.status)
+    );
+  }
+
+	componentWillMount() {
+    this.update(this.pk);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.pk != nextProps.pk) {
+      this.update(nextProps.pk);
     }
   }
 
-  constructor(props, context) {
-    super(props, context);
-    this.profiel = props.profiel;
-
-  }
-
   render() {
-    if(this.profiel) {
+    if(this.state.profiel) {
       return (
        <div className='civikaartje'>
-         <Link to="profiel-detail" params={{pk: this.profiel.pk}}>{this.profiel.full_name} ({this.profiel.pk})</Link>
-         <p>{this.profiel.adres}</p>
-         <p>{this.profiel.postcode} {this.profiel.woonplaats}</p>
-         <p>{this.profiel.mobiel}</p>
+         <Link to="profiel-detail" params={{pk: this.state.profiel.pk}}>{this.state.profiel.full_name} ({this.state.profiel.pk})</Link>
+         <p>{this.state.profiel.adres}</p>
+         <p>{this.state.profiel.postcode} {this.state.profiel.woonplaats}</p>
+         <p>{this.state.profiel.mobiel}</p>
        </div>
       );
     } else {
-      return <p>Loading...</p>;
+      return <div>Loading... Civikaartje</div>;
     }
   }
 }

@@ -86,7 +86,7 @@ class ForumList extends React.Component {
            <tbody>
            { _.map(this.state.threads, (thread) => (
             <tr key={thread.pk}>
-              <th><ProfielLink pk={thread.user.pk}/></th>
+              <th><ProfielLink pk={thread.user.pk}>{thread.user.full_name}</ProfielLink></th>
               <td>
                 <Link to="forum-thread-detail" params={{pk: thread.pk}}>
                   {thread.titel}

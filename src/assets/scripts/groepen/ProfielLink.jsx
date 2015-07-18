@@ -1,10 +1,10 @@
-const React = require("react");
-const $ = require("jquery");
-const _ = require("underscore");
-const api = require("api");
-const PropTypes = require('react-router').PropTypes;
-const Civikaartje = require("./Civikaartje");
-const Link = require('react-router');
+let React = require("react");
+let $ = require("jquery");
+let _ = require("underscore");
+let PropTypes = require('react-router').PropTypes;
+
+let Civikaartje = require("./Civikaartje");
+let {Link} = require('react-router');
 
 class ProfielLink extends React.Component {
 
@@ -24,33 +24,15 @@ class ProfielLink extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.pk = props.pk;
+    this.name = props.children;
 
     // initial state
 		this.state = {
-      show_civikaartje: false,
-      profiel: undefined
+      show_civikaartje: false
     };
 
     this.link = this.link.bind(this);
     this.unlink = this.unlink.bind(this);
-  }
-
-  update(pk) {
-    api.profiel.get(pk)
-      .then(
-      (resp) => this.setState({profiel: resp.data}),
-      (resp) => console.error('Getting profiel failed with status ' + resp.status)
-    );
-  }
-
-	componentWillMount() {
-    this.update(this.pk);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(this.pk != nextProps.pk) {
-      this.update(nextProps.pk);
-    }
   }
 
   link() {
@@ -70,23 +52,23 @@ class ProfielLink extends React.Component {
   }
 
   render_civikaartje() {
-    if(this.state.show_civikaartje && this.state.profiel) {
+    if(this.state.show_civikaartje) {
       return (
        <div className="profielLinkHover" onMouseLeave={this.unlink.bind(this)} >
-         <Civikaartje profiel={this.state.profiel} />
+         <Civikaartje pk={this.pk} />
        </div>
       );
     } else {
-      return <p>Loading...</p>;
+      return <div></div>;
     }
   }
 
   render() {
-    if(this.state.profiel) {
+    if(true) {
       return (
        <div className="profielLinkDiv">
-         <Link className="profielLinkName" to="profiel-detail" params={{pk: this.state.profiel.pk}} onMouseEnter={this.link.bind(this)}>
-           { this.state.profiel.full_name }
+         <Link className="profielLinkName" to="profiel-detail" params={{pk: this.pk}} onMouseEnter={this.link.bind(this)}>
+           { this.name }
          </Link>
          {this.render_civikaartje()}
        </div>

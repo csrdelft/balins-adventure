@@ -45,11 +45,11 @@ class MededelingDetail extends React.Component {
     if(mededeling) {
       return <div>
         <h1>{mededeling.titel}</h1>
-        <ProfielLink pk={mededeling.user} />
+        <p><ProfielLink pk={mededeling.user.pk}>{mededeling.user.full_name}</ProfielLink></p>
         <p>{mededeling.tekst}</p>
       </div>;
     } else {
-      return <p>Loading</p>;
+      return <p>Loading... MededelingDetail</p>;
     }
   }
 }
