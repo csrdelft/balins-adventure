@@ -1,3 +1,4 @@
+from base.utils import deny_on_fail
 from django.contrib.auth.models import User
 from django.conf.urls import url, include
 from django.http import *
@@ -70,12 +71,9 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
     # check that the user can sign in on this one
     deny_on_fail(request.user.has_perm('maaltijden.view_maaltijd', mlt))
 
-    request.data['user'] = request.profiel.pk
-    request.data['maaltijd'] = pk
-
     serializer = MaaltijdAanmeldingSerializer(data=request.data)
     if serializer.is_valid():
-      serializer.save(laatst_gewijzigd=datetime.now())
+      serializer.save(laatst_gewijzigd=datetime.now(), user=request.profiel, maaltijd=mlt)
       return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -94,7 +92,7 @@ class MaaltijdViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets
     """
     # make sure the maaltijd isn't closed
     if self.get_object().gesloten:
-      return Response({"message": "Maaltijd closed"}, status=status.HTTP_400_BAD_REQUEST)
+      return Response({"detail": "Maaltijd gesloten"}, status=status.HTTP_400_BAD_REQUEST)
 
     aanmelding = MaaltijdAanmelding.object\
       .get(maaltijd_id=pk, user=request.profiel)
