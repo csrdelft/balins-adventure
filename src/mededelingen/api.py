@@ -1,4 +1,4 @@
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, status
 from mededelingen.serializers import MededelingenSerializer
 from mededelingen.models import Mededeling
 from base.utils import deny_on_fail
@@ -27,16 +27,24 @@ class MededelingenViewSet(
     serializer = self.get_serializer(data=request.data)
     serializer.is_valid(raise_exception=True)
 
-    deny_on_fail(request.user.has_perm('mededelingen.add_mededeling', self.get_object()))
+    deny_on_fail(request.user.has_perm('mededelingen.add_mededeling'))
 
-    serializer.save(user=request.user.profiel.pk)
-    return super().create(request, *args, **kwargs)
+    serializer.save(user=request.user)
 
-  def update(self, request, *args, **kwargs):
-    serializer = self.get_serializer(data=request.data)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+  def update(self, request, pk, *args, **kwargs):
+    mededeling = self.get_object()
+
+    # initializing the serializer with both an instance and new data
+    # will cause the instance to update when we call .save() later on the serializer
+    serializer = self.get_serializer(mededeling, data=request.data)
     serializer.is_valid(raise_exception=True)
 
     deny_on_fail(request.user.has_perm('mededelingen.change_mededeling', self.get_object()))
 
-    serializer.save(user=request.user.profiel.pk)
-    return super().update(request, *args, **kwargs)
+    # the owner is unchanged
+    # update the existing mededeling
+    serializer.save()
+
+    return Response(serializer.data, status=status.HTTP_200_OK)

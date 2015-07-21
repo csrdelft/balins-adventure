@@ -257,7 +257,7 @@ class MededelingTests(APITestCase):
     response = self.client.get(reverse('mededeling-detail', kwargs={'pk': 4}))
     self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
 
-    response_2 = self.client.post(reverse('mededeling-list'), self.data, format='json')
+    response_2 = self.client.post(reverse('mededeling-list'), self.data)
     self.assertEqual(status.HTTP_403_FORBIDDEN, response_2.status_code)
 
     response_3 = self.client.get(reverse('mededeling-detail', kwargs={'pk': 4}))
