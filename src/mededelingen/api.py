@@ -20,7 +20,7 @@ class MededelingenViewSet(
       .order_by('-datum')
 
   def destroy(self, request, *args, **kwargs):
-    deny_on_fail(request.user.has_perm('mededelingen.delete_mededeling', self.get_object))
+    deny_on_fail(request.user.has_perm('mededelingen.delete_mededeling', self.get_object()))
     return super().destroy(request, *args, **kwargs)
 
   def create(self, request, *args, **kwargs):
@@ -41,7 +41,7 @@ class MededelingenViewSet(
     serializer = self.get_serializer(mededeling, data=request.data)
     serializer.is_valid(raise_exception=True)
 
-    deny_on_fail(request.user.has_perm('mededelingen.change_mededeling', self.get_object()))
+    deny_on_fail(request.user.has_perm('mededelingen.change_mededeling', mededeling))
 
     # the owner is unchanged
     # update the existing mededeling
