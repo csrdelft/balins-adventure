@@ -3,8 +3,14 @@ from mededelingen.serializers import MededelingenSerializer
 from mededelingen.models import Mededeling
 from base.utils import deny_on_fail
 
-class MededelingenViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.CreateModelMixin,
-  mixins.DestroyModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class MededelingenViewSet(
+  mixins.RetrieveModelMixin,
+  mixins.ListModelMixin,
+  mixins.CreateModelMixin,
+  mixins.DestroyModelMixin,
+  mixins.UpdateModelMixin,
+  viewsets.GenericViewSet
+):
 
   serializer_class = MededelingenSerializer
 
@@ -18,9 +24,19 @@ class MededelingenViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixi
     return super().destroy(request, *args, **kwargs)
 
   def create(self, request, *args, **kwargs):
-    deny_on_fail(request.user.has_perm('mededelingen.add_mededeling', self.get_object))
+    serializer = self.get_serializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    deny_on_fail(request.user.has_perm('mededelingen.add_mededeling', self.get_object()))
+
+    serializer.save(user=request.user.profiel.pk)
     return super().create(request, *args, **kwargs)
 
   def update(self, request, *args, **kwargs):
-    deny_on_fail(request.user.has_perm('mededelingen.change_mededeling', self.get_object))
+    serializer = self.get_serializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    deny_on_fail(request.user.has_perm('mededelingen.change_mededeling', self.get_object()))
+
+    serializer.save(user=request.user.profiel.pk)
     return super().update(request, *args, **kwargs)

@@ -67,11 +67,12 @@ class MededelingTests(APITestCase):
     }).create(1)
 
     self.data = {
+      'live': True,
       'titel': 'E',
       'tekst': 'Newly posted Announcement',
       'prioriteit': '0',
-      'user': '0003',
       'plaatje': 'NULL',
+      'audience': 'PUB'
     }
 
   def test_public_gets_public(self):
