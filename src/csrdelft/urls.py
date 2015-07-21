@@ -28,11 +28,9 @@ api_urls = patterns('',
 urlpatterns = patterns('',
   # app views
   url(r'^', include(base.views.urls)),
-  url(r'^forum/', include(forum.views.urls)),
 
   # app apis
   url(r'^api/v1/', include(api_urls)),
 
   url(r'^admin/', include(admin.site.urls)),
-  url(r'', include(legacy.views.urls)),
 )
