@@ -5,6 +5,7 @@ from .models import *
 class MaaltijdAanmeldingSerializer(serializers.ModelSerializer):
   class Meta:
     model = MaaltijdAanmelding
+    read_only_fields = ('user', 'maaltijd')
     fields = ('user', 'aantal_gasten', 'gasten_eetwens', 'maaltijd')
 
 class MaaltijdSerializer(serializers.ModelSerializer):
