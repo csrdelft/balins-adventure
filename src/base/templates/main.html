@@ -1,61 +1,14 @@
-<div id="frontpage" class="row">
-  <div class="col-lg-8">
-    <div class="row">
-      <div class="col-md-6">
-        <div id="agenda" class="front-page-block">
-          <h3>Agenda</h3>
-          <ul>
-            <li>
-              <p class="date"><span class="no">30</span><br/><span class="mo">mei</span>
-              </p>
-              <p class="text">LAN party
-              </p>
-            </li>
-            <li>
-              <p class="date"><span class="no">31</span><br/><span class="mo">mei</span>
-              </p>
-              <p class="text">Exodus
-              </p>
-            </li>
-          </ul>
-        </div>
-        <div id="mededelingen" class="front-page-block">
-          <h3>Mededelingen</h3>
-          <ul class="mededeling">
-            <li>First!
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div id="forum-important" class="front-page-block">
-          <h3>Forum Belangrijk</h3>
-          <ul class="mededeling">
-            <li>First!
-            </li>
-          </ul>
-        </div>
-        <div id="forum-recent" class="front-page-block">
-          <h3>Forum Recent</h3>
-          <div id="mount-forum-recent"></div>
-        </div>
-      </div>
+<!DOCTYPE html>
+{%  load staticfiles %}
+<html>
+  <head>
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">
+  </head>
+  <body>
+    <div id="mount-app">
     </div>
-  </div>
-  <div class="col-lg-4">
-    <div id="birthdays" class="front-page-block">
-      <h3>Verjaardagen</h3>
-      <ul class="mededeling">
-        <li>First!
-        </li>
-      </ul>
-    </div>
-    <div id="frontpage-album" class="front-page-block">
-      <h3>Album</h3>
-      <ul class="mededeling">
-        <li>First!
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
+
+    <!-- after the content -->
+    <script src="{% static 'scripts/app.js' %}"></script>
+  </body>
+</html>

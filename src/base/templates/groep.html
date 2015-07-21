@@ -1,9 +1,0 @@
-{% for groep,leden in groepen.values %}{% if  leden|length > 0 %}
-<div class="groep">
-  <h2>{{ groep.naam }}</h2>
-  <div class="leden">
-    <ul>{% for lid in leden %}
-      <li>{{ lid.user.formal_name }}</li>{% endfor %}
-    </ul>
-  </div>
-</div>{% endif %}{% endfor %}

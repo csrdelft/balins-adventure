@@ -4,9 +4,8 @@ from django.conf import settings
 
 from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import list_route
 from rest_framework.routers import DefaultRouter
-from rest_framework.pagination import PageNumberPagination
 
 from .serializers import *
 from base.utils import notification_client, deny_on_fail
@@ -15,7 +14,6 @@ from base.api import StekPaginator
 
 from datetime import datetime
 import logging
-import redis
 
 logger = logging.getLogger(__name__)
 redis = notification_client()
