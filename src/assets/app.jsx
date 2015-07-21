@@ -3,15 +3,16 @@ let $ = require("jquery");
 let _ = require("underscore");
 
 let api = require("api");
-let Profiel = require("groepen/Profiel");
 let ForumRouter = require("forum/Router");
 let MededelingRouter = require('mededelingen/MededelingRouter');
 
 let Router = require('react-router');
-let { Route, DefaultRoute, Link, RouteHandler } = require('react-router');
-
-// sockets yeah
+let { Route, DefaultRoute, Link, RouteHandler } = Router;
 let io = require('socket.io-client');
+
+let Profiel = require("groepen/Profiel");
+let ProfielRouter = require('groepen/ProfielRouter');
+let ProfielLink = require("groepen/ProfielLink");
 
 // set the modern ui theme
 let mui = require('material-ui');
@@ -54,6 +55,7 @@ class Menu extends React.Component {
     this.socket = null;
   }
 
+  //TODO: uid to profiel should contain the uid of the current user
   render() {
     return (
       <div className="container">
@@ -107,7 +109,7 @@ let routes = (
   <Route path="/" handler={App}>
     <Route path="" handler={NotFound} />
     <Route path="forum">{ForumRouter}</Route>
-    <Route path="profiel/:pk" handler={Profiel} />
+    <Route path="profiel">{ProfielRouter}</Route>
     <Route path="mededelingen">{MededelingRouter}</Route>
     <Route path="*" handler={NotFound} />
   </Route>
