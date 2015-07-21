@@ -1,55 +1,82 @@
-const React = require("react");
-const $ = require("jquery");
-const _ = require("underscore");
-const api = require("api");
-const PropTypes = require('react-router').PropTypes;
+let React = require("react");
+let $ = require("jquery");
+let _ = require("underscore");
+let PropTypes = require('react-router').PropTypes;
+
+let Civikaartje = require("./Civikaartje");
+let {Link} = require('react-router');
 
 class ProfielLink extends React.Component {
 
-	static get propTypes() {
+  static get propTypes() {
     return {
-			uid: React.PropTypes.number.isRequired,
-			name: React.PropTypes.string
-		};
+      pk: React.PropTypes.string.isRequired,
+      name: React.PropTypes.string
+    };
   }
 
-	constructor(props, context) {
-		super(props);
-		this.context = context;
-		this.uid = props.uid;
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.func.isRequired
+    }
+  }
 
-		// initial state
+  constructor(props, context) {
+    super(props, context);
+    this.pk = props.pk;
+    this.name = props.children;
+
+    // initial state
 		this.state = {
-			profiel: undefined
-		};
+      show_civikaartje: false
+    };
 
-		this.go = this.go.bind(this)
+    this.link = this.link.bind(this);
+    this.unlink = this.unlink.bind(this);
   }
 
-	componentWillMount() {
-    // load the profile
-    api.base.get_profiel(this.uid)
-      .then(
-        (resp) => this.setState({profiel: resp.data}),
-        (resp) => console.error('Getting profiel failed with status ' + resp.status)
+  link() {
+    this.setState({
+      show_civikaartje: true
+    });
+  }
+
+  unlink() {
+    //Uses delay to let animation finish before hiding element
+    const delay = 500;
+    setTimeout(() => {
+      this.setState({
+        show_civikaartje: false
+      });
+    }, delay);
+  }
+
+  render_civikaartje() {
+    if(this.state.show_civikaartje) {
+      return (
+       <div className="profielLinkHover" onMouseLeave={this.unlink.bind(this)} >
+         <Civikaartje pk={this.pk} />
+       </div>
       );
+    } else {
+      return <div></div>;
+    }
   }
 
-	go(event) {
-		this.context.router.transitionTo('profiel-detail', {uid: this.uid});
-	}
-
-	render() {
-	  if(this.state.profiel) {
-		  return <a data-id={this.props.uid} onClick={this.go}>{ this.state.profiel.full_name }</a>;
-		} else {
-		  return <p>Loading...</p>;
-		}
-	}
+  render() {
+    return (
+      <div className="profielLinkDiv">
+        <Link
+           className="profielLinkName"
+           to="profiel-detail"
+           params={{pk: this.pk}}
+           onMouseEnter={this.link.bind(this)}>
+          { this.name }
+        </Link>
+        {this.render_civikaartje()}
+      </div>
+    );
+  }
 }
-
-ProfielLink.contextTypes = {
-  router: React.PropTypes.func
-};
 
 module.exports = ProfielLink;

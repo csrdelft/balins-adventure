@@ -3,7 +3,7 @@ let $ = require("jquery");
 let _ = require("underscore");
 let Layout = require("Layout");
 let { Link, RouteHandler } = require('react-router');
-
+let ProfielLink = require("../groepen/ProfielLink");
 let api = require("api");
 
 class ForumPost extends React.Component {
@@ -16,7 +16,7 @@ class ForumPost extends React.Component {
     let post = this.props.post;
     return (
       <tr key={post.pk}>
-        <td>{post.user.full_name}</td>
+        <th><ProfielLink pk={post.user.pk}>{post.user.full_name}</ProfielLink></th>
         <td>{post.tekst}</td>
       </tr>
     );

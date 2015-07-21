@@ -55,6 +55,7 @@ class ProfielSerializer(serializers.ModelSerializer):
   class Meta:
     model = Profiel
     fields = (
+      'pk',
       'user',
       'full_name',
       'nickname',

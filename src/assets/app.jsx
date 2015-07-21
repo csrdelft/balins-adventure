@@ -10,9 +10,7 @@ let Router = require('react-router');
 let { Route, DefaultRoute, Link, RouteHandler } = Router;
 let io = require('socket.io-client');
 
-let Profiel = require("groepen/Profiel");
 let ProfielRouter = require('groepen/ProfielRouter');
-let ProfielLink = require("groepen/ProfielLink");
 
 // set the modern ui theme
 let mui = require('material-ui');
@@ -63,7 +61,7 @@ class Menu extends React.Component {
           <Link to="/">Thuis</Link>
           <Link to="/groepen">Groepen</Link>
           <Link to="/mededelingen">Mededelingen</Link>
-          <Link to="/profiel/1337">Profiel</Link>
+          <Link to="profiel-detail" params={{pk: 1337}}>Profiel</Link>
           <Link to="/forum">Reformaforum ({ this.state.forum_notifications })</Link>
         </div>
       </div>

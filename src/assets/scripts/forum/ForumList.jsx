@@ -5,6 +5,7 @@ let api = require("api");
 let { Link, RouteHandler } = require('react-router');
 
 let PostForm = require("forum/PostForm");
+let ProfielLink = require('../groepen/ProfielLink.jsx')
 
 class ForumList extends React.Component {
 
@@ -61,43 +62,43 @@ class ForumList extends React.Component {
 
   render() {
     return (
-      <div id="forum-thread-list">
-        <div id="page-action-menu">
-          <ul>
-            <li>
-              <button className="action">
-                + draadje
-              </button>
-              <Link className="action" to="forum-thread-list-page"
-                params={{pk: this.props.pk, page: Math.max(1, parseInt(this.props.page) - 1)}} >
-                &lt;
-              </Link>
-              <Link className="action" to="forum-thread-list-page"
-                params={{pk: this.props.pk, page: parseInt(this.props.page) + 1}} >
-                &gt;
-              </Link>
-            </li>
-          </ul>
-        </div>
+     <div id="forum-thread-list">
+       <div id="page-action-menu">
+         <ul>
+           <li>
+             <button className="action">
+               + draadje
+             </button>
+             <Link className="action" to="forum-thread-list-page"
+                   params={{pk: this.props.pk, page: Math.max(1, parseInt(this.props.page) - 1)}}>
+               &lt;
+             </Link>
+             <Link className="action" to="forum-thread-list-page"
+                   params={{pk: this.props.pk, page: parseInt(this.props.page) + 1}}>
+               &gt;
+             </Link>
+           </li>
+         </ul>
+       </div>
 
-        <div id="page-content">
-          <table>
-            <tbody>
-              { _.map(this.state.threads, (thread) => (
-                  <tr key={thread.pk}>
-                    <td>{thread.user.full_name}</td>
-                    <td>
-                      <Link to="forum-thread-detail" params={{pk: thread.pk}}>
-                        {thread.titel}
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
-      </div>
+       <div id="page-content">
+         <table>
+           <tbody>
+           { _.map(this.state.threads, (thread) => (
+            <tr key={thread.pk}>
+              <th><ProfielLink pk={thread.user.pk}>{thread.user.full_name}</ProfielLink></th>
+              <td>
+                <Link to="forum-thread-detail" params={{pk: thread.pk}}>
+                  {thread.titel}
+                </Link>
+              </td>
+            </tr>
+           ))
+           }
+           </tbody>
+         </table>
+       </div>
+     </div>
     );
   }
 }

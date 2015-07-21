@@ -8,13 +8,18 @@ let template = require("templates/Profiel");
 
 class Profiel extends React.Component {
 
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.func.isRequired
+    }
+  }
 
   static get propTypes() {
     return { pk: React.PropTypes.string.isRequired };
   }
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     // initial state
     this.state = {
