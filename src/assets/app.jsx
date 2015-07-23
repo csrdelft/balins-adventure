@@ -1,6 +1,7 @@
 let React = require("react");
 let $ = require("jquery");
 let _ = require("underscore");
+let Grid = require("bootstrap");
 
 let api = require("api");
 let ForumRouter = require("forum/Router");
@@ -15,7 +16,7 @@ let ProfielRouter = require('groepen/ProfielRouter');
 // set the modern ui theme
 let mui = require('material-ui');
 let ThemeManager = new mui.Styles.ThemeManager();
-ThemeManager.setTheme(ThemeManager.types.LIGHT);
+ThemeManager.setTheme(ThemeManager.types.DARK);
 
 // the top menu
 // where we use the Link element from the router to activate different views
@@ -72,6 +73,18 @@ class Menu extends React.Component {
 // the top level application just wraps the router.
 // The router is in charge of rendering the right child view based on the url.
 class App extends React.Component {
+
+  static get childContextTypes() {
+    return { muiTheme: React.PropTypes.object }
+  }
+
+  getChildContext() {
+    return {
+      // set the mui theme on the children through the context
+      muiTheme: ThemeManager.getCurrentTheme()
+    };
+  }
+
   render() {
     return (
       <div>
@@ -101,15 +114,54 @@ class NotFound extends React.Component {
   }
 }
 
+class Login extends React.Component {
+
+  static get childContextTypes() {
+    return { muiTheme: React.PropTypes.object }
+  }
+
+  getChildContext() {
+    return {
+      // set the mui theme on the children through the context
+      muiTheme: ThemeManager.getCurrentTheme()
+    };
+  }
+
+  render() {
+    return (
+      <Grid.Container>
+        <Grid.Row>
+          <Grid.Col id="login" offsetSm={4} sm={4}>
+            <Grid.Row id="login-header">
+              <h1>Inloggen</h1>
+            </Grid.Row>
+            <mui.TextField floatingLabelText="Gebruikersnaam" fullWidth />
+            <mui.TextField  floatingLabelText="Wachtwoord" fullWidth >
+              <input type="password" />
+            </mui.TextField>
+
+            <Grid.Row id="login-footer">
+              <mui.RaisedButton>OK</mui.RaisedButton>
+            </Grid.Row>
+          </Grid.Col>
+        </Grid.Row>
+      </Grid.Container>
+    );
+  }
+}
+
 // The actual routing tree.
 // This binds client side routes to views
 let routes = (
-  <Route path="/" handler={App}>
-    <Route path="" handler={NotFound} />
-    <Route path="forum">{ForumRouter}</Route>
-    <Route path="profiel">{ProfielRouter}</Route>
-    <Route path="mededelingen">{MededelingRouter}</Route>
-    <Route path="*" handler={NotFound} />
+  <Route>
+    <Route path="/login" handler={Login} name="login" />
+    <Route path="/" handler={App}>
+      <DefaultRoute handler={NotFound} />
+      <Route path="forum">{ForumRouter}</Route>
+      <Route path="mededelingen">{MededelingRouter}</Route>
+      <Route path="profiel">{ProfielRouter}</Route>
+      <Route path="*" handler={NotFound} />
+    </Route>
   </Route>
 );
 

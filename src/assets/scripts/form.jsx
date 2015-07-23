@@ -54,13 +54,6 @@ class ModernUIForm extends React.Component {
     return { fields: {} }
   }
 
-  getChildContext() {
-    return {
-      // set the mui theme on the children through the context
-      muiTheme: Styles.ThemeManager().getCurrentTheme()
-    };
-  }
-
   /**
    * `fields` is an object that describes the form
    *
