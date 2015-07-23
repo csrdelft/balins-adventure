@@ -13,7 +13,7 @@ let io = require('socket.io-client');
 
 let ProfielRouter = require('groepen/ProfielRouter');
 
-// set the modern ui theme
+let forms = require('forms');
 let mui = require('material-ui');
 let ThemeManager = new mui.Styles.ThemeManager();
 ThemeManager.setTheme(ThemeManager.types.DARK);
@@ -127,23 +127,33 @@ class Login extends React.Component {
     };
   }
 
+  submit(data) {
+    console.log(data);
+  }
+
   render() {
+    let formBuilder = () => {
+      return (
+        <Grid.Col id="login" offsetSm={4} sm={4}>
+          <Grid.Row id="login-header">
+            <h1>Inloggen</h1>
+          </Grid.Row>
+          <forms.TextField name="username" label="Gebruikersnaam" />
+          <forms.PasswordField name="password" label="Wachtwoord" />
+
+          <Grid.Row id="login-footer">
+            <forms.SubmitButton />
+          </Grid.Row>
+        </Grid.Col>
+      );
+    }
+
     return (
       <Grid.Container>
         <Grid.Row>
-          <Grid.Col id="login" offsetSm={4} sm={4}>
-            <Grid.Row id="login-header">
-              <h1>Inloggen</h1>
-            </Grid.Row>
-            <mui.TextField floatingLabelText="Gebruikersnaam" fullWidth />
-            <mui.TextField  floatingLabelText="Wachtwoord" fullWidth >
-              <input type="password" />
-            </mui.TextField>
-
-            <Grid.Row id="login-footer">
-              <mui.RaisedButton>OK</mui.RaisedButton>
-            </Grid.Row>
-          </Grid.Col>
+          <forms.Form ref="form"
+            formBuilder={formBuilder}
+            onSubmit={this.submit.bind(this)} />
         </Grid.Row>
       </Grid.Container>
     );

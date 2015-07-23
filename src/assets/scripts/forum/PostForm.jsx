@@ -1,11 +1,11 @@
-let { ModernUIForm, validators } = require('form');
+let forms = require('forms');
 var mui = require('material-ui');
 var { SelectField } = mui;
 let React = require("react");
 let _ = require('underscore');
 let api = require('api');
 
-class DraadForm extends ModernUIForm {
+class DraadForm extends React.Component {
 
   static get propTypes() {
     return { forum: React.PropTypes.number.isRequired };
