@@ -57,7 +57,7 @@ def user_login(request):
   if user is not None:
     if user.is_active:
       login(request, user)
-      Response(ShortProfielSerializer(user.profiel).data)
+      return Response(ShortProfielSerializer(user.profiel).data)
     else:
       raise PermissionDenied(detail="Inactieve gebruiker")
   else:

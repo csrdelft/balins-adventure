@@ -116,6 +116,10 @@ class NotFound extends React.Component {
 
 class Login extends React.Component {
 
+  static get contextTypes() {
+    return { router: React.PropTypes.object.isRequired }
+  }
+
   static get childContextTypes() {
     return { muiTheme: React.PropTypes.object }
   }
@@ -127,8 +131,30 @@ class Login extends React.Component {
     };
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      error_text: ""
+    };
+  }
+
+  setError(text) {
+    this.setState({
+      error_text: text
+    });
+  }
+
   submit(data) {
-    console.log(data);
+    api.login(data)
+      .then(
+        (resp) => {
+          console.debug(`Now logged in as ${resp.data.full_name}`);
+
+          this.context.router.transitionTo("/");
+        },
+        (resp) => this.setError(resp.data.detail)
+      );
   }
 
   render() {
@@ -138,6 +164,11 @@ class Login extends React.Component {
           <Grid.Row id="login-header">
             <h1>Inloggen</h1>
           </Grid.Row>
+          {
+            this.state.error_text
+              ? <p>{this.state.error_text}</p>
+              : false
+          }
           <forms.TextField name="username" label="Gebruikersnaam" />
           <forms.PasswordField name="password" label="Wachtwoord" />
 

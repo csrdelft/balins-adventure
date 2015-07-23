@@ -1,10 +1,21 @@
-var Q = require('q-xhr')(window.XMLHttpRequest, require('q'));
-var Cookies = require('cookies-js');
+let Q = require('q-xhr')(window.XMLHttpRequest, require('q'));
+let Cookies = require('cookies-js');
+let _ = require('underscore');
 
-var api = '/api/v1';
+let api = '/api/v1';
+
+function post(url, data, options={}) {
+  options.headers = _.defaults(options.headers || {}, {
+    'X-CSRFToken': Cookies.get('csrftoken')
+  });
+
+  return Q.xhr.post(url, data, options);
+}
 
 // api functions
-var api_obj = {
+let api_obj = {
+
+  login: (data) => post(`${api}/login`, data),
 
   // the forum resource
   forum: {
@@ -51,14 +62,7 @@ var api_obj = {
       },
 
       // create a new forum draadje
-      create: (data) => {
-        return Q.xhr
-          .post(`${api}/forum/threads/`, data, {
-            headers: {
-              'X-CSRFToken': Cookies.get('csrftoken')
-            }
-          });
-      },
+      create: (data) => post(`${api}/forum/threads/`, data),
 
       // get the metadata for the draad endpoint
       metadata : (pk) => {
