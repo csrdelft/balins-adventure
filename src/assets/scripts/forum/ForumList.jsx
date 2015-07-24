@@ -4,8 +4,8 @@ let _ = require("underscore");
 let api = require("api");
 let { Link, RouteHandler } = require('react-router');
 
-let PostForm = require("forum/PostForm");
 let ProfielLink = require('../groepen/ProfielLink.jsx')
+let ThreadForm = require("./ThreadForm");
 
 class ForumList extends React.Component {
 
@@ -79,6 +79,10 @@ class ForumList extends React.Component {
              </Link>
            </li>
          </ul>
+       </div>
+
+       <div id="thread-form">
+         <ThreadForm forum={this.props.pk} />
        </div>
 
        <div id="page-content">

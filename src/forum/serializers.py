@@ -29,8 +29,17 @@ class ForumPostSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = ForumPost
-    fields = ('pk', 'draad', 'user', 'tekst', 'datum_tijd', 'laatst_gewijzigd')
-    read_only_fields = ('user', 'datum_tijd', 'laatst_gewijzigd')
+    fields = (
+      'pk',
+      'draad',
+      'user',
+      'tekst',
+      'datum_tijd',
+    )
+    read_only_fields = (
+      'user',
+      'datum_tijd',
+    )
 
 class ShortForumDraadSerializer(serializers.ModelSerializer):
 
@@ -51,13 +60,12 @@ class ForumDraadSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = ForumDraad
-    read_only_fields = ('laatst_gewijzigd', 'datum_tijd', )
+    read_only_fields = ('datum_tijd', )
     fields = (
       'pk',
       'user',
       'forum',
       'titel',
-      'laatst_gewijzigd',
       'datum_tijd',
       'gesloten',
       'plakkerig'

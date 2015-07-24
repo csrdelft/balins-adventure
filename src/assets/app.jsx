@@ -16,7 +16,7 @@ let ProfielRouter = require('groepen/ProfielRouter');
 let forms = require('forms');
 let mui = require('material-ui');
 let ThemeManager = new mui.Styles.ThemeManager();
-ThemeManager.setTheme(ThemeManager.types.DARK);
+ThemeManager.setTheme(ThemeManager.types.LIGHT);
 
 // the top menu
 // where we use the Link element from the router to activate different views

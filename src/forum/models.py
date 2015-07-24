@@ -56,13 +56,9 @@ class ForumDraad(LiveModel):
   # TODO freeze this to true and delete the field
   eerste_post_plakkerig = models.IntegerField(default=True)
 
-  laatste_post_id = models.IntegerField(blank=True, null=True)
-  # TODO verwijderen? met bovenstaande id is de lookup toch cheap en kan de rest worden afgeleid
-  laatst_gewijzigd = models.DateTimeField(blank=True, null=True)
-  laatste_wijziging_user = models.ForeignKey(Profiel, blank=True, related_name='+', db_column="laatste_wijziging_uid")
-
-  # TODO verwijderen? niet nodig om dat configureerbaar te hebben in de DB...
-  pagina_per_post = models.IntegerField()
+  # keep this here to prevent expensive MAX(..) sql queries
+  # because we use the last post in the forum overview all the time
+  laatste_post = models.ForeignKey("ForumPost", blank=True, null=True)
 
   def __str__(self):
     return self.titel

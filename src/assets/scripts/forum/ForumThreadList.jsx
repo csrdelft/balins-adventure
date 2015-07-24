@@ -5,6 +5,14 @@ let api = require("api");
 
 class ForumThreadList extends React.Component {
 
+  static get propTypes() {
+    return { updateInterval: React.PropTypes.number };
+  }
+
+  static get defaultProps() {
+    return { updateInterval: 60000 };
+  }
+
   constructor(props) {
     super(props);
 
@@ -53,9 +61,5 @@ class ForumThreadList extends React.Component {
       </div>;
   }
 }
-
-// the component takes an attribute to manipulate the update interval
-ForumThreadList.propTypes = { updateInterval: React.PropTypes.number };
-ForumThreadList.defaultProps = { updateInterval: 60000 };
 
 module.exports = ForumThreadList

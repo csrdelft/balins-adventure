@@ -103,7 +103,7 @@ class ForumDraadViewSet(
     deny_on_fail(request.user.has_perm('forum.post_in_forumdeel', forum))
 
     # save the forumdeel
-    serializer.save(user=request.profiel, datum_tijd=datetime.now(), laatste_wijziging_user=request.profiel)
+    serializer.save(user=request.profiel, datum_tijd=datetime.now())
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
