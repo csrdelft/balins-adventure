@@ -57,10 +57,12 @@ class ShortForumDraadSerializer(serializers.ModelSerializer):
 class ForumDraadSerializer(serializers.ModelSerializer):
 
   user = ShortProfielSerializer(read_only=True)
+  laatste_wijziging_user = ShortProfielSerializer(source="laatste_post.user")
+  laatst_gewijzigd = serializers.ReadOnlyField(source="laatste_post.laatst_gewijzigd")
 
   class Meta:
     model = ForumDraad
-    read_only_fields = ('datum_tijd', )
+    read_only_fields = ('datum_tijd', "laatst_gewijzigd", "laatste_wijziging_user")
     fields = (
       'pk',
       'user',
@@ -68,7 +70,9 @@ class ForumDraadSerializer(serializers.ModelSerializer):
       'titel',
       'datum_tijd',
       'gesloten',
-      'plakkerig'
+      'plakkerig',
+      'laatst_gewijzigd',
+      'laatste_wijziging_user'
     )
 
 class EntireForumDeelSerializer(serializers.ModelSerializer):
