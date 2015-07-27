@@ -2,14 +2,25 @@ let Reflux = require('reflux');
 let api = require('api');
 
 let actions = Reflux.createActions({
-  // thread related actions
-  load: {asyncResult: true},
-  create: {asyncResult: true},
+
+  loadThreads: {asyncResult: true}, // load thread list (page, forum_pk)
+  loadThread: {asyncResult: true},  // load single thread (thread_pk)
+  createThread: {asyncResult: true},
+
+  createPost: {asyncResult: true},
+
 });
 
-// Action async event handlers.
-// They kick off the asynchronous action to the remote.
-actions.load.listenAndPromise((pk, page) => api.forum.threads.list(pk, page));
-actions.create.listenAndPromise(api.forum.threads.create);
+//
+// arguments to api repeated here for clarity
+//
+
+// thread related
+actions.loadThreads.listenAndPromise((pk, page) => api.forum.threads.list(pk, page));
+actions.loadThread.listenAndPromise((pk) => api.forum.threads.get(pk));
+actions.createThread.listenAndPromise((thread) => api.forum.threads.create(thread));
+
+// post related
+actions.createPost.listenAndPromise((post) => api.forum.posts.create(post));
 
 module.exports = actions;

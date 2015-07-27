@@ -1,10 +1,15 @@
 let React = require("react");
+let Reflux = require("reflux");
 let $ = require("jquery");
 let _ = require("underscore");
 let Layout = require("Layout");
 let { Link, RouteHandler } = require('react-router');
-let ProfielLink = require("../groepen/ProfielLink");
+
+let ProfielLink = require("groepen/ProfielLink");
+let PostForm = require("forum/PostForm");
 let api = require("api");
+let stores = require("forum/stores");
+let actions = require("forum/actions");
 
 class ForumPost extends React.Component {
 
@@ -54,12 +59,8 @@ class ForumThread extends React.Component {
     };
   }
 
-  update(pk, page=1) {
-    api.forum.threads.get(pk, page)
-      .then(
-      (resp) => this.setState({thread: resp.data}),
-      (resp) => console.error('Getting thread failed with status ' + resp.status)
-    );
+  update(pk) {
+    actions.loadThread(pk);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,6 +70,12 @@ class ForumThread extends React.Component {
   }
 
   componentWillMount() {
+    // listen to thread store
+    stores.threadStore.listen((threads) => {
+      this.setState({thread: threads[this.props.pk]})
+    });
+
+    // kick of fresh thread load
     this.update(this.props.pk);
   }
 
@@ -80,7 +87,7 @@ class ForumThread extends React.Component {
             <ul>
               <li>
                 <button className="action">
-                  + draadje
+                  <strong>+</strong> bericht
                 </button>
                 <Link className="action" to="forum-thread-detail-page"
                   params={{pk: this.props.pk, page: Math.max(1, parseInt(this.props.page) - 1)}} >
@@ -95,11 +102,12 @@ class ForumThread extends React.Component {
           </div>
 
           <div id="page-content">
-          <table>
-            <tbody>
-              {_.map(this.state.thread.posts, (p) => <ForumPost post={p} key={p.pk} /> )}
-            </tbody>
-          </table>
+            <table>
+              <tbody>
+                {_.map(this.state.thread.posts, (p) => <ForumPost post={p} key={p.pk} /> )}
+              </tbody>
+            </table>
+            <PostForm thread={this.props.pk} />
           </div>
         </div>
       );

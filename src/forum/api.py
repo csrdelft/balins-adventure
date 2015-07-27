@@ -155,18 +155,16 @@ class ForumPostViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     # check if we can validly deserialize the json data
     serializer = ForumPostSerializer(data=request.data)
     if serializer.is_valid():
-      draad = ForumDraad.objects.get(serializer.validated_data['draad_id'])
+      draad = serializer.validated_data['draad']
 
       # make sure the user can post in the forum draad
       deny_on_fail(request.user.has_perm('forum.post_in_forumdeel', draad.forum))
       deny_on_fail(not draad.gesloten)
 
       # create the post
-      post = serializer.save(datum_tijd=datetime.now(), laatst_gewijzigd=datetime.now())
+      post = serializer.save(user=request.profiel, datum_tijd=datetime.now(), laatst_gewijzigd=datetime.now())
 
       # update the draad
-      draad.laatst_gewijzigd = request.data['laatst_gewijzigd']
-      draad.laatste_wijziging_user_id = request.profiel.pk
       draad.laatste_post_id = post.pk
       draad.save()
 

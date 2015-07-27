@@ -71,7 +71,13 @@ let api_obj = {
           url: api + '/forum/threads/' + pk + '/'
         });
       }
+    },
+
+    posts: {
+      // create a new forum post
+      create: (data) => post(`${api}/forum/posts/`, data),
     }
+
   },
 
   // the auth and base resources

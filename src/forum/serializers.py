@@ -25,7 +25,7 @@ class ForumDeelSerializer(serializers.ModelSerializer):
 
 class ForumPostSerializer(serializers.ModelSerializer):
 
-  user = ShortProfielSerializer()
+  user = ShortProfielSerializer(read_only=True)
 
   class Meta:
     model = ForumPost

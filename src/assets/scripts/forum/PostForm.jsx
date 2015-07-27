@@ -5,12 +5,11 @@ let mui = require("material-ui");
 let forms = require('forms');
 let actions = require('forum/actions');
 
-class ThreadForm extends React.Component {
+class PostForm extends React.Component {
 
   static get propTypes() {
     return {
-      forum: React.PropTypes.number.isRequired,
-      onCancel: React.PropTypes.func
+      thread: React.PropTypes.number.isRequired
     };
   }
 
@@ -21,14 +20,13 @@ class ThreadForm extends React.Component {
   render() {
     let handleSubmit = (data) => {
       data = _.extend(data, {
-        forum: this.props.forum,
-        gesloten: false
+        draad: this.props.thread
       });
 
       // kick of the create actions
       // TODO error handling
       actions
-        .createThread(data)
+        .createPost(data)
         .then(() => this.clear())
         .catch((resp) => console.error(resp.data))
         .done();
@@ -36,16 +34,9 @@ class ThreadForm extends React.Component {
 
     let formBuilder = () => {
       return (
-        <div className="thread-form">
-          <forms.CharField ref="form" name="titel" />
+        <div className="forumpost-form">
+          <forms.TextField ref="form" name="tekst" />
           <br />
-          <forms.TextField name="tekst" />
-          <br />
-          {
-            this.props.onCancel
-            ? <mui.RaisedButton onClick={this.props.onCancel}>Annuleren</mui.RaisedButton>
-            : false
-          }
           <forms.SubmitButton />
         </div>
       );
@@ -55,4 +46,4 @@ class ThreadForm extends React.Component {
   }
 }
 
-module.exports = ThreadForm;
+module.exports = PostForm;

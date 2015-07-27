@@ -47,16 +47,21 @@ class ForumList extends React.Component {
   componentWillMount() {
     // subscribe at the thread store
     this.unsubscribe = stores
-      .threadStore
-      .listen((threads) => this.setState({threads: threads}));
+      .threadsByPageStore
+      .listen((threadsPage) => {
+        let [page, threads] = threadsPage;
+        // ignore other pages
+        if(page == this.props.page)
+          this.setState({threads: threads})
+    });
 
-    // load forum threads
-    this.update(this.props.pk);
+    // force fresh load of forum threads
+    this.update(this.props.pk, this.props.page);
   }
 
 
   update(pk, page=1) {
-    actions.load(pk, page);
+    actions.loadThreads(pk, page);
   }
 
   componentWillUnmount() {

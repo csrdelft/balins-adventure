@@ -20,9 +20,6 @@ class StekPaginator(PageNumberPagination):
   page_size_query_param = 'page_size'
   max_page_size = 1000
 
-  def get_paginated_response(self, data):
-    return Response(data)
-
 class ProfielApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
   permission_classes = [IsAuthenticated]
