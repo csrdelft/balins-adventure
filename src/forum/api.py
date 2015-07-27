@@ -3,6 +3,7 @@ from django.utils.decorators import method_decorator
 from django.conf import settings
 
 from rest_framework import mixins, status, viewsets
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.decorators import list_route
 from rest_framework.routers import DefaultRouter
@@ -95,15 +96,35 @@ class ForumDraadViewSet(
     return Response(self.get_serializer(queryset, many=True).data)
 
   def create(self, request, *args, **kwargs):
+    """ Create a new forum thread including the first post
+        ---
+        parameters:
+          - name: tekst
+            description: Text of the first post
+            required: true
+            type: string
+    """
     serializer = self.get_serializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     forum = serializer.validated_data['forum']
 
-    # check that the user can create a draadje in this forum
+    # check that the user can create a thread in this forum
     deny_on_fail(request.user.has_perm('forum.post_in_forumdeel', forum))
 
-    # save the forumdeel
-    serializer.save(user=request.profiel, datum_tijd=datetime.now())
+    # validate the tekst field
+    tekst = request.data.get('tekst', None)
+    if tekst is None or len(tekst.strip()) < 15:
+      raise ValidationError("Tekst moet minstens 15 tekens bevatten")
+
+    # save the new thread...
+    thread = serializer.save(user=request.profiel, datum_tijd=datetime.now())
+
+    # create the first post
+    post = ForumPost.objects.create(
+      user=request.profiel,
+      tekst=request.data.get('tekst', None),
+      draad=thread
+    )
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -115,6 +136,7 @@ class ForumDraadViewSet(
 
     # we cannot elegantly handle pagination by request parameters
     # of a related object in a serializer
+    # so we do it here manually
     data = ForumDraadSerializer(draad).data
     posts_query = draad.posts.all().order_by("datum_tijd")
     data['posts'] = ForumPostSerializer(

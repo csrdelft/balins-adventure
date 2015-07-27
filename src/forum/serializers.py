@@ -57,7 +57,7 @@ class ShortForumDraadSerializer(serializers.ModelSerializer):
 class ForumDraadSerializer(serializers.ModelSerializer):
 
   user = ShortProfielSerializer(read_only=True)
-  laatste_wijziging_user = ShortProfielSerializer(source="laatste_post.user")
+  laatste_wijziging_user = ShortProfielSerializer(read_only=True, source="laatste_post.user")
   laatst_gewijzigd = serializers.ReadOnlyField(source="laatste_post.laatst_gewijzigd")
 
   class Meta:

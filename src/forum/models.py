@@ -2,6 +2,8 @@ from django.db import models
 from base.models import Profiel
 from livefield import LiveModel
 
+from datetime import datetime
+
 class ForumCategorie(models.Model):
   categorie_id = models.AutoField(primary_key=True)
   titel = models.CharField(max_length=255)
@@ -124,10 +126,9 @@ class ForumPost(LiveModel):
   draad = models.ForeignKey(ForumDraad, db_column="draad_id", related_name='posts')
   user = models.ForeignKey(Profiel, db_column='uid')
   tekst = models.TextField()
-  datum_tijd = models.DateTimeField()
-  laatst_gewijzigd = models.DateTimeField()
+  datum_tijd = models.DateTimeField(default=datetime.now)
+  laatst_gewijzigd = models.DateTimeField(default=datetime.now)
   bewerkt_tekst = models.TextField(blank=True)
-  auteur_ip = models.CharField(max_length=255, blank=True)
   wacht_goedkeuring = models.BooleanField(default=False)
 
   def __str__(self):
