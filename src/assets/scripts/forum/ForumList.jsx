@@ -55,6 +55,7 @@ class ForumList extends React.Component {
   }
 
   componentWillUnmount() {
+    // make sure to unsubscribe from the thread store
     this.unsubscribe();
   }
 

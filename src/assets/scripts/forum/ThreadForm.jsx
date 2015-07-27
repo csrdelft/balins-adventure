@@ -25,9 +25,11 @@ class ThreadForm extends React.Component {
         gesloten: false
       });
 
+      // kick of the create actions
+      // TODO error handling
       actions
         .create(data)
-        .catch((resp) => console.log(resp.data))
+        .catch((resp) => console.error(resp.data))
         .done();
     }
 
