@@ -4,31 +4,37 @@
 // we need to be very specific or the generic layout sass
 // takes over
 #app #page #forum-thread-list
-  #page-action-menu
-    ul
-      border-bottom: 0px
-
   #page-content
     table
       width: 100%
+      border-top: 1px solid #ddd
 
       tr
+        border-top: none
         border-bottom: 1px solid #ddd
-        border-top: 1px solid #ddd
         td
           padding: 5px
 
-#app #page #forum-thread
-  #page-action-menu
-    ul
-      border-bottom: 0px
 
+  #thread-form
+    height: 0px
+    padding: 15px
+      top: 0px
+      bottom: 0px
+    overflow: hidden
+
+    &.open
+      padding: 15px
+      height: auto
+
+#app #page #forum-thread
   #page-content
     table
       width: 100%
 
       tr
+        border-top: none
         border-bottom: 1px solid #ddd
-        border-top: 1px solid #ddd
+
         td
           padding: 5px

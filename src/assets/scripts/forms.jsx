@@ -117,7 +117,7 @@ class Field extends React.Component {
   }
 }
 
-class TextField extends Field {
+class CharField extends Field {
 
   constructor(props) {
     super(props);
@@ -159,7 +159,7 @@ class TextField extends Field {
   }
 }
 
-class PasswordField extends TextField {
+class PasswordField extends CharField {
 
   render() {
     return <mui.TextField
@@ -169,6 +169,17 @@ class PasswordField extends TextField {
       onChange={this.onChange.bind(this)} fullWidth >
       <input type="password"/>
     </mui.TextField>;
+  }
+}
+
+class TextField extends CharField {
+  render() {
+    return <mui.TextField
+      floatingLabelText={this.props.label || this.props.name}
+      errorText={this.state.error_text}
+      value={this.context.form.get(this.props.name)}
+      onChange={this.onChange.bind(this)} fullWidth
+      multiLine={true} />;
   }
 }
 
@@ -186,6 +197,7 @@ class SubmitButton extends Field {
 module.exports = {
   Form: Form,
   Field: Field,
+  CharField: CharField,
   TextField: TextField,
   SubmitButton: SubmitButton,
   PasswordField: PasswordField,

@@ -2,11 +2,15 @@ let forms = require('forms');
 let React = require("react");
 let _ = require('underscore');
 let api = require('api');
+let mui = require("material-ui");
 
 class ThreadForm extends React.Component {
 
   static get propTypes() {
-    return { forum: React.PropTypes.number.isRequired };
+    return {
+      forum: React.PropTypes.number.isRequired,
+      onCancel: React.PropTypes.func
+    };
   };
 
   constructor(props) {
@@ -32,9 +36,16 @@ class ThreadForm extends React.Component {
 
     let formBuilder = () => {
       return (
-        <div>
-          <forms.TextField name="titel" />
+        <div className="thread-form">
+          <forms.CharField name="titel" />
+          <br />
           <forms.TextField name="tekst" />
+          <br />
+          {
+            this.props.onCancel
+            ? <mui.RaisedButton onClick={this.props.onCancel}>Annuleren</mui.RaisedButton>
+            : false
+          }
           <forms.SubmitButton />
         </div>
       );

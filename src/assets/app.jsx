@@ -169,7 +169,7 @@ class Login extends React.Component {
               ? <p>{this.state.error_text}</p>
               : false
           }
-          <forms.TextField name="username" label="Gebruikersnaam" />
+          <forms.CharField name="username" label="Gebruikersnaam" />
           <forms.PasswordField name="password" label="Wachtwoord" />
 
           <Grid.Row id="login-footer">

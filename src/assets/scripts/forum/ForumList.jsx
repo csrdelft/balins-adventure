@@ -1,9 +1,10 @@
 let React = require("react");
 let $ = require("jquery");
 let _ = require("underscore");
+let cs = require("classnames");
 let api = require("api");
 let { Link, RouteHandler } = require('react-router');
-
+let mui = require("material-ui");
 let ProfielLink = require('../groepen/ProfielLink.jsx')
 let ThreadForm = require("./ThreadForm");
 
@@ -34,7 +35,8 @@ class ForumList extends React.Component {
 
     // initial state
     this.state = {
-      threads: []
+      threads: [],
+      show_create: false
     };
   }
 
@@ -60,13 +62,23 @@ class ForumList extends React.Component {
     this.update(this.props.pk);
   }
 
+  showCreate(show=true) {
+    this.setState({
+      show_create: show
+    });
+  }
+
   render() {
+    let create_classes = cs({
+      open: this.state.show_create
+    });
+
     return (
      <div id="forum-thread-list">
        <div id="page-action-menu">
          <ul>
            <li>
-             <button className="action">
+             <button className="action" onClick={this.showCreate.bind(this, true)}>
                + draadje
              </button>
              <Link className="action" to="forum-thread-list-page"
@@ -81,8 +93,9 @@ class ForumList extends React.Component {
          </ul>
        </div>
 
-       <div id="thread-form">
-         <ThreadForm forum={this.props.pk} />
+       <div id="thread-form" className={create_classes} >
+         <h2>Nieuw draadje</h2>
+         <ThreadForm forum={this.props.pk} onCancel={this.showCreate.bind(this, false)}/>
        </div>
 
        <div id="page-content">
