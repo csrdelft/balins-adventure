@@ -183,7 +183,11 @@ class TextField extends CharField {
   }
 }
 
-class SubmitButton extends Field {
+class SubmitButton extends React.Component {
+
+  static get contextTypes() {
+    return { form: React.PropTypes.object.isRequired };
+  }
 
   submitForm() {
     this.context.form.submit();

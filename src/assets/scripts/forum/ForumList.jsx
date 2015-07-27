@@ -50,8 +50,13 @@ class ForumList extends React.Component {
       .threadStore
       .listen((threads) => this.setState({threads: threads}));
 
-    // reload forum threads
-    actions.load();
+    // load forum threads
+    this.update(this.props.pk);
+  }
+
+
+  update(pk, page=1) {
+    actions.load(pk, page);
   }
 
   componentWillUnmount() {

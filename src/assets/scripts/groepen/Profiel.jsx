@@ -4,7 +4,6 @@ let _ = require("underscore");
 let Layout = require("Layout");
 
 let api = require("api");
-let template = require("templates/Profiel");
 
 class Profiel extends React.Component {
 
@@ -30,7 +29,10 @@ class Profiel extends React.Component {
   update(pk) {
     api.profiel.get(pk)
       .then(
-      (resp) => this.setState({profiel: resp.data}),
+      (resp) => {
+        console.debug("Profile loaded...");
+        this.setState({profiel: resp.data})
+      },
       (resp) => console.error('Getting profiel failed with status ' + resp.status)
     );
   }
@@ -48,34 +50,31 @@ class Profiel extends React.Component {
   template() {
     // helper to make setters for profiel attributes
     let profiel = this.state.profiel;
-    let setter = (attr) => {
-      return (v) => this.setState(_.extend(this.state.profiel, {[attr]: v}));
-    }
 
     // actual template based on the state
     return (
       <div>
         <h1>
-          <InlineInput value={p.voornaam} setter={setter("voornaam")}/>
+          {profiel.voornaam}
           &nbsp;
-          <InlineInput value={p.tussenvoegsel} setter={setter("tussenvoegsel")}/>
+          {profiel.tussenvoegsel}
           &nbsp;
-          <InlineInput value={p.achternaam} setter={setter("achternaam")}/>
+          {profiel.achternaam}
         </h1>
         <h3>
           A.K.A.
           &nbsp;
-          <InlineInput value={p.nickname} setter={setter("nickname")}/>
+          {profiel.nickname}
         </h3>
         <div className="gegevens">
           <table className="table table-bordered">
             <tr>
               <th>Verticale</th>
-              <td>{ p.verticale.naam }</td>
+              <td>{ profiel.verticale.naam }</td>
             </tr>
             <tr>
               <th>Kring</th>
-              <td>{ p.kring.naam }</td>
+              <td>{ profiel.kring.naam }</td>
             </tr>
           </table>
         </div>
@@ -84,7 +83,7 @@ class Profiel extends React.Component {
           <h2>Commissies</h2>
           <table className="table table-bordered">
             <tbody>
-            { _.map(p.commissies, (c, i) =>
+            { _.map(profiel.commissies, (c, i) =>
               <tr key={i}><td>{ c.naam }</td></tr>
             )}
             </tbody>
@@ -93,7 +92,7 @@ class Profiel extends React.Component {
           <h2>Werkgroepen</h2>
           <table className="table table-bordered">
             <tbody>
-            { _.map(p.werkgroepen, (c, i) =>
+            { _.map(profiel.werkgroepen, (c, i) =>
               <tr key={i}><td>{ c.naam }</td></tr>
             )}
             </tbody>
@@ -102,7 +101,7 @@ class Profiel extends React.Component {
           <h2>Overige Groepen</h2>
           <table className="table table-bordered">
             <tbody>
-            { _.map(p.groepen, (c, i) =>
+            { _.map(profiel.groepen, (c, i) =>
               <tr key={i}><td>{ c.naam }</td></tr>
             )}
             </tbody>
