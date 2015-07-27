@@ -1,4 +1,5 @@
 let React = require("react");
+let Reflux = require('reflux');
 let $ = require("jquery");
 let _ = require("underscore");
 let Grid = require("bootstrap");
@@ -15,8 +16,13 @@ let ProfielRouter = require('groepen/ProfielRouter');
 
 let forms = require('forms');
 let mui = require('material-ui');
+
+// configure mui
 let ThemeManager = new mui.Styles.ThemeManager();
 ThemeManager.setTheme(ThemeManager.types.LIGHT);
+
+// configure reflux
+Reflux.setPromiseFactory(require('q').Promise);
 
 // the top menu
 // where we use the Link element from the router to activate different views

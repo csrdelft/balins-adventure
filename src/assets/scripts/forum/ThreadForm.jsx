@@ -1,8 +1,9 @@
-let forms = require('forms');
 let React = require("react");
 let _ = require('underscore');
 let api = require('api');
 let mui = require("material-ui");
+let forms = require('forms');
+let actions = require('forum/actions');
 
 class ThreadForm extends React.Component {
 
@@ -19,19 +20,15 @@ class ThreadForm extends React.Component {
 
   render() {
     let handleSubmit = (data) => {
-      // create the request body
       data = _.extend(data, {
         forum: this.props.forum,
         gesloten: false
       });
 
-      // post the forum thread
-      // and return the promise
-      return api.forum.threads.create(data).then(
-        // todo
-        (resp) => console.log("SUCCESS!", resp),
-        (resp) => _.each(resp.data, (errs, name) => this.set_error(name, errs[0]))
-      );
+      actions
+        .create(data)
+        .catch((resp) => console.log(resp.data))
+        .done();
     }
 
     let formBuilder = () => {

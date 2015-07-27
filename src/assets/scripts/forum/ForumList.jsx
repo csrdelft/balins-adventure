@@ -1,12 +1,16 @@
 let React = require("react");
+let Reflux = require("reflux");
 let $ = require("jquery");
 let _ = require("underscore");
 let cs = require("classnames");
 let api = require("api");
+let mixin = require("mixin");
+
 let { Link, RouteHandler } = require('react-router');
-let mui = require("material-ui");
-let ProfielLink = require('../groepen/ProfielLink.jsx')
-let ThreadForm = require("./ThreadForm");
+let ProfielLink = require('groepen/ProfielLink.jsx')
+let ThreadForm = require("forum/ThreadForm");
+let stores = require("forum/stores");
+let actions = require("forum/actions");
 
 class ForumList extends React.Component {
 
@@ -35,31 +39,29 @@ class ForumList extends React.Component {
 
     // initial state
     this.state = {
-      threads: [],
+      threads: {},
       show_create: false
     };
   }
 
-  update(pk, page=1) {
-    // use the api to get most recent forum threads
-    // this returns a promise that we can register our success and error callbacks on
-    // at success we simply update the state of the component
-    api.forum.threads.list(pk, page)
-      .then(
-        (resp) => this.setState({ threads: resp.data }),
-        (resp) => console.error('Getting recent forum posts failed with status ' + resp.status)
-      );
+  componentWillMount() {
+    // subscribe at the thread store
+    this.unsubscribe = stores
+      .threadStore
+      .listen((threads) => this.setState({threads: threads}));
+
+    // reload forum threads
+    actions.load();
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.pk != this.props.pk || nextProps.page != this.props.page) {
       this.update(nextProps.pk, nextProps.page);
     }
-  }
-
-  componentWillMount() {
-    // load initial recent forum posts
-    this.update(this.props.pk);
   }
 
   showCreate(show=true) {
@@ -102,15 +104,15 @@ class ForumList extends React.Component {
          <table>
            <tbody>
            { _.map(this.state.threads, (thread) => (
-            <tr key={thread.pk}>
-              <th><ProfielLink pk={thread.user.pk}>{thread.user.full_name}</ProfielLink></th>
-              <td>
-                <Link to="forum-thread-detail" params={{pk: thread.pk}}>
-                  {thread.titel}
-                </Link>
-              </td>
-            </tr>
-           ))
+              <tr key={thread.pk}>
+                <th><ProfielLink pk={thread.user.pk}>{thread.user.full_name}</ProfielLink></th>
+                <td>
+                  <Link to="forum-thread-detail" params={{pk: thread.pk}}>
+                    {thread.titel}
+                  </Link>
+                </td>
+              </tr>
+             ))
            }
            </tbody>
          </table>
