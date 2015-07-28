@@ -2,6 +2,7 @@ let _ = require('underscore');
 let actions = require('./actions.js');
 let Reflux = require('reflux');
 
+// Store that specializes in paginated thread lists
 // updates from this store are tuples [ page, threads ]
 let threadsByPageStore = Reflux.createStore({
 
@@ -35,7 +36,9 @@ let threadsByPageStore = Reflux.createStore({
   },
 });
 
-// updates from this store is a Map[pk -> thread]
+// Store that specializes in threads by pk
+// Updates from this store are a Map[pk -> thread]
+// Each thread has a field 'posts' that is a Map[page -> posts_page]
 let threadStore = Reflux.createStore({
 
   // listen to all forum action
@@ -47,7 +50,14 @@ let threadStore = Reflux.createStore({
   },
 
   updateThread: function(thread) {
+    // order posts by page
+    let posts_page = _.clone(thread.posts);
+    thread.posts = (this.threads[thread.pk] || {posts: {}}).posts;
+    thread.posts[posts_page.pageno] = posts_page;
+
+    // update the state
     this.threads[thread.pk] = thread;
+
     this.trigger(this.threads);
   },
 
@@ -59,16 +69,6 @@ let threadStore = Reflux.createStore({
     this.updateThread(resp.data);
   },
 
-  onLoadThreadsCompleted: function(resp) {
-    this.threads = _
-      .chain(resp.data)
-      .map((thread) => [thread.pk, thread])
-      .object()
-      .value();
-
-    this.trigger(this.threads);
-  },
-
   onLoadThreadCompleted: function(resp) {
     this.updateThread(resp.data);
   },
@@ -77,13 +77,16 @@ let threadStore = Reflux.createStore({
     let post = resp.data;
     let thread = this.threads[post.draad];
 
-    // if the thread is not in the store, no one is interested
-    if(thread !== undefined) {
-      // optimistic update
-      thread.posts.push(post);
+    // newest posts are on the last page
+    let page = _.max(thread.posts, (_, pageno) => pageno);
 
-      // reload the single thread
-      actions.loadThread(thread.pk);
+    // if the thread or posts page is not in the store, no one is interested
+    if(thread !== undefined && page !== undefined) {
+      // optimistic update
+      page.results.unshift(post);
+
+      // reload the first page of this thread
+      actions.loadThread(thread.pk, 1);
 
       // notify listeners
       this.trigger(this.threads);

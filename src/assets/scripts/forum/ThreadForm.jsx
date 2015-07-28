@@ -14,10 +14,6 @@ class ThreadForm extends React.Component {
     };
   }
 
-  clear() {
-    console.debug("TODO: Supposed to clear the form now...");
-  }
-
   render() {
     let handleSubmit = (data) => {
       data = _.extend(data, {
@@ -29,7 +25,7 @@ class ThreadForm extends React.Component {
       // TODO error handling
       actions
         .createThread(data)
-        .then(() => this.clear())
+        .then(() => this.refs.form.clear())
         .catch((resp) => console.error(resp.data))
         .done();
     }

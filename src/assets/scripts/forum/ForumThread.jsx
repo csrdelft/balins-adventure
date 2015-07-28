@@ -59,8 +59,8 @@ class ForumThread extends React.Component {
     };
   }
 
-  update(pk) {
-    actions.loadThread(pk);
+  update(pk, page) {
+    actions.loadThread(pk, page);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,15 +72,19 @@ class ForumThread extends React.Component {
   componentWillMount() {
     // listen to thread store
     stores.threadStore.listen((threads) => {
-      this.setState({thread: threads[this.props.pk]})
+      this.setState({
+        thread: threads[this.props.pk]
+      });
     });
 
     // kick of fresh thread load
-    this.update(this.props.pk);
+    this.update(this.props.pk, this.props.page);
   }
 
   render() {
-    if(this.state.thread) {
+    // make sure that the thread and the right posts page are loaded
+    if(this.state.thread && this.state.thread.posts[this.props.page]) {
+      let posts_page = this.state.thread.posts[this.props.page];
       return (
         <div id="forum-thread">
           <div id="page-action-menu">
@@ -104,7 +108,7 @@ class ForumThread extends React.Component {
           <div id="page-content">
             <table>
               <tbody>
-                {_.map(this.state.thread.posts, (p) => <ForumPost post={p} key={p.pk} /> )}
+                {_.map(posts_page.results, (p) => <ForumPost post={p} key={p.pk} /> )}
               </tbody>
             </table>
             <PostForm thread={this.props.pk} />

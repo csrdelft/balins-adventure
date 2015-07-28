@@ -58,9 +58,19 @@ class Form extends React.Component {
   constructor(props) {
     super(props);
 
+    this.fields = {};
     this.state = {
       data: {}
     };
+  }
+
+  // register a field with the form
+  // (this is required for the form to be able to control the children directly)
+  register(name, field) {
+    if(this.fields[name] !== undefined)
+      console.warn(`A field with name ${name} is already registered on this form`);
+
+    this.fields[name] = field;
   }
 
   set(name, value) {
@@ -77,6 +87,11 @@ class Form extends React.Component {
     return {
       form: this
     };
+  }
+
+  clear() {
+    // clear the children
+    _.each(this.fields, (field, name) => field.clear())
   }
 
   submit() {
@@ -105,6 +120,7 @@ class Field extends React.Component {
     return {
       name: React.PropTypes.string.isRequired,
       label: React.PropTypes.string,
+      initial: React.PropTypes.any,
       validator: React.PropTypes.func,
     };
   }
@@ -112,12 +128,31 @@ class Field extends React.Component {
   static get defaultProps() {
     return {
       validator: (val) => [],
-      label: ""
+      label: "",
+      initial: undefined
     }
+  }
+
+  clear() {
+    // clear the value with the initial value
+    this.context.form.set(this.props.name, this.props.initial);
+  }
+
+  componentWillMount() {
+    this.context.form.register(this.props.name, this);
+
+    // init the state
+    this.context.form.set(this.props.name, this.props.initial);
   }
 }
 
 class CharField extends Field {
+
+  static get defaultProps() {
+    return _.extend(Field.defaultProps, {
+      initial: ""
+    });
+  }
 
   constructor(props) {
     super(props);
@@ -128,6 +163,8 @@ class CharField extends Field {
   }
 
   componentWillMount() {
+    super.componentWillMount();
+
     // initial value
     this.context.form.set(this.props.name, "");
   }
@@ -173,6 +210,7 @@ class PasswordField extends CharField {
 }
 
 class TextField extends CharField {
+
   render() {
     return <mui.TextField
       floatingLabelText={this.props.label || this.props.name}

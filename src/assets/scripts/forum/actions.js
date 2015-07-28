@@ -17,7 +17,7 @@ let actions = Reflux.createActions({
 
 // thread related
 actions.loadThreads.listenAndPromise((pk, page) => api.forum.threads.list(pk, page));
-actions.loadThread.listenAndPromise((pk) => api.forum.threads.get(pk));
+actions.loadThread.listenAndPromise((pk, postsPage) => api.forum.threads.get(pk, postsPage));
 actions.createThread.listenAndPromise((thread) => api.forum.threads.create(thread));
 
 // post related

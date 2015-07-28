@@ -139,10 +139,9 @@ class ForumDraadViewSet(
     # so we do it here manually
     data = ForumDraadSerializer(draad).data
     posts_query = draad.posts.all().order_by("datum_tijd")
-    data['posts'] = ForumPostSerializer(
-      StekPaginator().paginate_queryset(posts_query, request),
-      many=True
-    ).data
+    paginator = StekPaginator()
+    posts = ForumPostSerializer(paginator.paginate_queryset(posts_query, request), many=True).data
+    data['posts'] = paginator.get_paginated_response(posts).data
 
     return Response(data)
 

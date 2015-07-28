@@ -13,10 +13,6 @@ class PostForm extends React.Component {
     };
   }
 
-  clear() {
-    console.debug("TODO: Supposed to clear the form now...");
-  }
-
   render() {
     let handleSubmit = (data) => {
       data = _.extend(data, {
@@ -27,22 +23,22 @@ class PostForm extends React.Component {
       // TODO error handling
       actions
         .createPost(data)
-        .then(() => this.clear())
         .catch((resp) => console.error(resp.data))
+        .then(() => this.refs.postForm.clear())
         .done();
     }
 
     let formBuilder = () => {
       return (
         <div className="forumpost-form">
-          <forms.TextField ref="form" name="tekst" />
+          <forms.TextField name="tekst" />
           <br />
           <forms.SubmitButton />
         </div>
       );
     };
 
-    return <forms.Form formBuilder={formBuilder} onSubmit={handleSubmit} />;
+    return <forms.Form ref="postForm" formBuilder={formBuilder} onSubmit={handleSubmit} />;
   }
 }
 
