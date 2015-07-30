@@ -12,7 +12,7 @@ class ForumCategorieSerializer(serializers.ModelSerializer):
       'volgorde',
     )
 
-class ForumDeelSerializer(serializers.ModelSerializer):
+class ListForumDeelSerializer(serializers.ModelSerializer):
   categorie = ForumCategorieSerializer()
 
   class Meta:
@@ -112,7 +112,7 @@ class DetailForumDraadSerializer(ListForumDraadSerializer):
     read_only_fields = ListForumDraadSerializer.Meta.read_only_fields
     fields = ListForumDraadSerializer.Meta.fields + ('posts',)
 
-class EntireForumDeelSerializer(serializers.ModelSerializer):
+class DetailForumDeelSerializer(serializers.ModelSerializer):
   draden = ShortForumDraadSerializer(many=True)
 
   class Meta:

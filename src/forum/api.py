@@ -11,7 +11,7 @@ from rest_framework.routers import DefaultRouter
 from .serializers import *
 from base.utils import notification_client, deny_on_fail
 from base.serializers import *
-from base.api import StekPaginator
+from base.api import StekPaginator, StekViewSet
 
 from datetime import datetime
 import logging
@@ -45,9 +45,10 @@ def notify_subscribers(draad, post):
       }
     })
 
-class ForumViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class ForumViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
 
-  serializer_class = ForumDeelSerializer
+  detail_serializer_class = DetailForumDeelSerializer
+  list_serializer_class = ListForumDeelSerializer
 
   def get_queryset(self):
     return ForumDeel.objects.all()
@@ -63,34 +64,22 @@ class ForumViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Ge
     # permission check
     deny_on_fail(request.user.has_perm('forum.view_forumdeel', deel))
 
-    return Response(EntireForumDeelSerializer(deel).data)
+    return Response(self.get_serializer(deel).data)
 
 class ForumDraadViewSet(
   mixins.DestroyModelMixin,
   mixins.CreateModelMixin,
   mixins.ListModelMixin,
   mixins.RetrieveModelMixin,
-  viewsets.GenericViewSet):
+  StekViewSet):
 
   detail_serializer_class = DetailForumDraadSerializer
   list_serializer_class = ListForumDraadSerializer
-
-  def get_serializer(self, *args, **kwargs):
-    if self.action == 'list':
-      cls = self.__class__.list_serializer_class
-    else:
-      cls = self.__class__.detail_serializer_class
-
-    # default the context
-    kwargs['context'] = self.get_serializer_context()
-
-    return cls(*args, **kwargs)
 
   queryset = ForumDraad.objects\
     .prefetch_related("posts", "forum")\
     .order_by("-laatste_post__laatst_gewijzigd")
   filter_fields = ('forum',)
-  pagination_class = StekPaginator
 
   @method_decorator(condition(last_modified_func=most_recent_forum_change))
   @list_route(methods=['get'])
@@ -165,7 +154,7 @@ class ForumDraadViewSet(
 class ForumPostViewSet(
   mixins.DestroyModelMixin,
   mixins.CreateModelMixin,
-  viewsets.GenericViewSet):
+  StekViewSet):
 
   serializer_class = ForumPostSerializer
   queryset = ForumPost.objects.all()

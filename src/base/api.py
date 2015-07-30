@@ -28,7 +28,30 @@ class StekPaginator(PageNumberPagination):
 
     return resp
 
-class ProfielApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class StekViewSet(viewsets.GenericViewSet):
+
+  pagination_class = StekPaginator
+
+  def get_serializer(self, *args, **kwargs):
+    """ Improved get_serializer that will look for list_/detail_serializer_class properties
+    """
+    if self.__class__.serializer_class is not None:
+      cls = self.__class__.serializer_class
+    else:
+      if self.action == 'list' and hasattr(self.__class__, 'list_serializer_class'):
+        cls = self.__class__.list_serializer_class
+      elif hasattr(self.__class__, 'detail_serializer_class'):
+        cls = self.__class__.detail_serializer_class
+      else:
+        # error handling
+        return super().get_serializer(*args, **kwargs)
+
+    # default the context
+    kwargs['context'] = self.get_serializer_context()
+
+    return cls(*args, **kwargs)
+
+class ProfielApi(mixins.RetrieveModelMixin, StekViewSet):
 
   permission_classes = [IsAuthenticated]
   serializer_class = ProfielSerializer
