@@ -25,15 +25,15 @@ class ThreadForm extends React.Component {
       // TODO error handling
       actions
         .createThread(data)
-        .then(() => this.refs.form.clear())
         .catch((resp) => console.error(resp.data))
+        .then(() => this.refs.form.clear())
         .done();
     }
 
     let formBuilder = () => {
       return (
         <div className="thread-form">
-          <forms.CharField ref="form" name="titel" />
+          <forms.CharField name="titel" />
           <br />
           <forms.TextField name="tekst" />
           <br />
@@ -47,7 +47,7 @@ class ThreadForm extends React.Component {
       );
     };
 
-    return <forms.Form formBuilder={formBuilder} onSubmit={handleSubmit} />;
+    return <forms.Form ref="form" formBuilder={formBuilder} onSubmit={handleSubmit} />;
   }
 }
 

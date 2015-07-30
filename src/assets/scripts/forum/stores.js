@@ -63,8 +63,8 @@ let threadListStore = Reflux.createStore({
     // ignore if the forum part is not loaded
     if(forum) {
       // add the new thread to the front of the first page
-      let page = this.threadsByPage[1] || [];
-      page.unshift(resp.data);
+      let page = forum[1] || [];
+      page[thread.pk] = thread;
       forum[1] = page;
       this.trigger(this.threads);
     }

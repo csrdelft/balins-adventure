@@ -72,7 +72,20 @@ class ForumDraadViewSet(
   mixins.RetrieveModelMixin,
   viewsets.GenericViewSet):
 
-  serializer_class = ForumDraadSerializer
+  detail_serializer_class = DetailForumDraadSerializer
+  list_serializer_class = ListForumDraadSerializer
+
+  def get_serializer(self, *args, **kwargs):
+    if self.action == 'list':
+      cls = self.__class__.list_serializer_class
+    else:
+      cls = self.__class__.detail_serializer_class
+
+    # default the context
+    kwargs['context'] = self.get_serializer_context()
+
+    return cls(*args, **kwargs)
+
   queryset = ForumDraad.objects\
     .prefetch_related("posts", "forum")\
     .order_by("-laatste_post__laatst_gewijzigd")
@@ -135,6 +148,10 @@ class ForumDraadViewSet(
       draad=thread
     )
 
+    # close the loop
+    thread.laatste_post = post
+    thread.save()
+
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
   def retrieve(self, request, *args, **kwargs):
@@ -143,20 +160,7 @@ class ForumDraadViewSet(
     # make sure the user can view the forum draad
     deny_on_fail(request.user.has_perm('forum.view_forumdeel', draad.forum))
 
-    # we cannot elegantly handle pagination by request parameters
-    # of a related object in a serializer
-    # so we do it here manually
-    data = self.get_serializer(instance=draad).data
-    posts_query = draad.posts.all().order_by("datum_tijd")
-    paginator = StekPaginator()
-    posts = ForumPostSerializer(
-      paginator.paginate_queryset(posts_query, request),
-      context=self.get_serializer_context(),
-      many=True
-    ).data
-    data['posts'] = paginator.get_paginated_response(posts).data
-
-    return Response(data)
+    return Response(self.get_serializer(instance=draad).data)
 
 class ForumPostViewSet(
   mixins.DestroyModelMixin,

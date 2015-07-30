@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from base.serializers import ShortProfielSerializer
+from base.api import StekPaginator
 
 class ForumCategorieSerializer(serializers.ModelSerializer):
   class Meta:
@@ -62,7 +63,7 @@ class ShortForumDraadSerializer(serializers.ModelSerializer):
       'user'
     )
 
-class ForumDraadSerializer(serializers.ModelSerializer):
+class ListForumDraadSerializer(serializers.ModelSerializer):
 
   user = ShortProfielSerializer(read_only=True)
   laatste_wijziging_user = ShortProfielSerializer(read_only=True, source="laatste_post.user")
@@ -89,6 +90,27 @@ class ForumDraadSerializer(serializers.ModelSerializer):
       'laatste_wijziging_user',
       'can_delete'
     )
+
+class DetailForumDraadSerializer(ListForumDraadSerializer):
+
+  posts = serializers.SerializerMethodField()
+
+  def get_posts(self, draad):
+    posts_query = draad.posts.all().order_by("datum_tijd")
+    paginator = StekPaginator()
+
+    serializer = ForumPostSerializer(
+      paginator.paginate_queryset(posts_query, self.context['request']),
+      context=self.context,
+      many=True
+    )
+
+    return paginator.get_paginated_response(serializer.data).data
+
+  class Meta:
+    model = ForumDraad
+    read_only_fields = ListForumDraadSerializer.Meta.read_only_fields
+    fields = ListForumDraadSerializer.Meta.fields + ('posts',)
 
 class EntireForumDeelSerializer(serializers.ModelSerializer):
   draden = ShortForumDraadSerializer(many=True)
