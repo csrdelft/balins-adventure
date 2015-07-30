@@ -126,7 +126,7 @@ let threadDetailStore = Reflux.createStore({
   },
 
   onDeleteThreadCompleted: function(resp) {
-    delete this.threads[resp.req_data.pk];
+    delete this.threads[resp.config.params.pk];
   },
 
   onCreatePostCompleted: function(resp) {
