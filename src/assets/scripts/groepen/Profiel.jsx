@@ -55,16 +55,10 @@ class Profiel extends React.Component {
     return (
       <div>
         <h1>
-          {profiel.voornaam}
-          &nbsp;
-          {profiel.tussenvoegsel}
-          &nbsp;
-          {profiel.achternaam}
+          {profiel.voornaam} {profiel.tussenvoegsel} {profiel.achternaam}
         </h1>
         <h3>
-          A.K.A.
-          &nbsp;
-          {profiel.nickname}
+          A.K.A. {profiel.nickname}
         </h3>
         <div className="gegevens">
           <table className="table table-bordered">
@@ -74,7 +68,7 @@ class Profiel extends React.Component {
             </tr>
             <tr>
               <th>Kring</th>
-              <td>{ profiel.kring.naam }</td>
+              <td>{ profiel.kring ? profiel.kring.naam : "Geen" }</td>
             </tr>
           </table>
         </div>
@@ -112,12 +106,19 @@ class Profiel extends React.Component {
   }
 
   render() {
-    return <Layout title="Profiel">
-      { this.state.profiel
-          ? this.template()
-          : <h1>Loading...</h1>
-      }
-    </Layout>;
+    if(this.state.profiel) {
+      return (
+        <Layout title={`Profiel van ${this.state.profiel.full_name}`}>
+          { this.template() }
+        </Layout>
+      );
+    } else {
+      return (
+        <Layout title="Profiel van ...">
+          <h1>Loading...</h1>
+        </Layout>
+      );
+    }
   }
 }
 
