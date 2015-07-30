@@ -41,7 +41,8 @@ class ForumPostSerializer(serializers.ModelSerializer):
       'user',
       'tekst',
       'datum_tijd',
-      'can_delete'
+      'can_delete',
+      'laatst_gewijzigd'
     )
     read_only_fields = (
       'user',

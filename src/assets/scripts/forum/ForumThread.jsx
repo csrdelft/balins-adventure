@@ -4,6 +4,7 @@ let $ = require("jquery");
 let _ = require("underscore");
 let Layout = require("Layout");
 let { Link, RouteHandler } = require('react-router');
+let moment = require("moment");
 
 let ProfielLink = require("groepen/ProfielLink");
 let PostForm = require("forum/PostForm");
@@ -21,7 +22,10 @@ class ForumPost extends React.Component {
     let post = this.props.post;
     return (
       <tr key={post.pk}>
-        <th><ProfielLink pk={post.user.pk}>{post.user.full_name}</ProfielLink></th>
+        <th>
+          <ProfielLink pk={post.user.pk}>{post.user.full_name}</ProfielLink>
+          <i>{moment(post.laatst_gewijzigd).fromNow()}</i>
+        </th>
         <td>{post.tekst}</td>
       </tr>
     );
