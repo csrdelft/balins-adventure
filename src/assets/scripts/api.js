@@ -4,6 +4,41 @@ let _ = require('underscore');
 
 let api = '/api/v1';
 
+Q.xhr.interceptors = [
+  // interceptor to load the url parameters into the url
+  // while keeping track of them in the 'params' field of the config.
+  // this is useful to be able to recover the url parameters easily from the response
+  // in the listeners
+  {
+    request: (config) => {
+      config.urlparams = {};
+
+      _.each(config.params, (param, name) => {
+        if(config.url.indexOf(`:${name}`) !== -1) {
+          config.url = config.url.replace(`:${name}`, param.toString());
+
+          // prevent it from showing up in the get params
+          delete config.params[name];
+          // back the value up
+          config.urlparams[name] = param;
+        }
+      });
+
+      return config;
+    },
+
+    response: (resp) => {
+      // put the urlparams back in the params
+      _.extend(resp.config.params, resp.config.urlparams);
+      return resp;
+    }
+  }
+];
+
+//
+// utility functions
+//
+
 function post(url, data, options={}) {
   options.headers = _.defaults(options.headers || {}, {
     'X-CSRFToken': Cookies.get('csrftoken')
@@ -12,7 +47,18 @@ function post(url, data, options={}) {
   return Q.xhr.post(url, data, options);
 }
 
+function del(url, options={}) {
+  options.headers = _.defaults(options.headers || {}, {
+    'X-CSRFToken': Cookies.get('csrftoken')
+  });
+
+  return Q.xhr.delete(url, options);
+}
+
+//
 // api functions
+//
+
 let api_obj = {
 
   login: (data) => post(`${api}/login`, data),
@@ -42,10 +88,11 @@ let api_obj = {
 
       get: (pk, page=1, page_size=25) => {
         return Q.xhr
-          .get(`${api}/forum/threads/${pk}`, {
+          .get(`${api}/forum/threads/:pk`, {
             params: {
               page_size: page_size,
-              page: page
+              page: page,
+              pk: pk
             }
           });
       },
@@ -64,13 +111,8 @@ let api_obj = {
       // create a new forum draadje
       create: (data) => post(`${api}/forum/threads/`, data),
 
-      // get the metadata for the draad endpoint
-      metadata : (pk) => {
-        return Q.xhr({
-          method: 'options',
-          url: api + '/forum/threads/' + pk + '/'
-        });
-      }
+      // delete a forum draadje
+      delete: (pk) => del(`${api}/forum/threads/:pk`, { params: {pk: pk}}),
     },
 
     posts: {
@@ -85,7 +127,9 @@ let api_obj = {
 
     get: (pk) => {
       return Q.xhr
-        .get(`${api}/profiel/${pk}`);
+        .get(`${api}/profiel/:pk`, {
+          params: {pk: pk}
+        });
     }
 
   },
@@ -101,15 +145,15 @@ let api_obj = {
 
     aanmelden: (pk, gasten = 0, gasten_eetwens = "") => {
       return Q.xhr
-        .post(`${api}/maaltijden/${pk}/aanmelden/`, {
+        .post(`${api}/maaltijden/:pk/aanmelden/`, {
           aantal_gasten: gasten,
           gasten_eetwens: gasten_eetwens
-        });
+        }, {params: {pk: pk}});
     },
 
     afmelden: (pk) => {
       return Q.xhr
-        .post(`${api}/maaltijden/${pk}/afmelden/`);
+        .post(`${api}/maaltijden/:pk/afmelden/`, {}, {params: {pk: pk}});
     },
   },
 
@@ -121,7 +165,7 @@ let api_obj = {
 
     get: (pk) => {
       return Q.xhr
-        .get(`${api}/mededelingen/${pk}/`);
+        .get(`${api}/mededelingen/:pk/`, {params: {pk: pk}});
     }
   }
 };

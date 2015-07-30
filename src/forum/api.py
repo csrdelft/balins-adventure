@@ -66,6 +66,7 @@ class ForumViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Ge
     return Response(EntireForumDeelSerializer(deel).data)
 
 class ForumDraadViewSet(
+  mixins.DestroyModelMixin,
   mixins.CreateModelMixin,
   mixins.ListModelMixin,
   mixins.RetrieveModelMixin,
@@ -74,7 +75,7 @@ class ForumDraadViewSet(
   serializer_class = ForumDraadSerializer
   queryset = ForumDraad.objects\
     .prefetch_related("posts", "forum")\
-    .order_by("-datum_tijd")
+    .order_by("-laatste_post__laatst_gewijzigd")
   filter_fields = ('forum',)
   pagination_class = StekPaginator
 
@@ -94,6 +95,14 @@ class ForumDraadViewSet(
       .order_by('-laatst_gewijzigd')[:n]
 
     return Response(self.get_serializer(queryset, many=True).data)
+
+  def destroy(self, request, *args, **kwargs):
+    post = self.get_object()
+
+    # check delete permission
+    deny_on_fail(request.user.has_perm('forum.delete_forumdraad', post))
+
+    return super().destroy(request, *args, **kwargs)
 
   def create(self, request, *args, **kwargs):
     """ Create a new forum thread including the first post
@@ -137,22 +146,37 @@ class ForumDraadViewSet(
     # we cannot elegantly handle pagination by request parameters
     # of a related object in a serializer
     # so we do it here manually
-    data = ForumDraadSerializer(draad).data
+    data = self.get_serializer(instance=draad).data
     posts_query = draad.posts.all().order_by("datum_tijd")
     paginator = StekPaginator()
-    posts = ForumPostSerializer(paginator.paginate_queryset(posts_query, request), many=True).data
+    posts = ForumPostSerializer(
+      paginator.paginate_queryset(posts_query, request),
+      context=self.get_serializer_context(),
+      many=True
+    ).data
     data['posts'] = paginator.get_paginated_response(posts).data
 
     return Response(data)
 
-class ForumPostViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class ForumPostViewSet(
+  mixins.DestroyModelMixin,
+  mixins.CreateModelMixin,
+  viewsets.GenericViewSet):
 
   serializer_class = ForumPostSerializer
   queryset = ForumPost.objects.all()
 
+  def destroy(self, request, *args, **kwargs):
+    post = self.get_object()
+
+    # check delete permission
+    deny_on_fail(request.user.has_perm('forum.delete_forumpost', post))
+
+    return super().destroy(request, *args, **kwargs)
+
   def create(self, request, *args, **kwargs):
     # check if we can validly deserialize the json data
-    serializer = ForumPostSerializer(data=request.data)
+    serializer = self.get_serializer(data=request.data)
     if serializer.is_valid():
       draad = serializer.validated_data['draad']
 

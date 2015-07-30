@@ -71,7 +71,7 @@ class ForumThread extends React.Component {
 
   componentWillMount() {
     // listen to thread store
-    stores.threadStore.listen((threads) => {
+    stores.threadDetailStore.listen((threads) => {
       this.setState({
         thread: threads[this.props.pk]
       });

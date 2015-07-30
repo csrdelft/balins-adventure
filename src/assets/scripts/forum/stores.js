@@ -4,15 +4,31 @@ let Reflux = require('reflux');
 
 // Store that specializes in paginated thread lists
 // updates from this store are tuples [ page, threads ]
-let threadsByPageStore = Reflux.createStore({
+let threadListStore = Reflux.createStore({
 
   // listen to all forum action
   listenables: actions,
 
   init: function() {
-    // Map[page -> [thread]]
-    this.threadsByPage = {};
+    // Map[forum -> Map[page -> Map[pk -> thread]]]
+    this.threads = {};
   },
+
+  //
+  // getters
+  // (they won't perform actions, so if something is not in the store,
+  // you'll have to query the right actions yourself)
+  //
+
+  // returns undefined when the data is not in the store
+  getForumPage: function(forum_pk, page) {
+    let forum = this.threads[forum_pk];
+    if(forum)
+      return forum[page];
+    else
+      return undefined;
+  },
+
 
   //
   // Handlers
@@ -22,24 +38,60 @@ let threadsByPageStore = Reflux.createStore({
     // handle load async completed action results
     // by replacing the store state
     let threads = resp.data.results;
-    this.threadsByPage[resp.config.params.page] = threads;
-    this.trigger([resp.config.params.page, threads]);
+    let forum_pk = resp.config.params.forum;
+
+    let forum = this.threads[forum_pk] || {};
+
+    // transform the thread list into a Map[pk -> thread]
+    forum[resp.data.pageno] = _
+      .chain(threads)
+      .map((thread) => [thread.pk, thread])
+      .object()
+      .value();
+
+    this.threads[forum_pk] = forum;
+
+    this.trigger(this.threads);
   },
 
   onCreateThreadCompleted: function(resp) {
-    // add the new thread to the front of the first page
-    let page = this.threadsByPage[1] || [];
-    page.unshift(resp.data);
-    this.threadsByPage[1] = page;
+    let thread = resp.data;
 
-    this.trigger([1, this.threads]);
+    // get the right forum
+    let forum = this.threads[thread.forum];
+
+    // ignore if the forum part is not loaded
+    if(forum) {
+      // add the new thread to the front of the first page
+      let page = this.threadsByPage[1] || [];
+      page.unshift(resp.data);
+      forum[1] = page;
+      this.trigger(this.threads);
+    }
+  },
+
+  onDeleteThreadCompleted: function(resp) {
+    let thread_pk = resp.config.params.pk;
+
+    // search for the thread in the store
+    _(this.threads).each((forum) =>
+      _(forum).each((threadsByPage) => {
+        // delete the thread from the store
+        // and notify observers
+        if(threadsByPage[thread_pk]) {
+          delete threadsByPage[thread_pk];
+          this.trigger(this.threads);
+        }
+      })
+    )
+
   },
 });
 
 // Store that specializes in threads by pk
 // Updates from this store are a Map[pk -> thread]
 // Each thread has a field 'posts' that is a Map[page -> posts_page]
-let threadStore = Reflux.createStore({
+let threadDetailStore = Reflux.createStore({
 
   // listen to all forum action
   listenables: actions,
@@ -73,6 +125,10 @@ let threadStore = Reflux.createStore({
     this.updateThread(resp.data);
   },
 
+  onDeleteThreadCompleted: function(resp) {
+    delete this.threads[resp.req_data.pk];
+  },
+
   onCreatePostCompleted: function(resp) {
     let post = resp.data;
     let thread = this.threads[post.draad];
@@ -95,6 +151,6 @@ let threadStore = Reflux.createStore({
 });
 
 module.exports = {
-  threadsByPageStore: threadsByPageStore,
-  threadStore: threadStore
+  threadListStore: threadListStore,
+  threadDetailStore: threadDetailStore
 };

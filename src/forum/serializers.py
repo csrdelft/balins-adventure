@@ -27,6 +27,12 @@ class ForumPostSerializer(serializers.ModelSerializer):
 
   user = ShortProfielSerializer(read_only=True)
 
+  # permissions
+  can_delete = serializers.SerializerMethodField()
+
+  def get_can_delete(self, post):
+    return self.context['request'].user.has_perm('forum.delete_forumpost', post)
+
   class Meta:
     model = ForumPost
     fields = (
@@ -35,6 +41,7 @@ class ForumPostSerializer(serializers.ModelSerializer):
       'user',
       'tekst',
       'datum_tijd',
+      'can_delete'
     )
     read_only_fields = (
       'user',
@@ -60,6 +67,12 @@ class ForumDraadSerializer(serializers.ModelSerializer):
   laatste_wijziging_user = ShortProfielSerializer(read_only=True, source="laatste_post.user")
   laatst_gewijzigd = serializers.ReadOnlyField(source="laatste_post.laatst_gewijzigd")
 
+  # permissions
+  can_delete = serializers.SerializerMethodField()
+
+  def get_can_delete(self, draad):
+    return self.context['request'].user.has_perm('forum.delete_forumdraad', draad)
+
   class Meta:
     model = ForumDraad
     read_only_fields = ('datum_tijd', "laatst_gewijzigd", "laatste_wijziging_user")
@@ -72,7 +85,8 @@ class ForumDraadSerializer(serializers.ModelSerializer):
       'gesloten',
       'plakkerig',
       'laatst_gewijzigd',
-      'laatste_wijziging_user'
+      'laatste_wijziging_user',
+      'can_delete'
     )
 
 class EntireForumDeelSerializer(serializers.ModelSerializer):

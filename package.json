@@ -22,6 +22,7 @@
     "cookies-js": "^1.2.1",
     "jquery": "^2.1.4",
     "material-ui": "^0.10.0",
+    "moment": "^2.10.6",
     "nanoscope": "^2.2.0",
     "object-assign": "^3.0.0",
     "q": "^1.4.1",

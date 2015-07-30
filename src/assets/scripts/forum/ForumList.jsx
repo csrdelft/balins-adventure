@@ -5,6 +5,7 @@ let _ = require("underscore");
 let cs = require("classnames");
 let api = require("api");
 let mixin = require("mixin");
+let moment = require("moment");
 
 let { Link, RouteHandler } = require('react-router');
 let ProfielLink = require('groepen/ProfielLink.jsx')
@@ -47,13 +48,12 @@ class ForumList extends React.Component {
   componentWillMount() {
     // subscribe at the thread store
     this.unsubscribe = stores
-      .threadsByPageStore
-      .listen((threadsPage) => {
-        let [page, threads] = threadsPage;
-        // ignore other pages
-        if(page == this.props.page)
-          this.setState({threads: threads})
-    });
+      .threadListStore
+      .listen((threads) =>
+        this.setState({
+          threads: stores.threadListStore.getForumPage(this.props.pk, this.props.page)
+        })
+      );
 
     // force fresh load of forum threads
     this.update(this.props.pk, this.props.page);
@@ -79,6 +79,10 @@ class ForumList extends React.Component {
     this.setState({
       show_create: show
     });
+  }
+
+  deleteThread(thread_pk) {
+    actions.deleteThread(thread_pk);
   }
 
   render() {
@@ -116,11 +120,22 @@ class ForumList extends React.Component {
            <tbody>
            { _.map(this.state.threads, (thread) => (
               <tr key={thread.pk}>
-                <th><ProfielLink pk={thread.user.pk}>{thread.user.full_name}</ProfielLink></th>
+                <td>
+                  <ProfielLink pk={thread.user.pk}>
+                    { thread.user.full_name }
+                  </ProfielLink>
+                  <i>{ moment(thread.laatst_gewijzigd).fromNow() }</i>
+                </td>
                 <td>
                   <Link to="forum-thread-detail" params={{pk: thread.pk}}>
-                    {thread.titel}
+                    { thread.titel }
                   </Link>
+                </td>
+                <td>
+                  { thread.can_delete
+                    ? <button onClick={this.deleteThread.bind(this, thread.pk)} >X</button>
+                    : false
+                  }
                 </td>
               </tr>
              ))
