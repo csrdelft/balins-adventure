@@ -76,6 +76,13 @@ class LichtingApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     # throws mooiste lichting not found when 2013 is missing
     return Response(self.get_serializer(Lichting.objects.get(lidjaar=2013)).data)
 
+@api_view(["GET"])
+def user_get(request):
+  if request.user.is_authenticated():
+    return Response(ShortProfielSerializer(request.profiel).data)
+  else:
+    return Response({})
+
 @api_view(["POST"])
 def user_login(request):
   username = request.data['username']
@@ -95,5 +102,6 @@ router = DefaultRouter()
 router.register("lichtingen", LichtingApi, base_name="lichtingen")
 router.register("profiel", ProfielApi, base_name="profiel")
 urls = [
-  url(r'^login$', user_login, name="login"),
+  url(r'^auth/$', user_get, name="auth-retrieve"),
+  url(r'^auth/login$', user_login, name="auth-login"),
 ] + router.urls

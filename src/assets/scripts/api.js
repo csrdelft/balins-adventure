@@ -61,7 +61,16 @@ function del(url, options={}) {
 
 let api_obj = {
 
-  login: (data) => post(`${api}/login`, data),
+  auth: {
+    // login a user
+    login: (user, pw) => post(`${api}/auth/login`, {
+      username: user,
+      password: pw
+    }),
+
+    // get the currently logged in user
+    get: () => Q.xhr.get(`${api}/auth`),
+  },
 
   // the forum resource
   forum: {
