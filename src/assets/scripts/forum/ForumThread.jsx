@@ -44,7 +44,10 @@ class ForumPost extends React.Component {
           <ProfielLink pk={post.user.pk}>{post.user.full_name}</ProfielLink>
           <i>{moment(post.laatst_gewijzigd).fromNow()}</i>
           <div class="post-actions">
-            <button onClick={this.deletePost.bind(this)}>X</button>
+            { post.can_delete
+              ? <button onClick={this.deletePost.bind(this)}>X</button>
+              : false
+            }
           </div>
         </th>
         <td>{post.tekst}</td>
