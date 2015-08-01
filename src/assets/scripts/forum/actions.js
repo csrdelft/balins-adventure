@@ -13,6 +13,7 @@ let actions = Reflux.createActions({
   deleteThread: {asyncResult: true},
 
   createPost: {asyncResult: true},
+  deletePost: {asyncResult: true},
 
 });
 
@@ -32,5 +33,6 @@ actions.deleteThread
 
 // post related
 actions.createPost.listenAndPromise((post) => api.forum.posts.create(post));
+actions.deletePost.listenAndPromise((pk) => api.forum.posts.delete(pk));
 
 module.exports = actions;

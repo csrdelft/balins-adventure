@@ -127,6 +127,9 @@ let api_obj = {
     posts: {
       // create a new forum post
       create: (data) => post(`${api}/forum/posts/`, data),
+
+      // delete a forum draadje
+      delete: (pk) => del(`${api}/forum/posts/:pk`, { params: {pk: pk}}),
     }
 
   },

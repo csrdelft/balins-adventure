@@ -14,8 +14,26 @@ let actions = require("forum/actions");
 
 class ForumPost extends React.Component {
 
+  static get propTypes() {
+    return {
+      post: React.PropTypes.object.isRequired,
+      threadPage: React.PropTypes.number.isRequired,
+    }
+  }
+
   constructor(props) {
     super(props);
+  }
+
+  deletePost() {
+    // just kick off the delete action
+    // and make sure to reload the right thread page afterwards
+    // we have to do it here because the store won't know which page to load
+    actions
+      .deletePost(this.props.post.pk)
+      .then(() => {
+        return actions.loadThread(this.props.post.draad, this.props.threadPage)
+      });
   }
 
   render() {
@@ -25,6 +43,9 @@ class ForumPost extends React.Component {
         <th>
           <ProfielLink pk={post.user.pk}>{post.user.full_name}</ProfielLink>
           <i>{moment(post.laatst_gewijzigd).fromNow()}</i>
+          <div class="post-actions">
+            <button onClick={this.deletePost.bind(this)}>X</button>
+          </div>
         </th>
         <td>{post.tekst}</td>
       </tr>
@@ -112,10 +133,12 @@ class ForumThread extends React.Component {
           <div id="page-content">
             <table>
               <tbody>
-                {_.map(posts_page.results, (p) => <ForumPost post={p} key={p.pk} /> )}
+                { _.map(posts_page.results, (p) =>
+                    <ForumPost threadPage={this.props.page} post={p} key={p.pk} /> )
+                }
               </tbody>
             </table>
-            <PostForm thread={this.props.pk} />
+            <PostForm thread={this.props.pk} threadPage={this.props.page} />
           </div>
         </div>
       );

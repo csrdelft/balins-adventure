@@ -139,14 +139,19 @@ let threadDetailStore = Reflux.createStore({
     // if the thread or posts page is not in the store, no one is interested
     if(thread !== undefined && page !== undefined) {
       // optimistic update
-      page.results.unshift(post);
+      this.threads[post.draad].posts[page].push(post);
 
-      // reload the first page of this thread
-      actions.loadThread(thread.pk, 1);
+      // reload that page of this thread
+      actions.loadThread(thread.pk, page);
 
       // notify listeners
       this.trigger(this.threads);
     }
+  },
+
+  onDeletePostCompleted: function(resp) {
+    // we don't have enough information from the delete
+    // to reload (missing the page of the post)
   }
 });
 
