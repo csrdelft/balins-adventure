@@ -10,15 +10,13 @@ let preloadStore = Reflux.createStore({
 
   init: function() {
     // default the global preload data object
-    if(window.preloadData === undefined) {
-      window.preloadData = {
-        user: undefined,
-      };
-    }
+    window.preloadData = _(window.preloadData).defaults({
+      user: undefined,
+    });
   },
 
   get: function(name) {
-    return window.preloadData[name];
+    return JSON.parse(window.preloadData[name]);
   },
 
 
