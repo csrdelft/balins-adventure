@@ -8,6 +8,7 @@ let authStore = Reflux.createStore({
 
   init: function() {
     this.user = undefined;
+    this.authenticated = false;
   },
 
   update: function(user) {
@@ -26,6 +27,10 @@ let authStore = Reflux.createStore({
   //
   // getters
   //
+
+  isAuthenticated: function() {
+    return this.authenticated;
+  },
 
   getCurrentUser: function() {
     return this.user;

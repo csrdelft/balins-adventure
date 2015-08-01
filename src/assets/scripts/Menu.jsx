@@ -60,11 +60,16 @@ class Menu extends React.Component {
   }
 
   privateLinks() {
-    return [
-      <Link to="/groepen">Groepen</Link>,
-      <Link to="/mededelingen">Mededelingen</Link>,
-      <Link to="profiel-detail" params={{pk: 1337}}>Profiel</Link>
-    ];
+    if(authStore.isAuthenticated()) {
+      let user = authStore.getCurrentUser();
+      return [
+        <Link to="/groepen">Groepen</Link>,
+        <Link to="/mededelingen">Mededelingen</Link>,
+        <Link to="profiel-detail" params={{pk: user.pk}}>Profiel</Link>
+      ];
+    } else {
+      return [];
+    }
   }
 
   //TODO: uid to profiel should contain the uid of the current user
@@ -73,7 +78,7 @@ class Menu extends React.Component {
       <div className="container">
         <div className="row">
           <Link to="/">Thuis</Link>
-          { authStore.getCurrentUser() ? this.privateLinks() : false }
+          { this.privateLinks() }
           <Link to="/forum">Reformaforum ({ this.state.forum_notifications })</Link>
         </div>
       </div>
