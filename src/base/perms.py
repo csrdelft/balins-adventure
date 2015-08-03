@@ -1,5 +1,6 @@
 from permission.logics import PermissionLogic
 from permission.utils.field_lookup import field_lookup
+from base.models import GROUP_STATUS_CHOICES, Lichting, LichtingLid, Bestuur, Commissie
 
 import logging
 logger = logging.getLogger(__name__)
@@ -25,9 +26,7 @@ class InGroupPermissionLogic(PermissionLogic):
 
     # check if lid in group
     # if user is in group this logic grants permission for any passed object
-    in_group = group.leden.filter(user__user__pk=user.pk).exists()
-    if in_group:
-      return True
+    return group.leden.filter(user__user__pk=user.pk).exists()
 
     return False
 
@@ -73,13 +72,19 @@ class DynamicConditionLogic(PermissionLogic):
     self.condition_field = condition_field
 
   def has_perm(self, user, perm, obj):
+    # non authenticated users cannot gain access through dynamic conditions
     if not user.is_authenticated() or perm not in self.grants:
       return False
 
     if obj is None:
       return True
     else:
-      return self.check_dynamic_condition(user, field_lookup(obj, self.condition_field))
+      conditions = field_lookup(obj, self.condition_field).split(',')
+
+      # any of the following conditions can be true
+      for cond in conditions:
+        if self.check_dynamic_condition(user, field_lookup(obj, self.condition_field)):
+          return True
 
     return False
 
@@ -89,13 +94,45 @@ class DynamicConditionLogic(PermissionLogic):
       return True
 
     try:
-      cond, value = condition.split(':', 1)
+      parts = condition.split(':')
 
-      if cond == 'lidjaar':
+      # parse
+      cond = parts[0].lower()
+      if len(parts) > 1: value = parts[1]
+      else: value = None
+      if len(parts) > 2: role = parts[2].lower()
+      else: role = None
+
+      if cond == 'lidjaar' or cond == 'lichting':
         return user.profiel.lidjaar == int(value)
       elif cond == 'verticale':
-        return user.profiel.verticale().naam.upper() == value.upper()
+        return user.profiel.verticale().naam.lower() == value.lower()
+      elif cond == 'geslacht':
+        return user.profiel.geslacht.lower() == value.lower()
+      elif cond == 'eerstejaars':
+        return LichtingLid.objects\
+          .filter(user__user__pk=user.pk, lidjaar=Lichting.get_max_lidjaar()).exists()
+      elif cond == 'ouderejaars':
+        return not LichtingLid.objects\
+          .filter(user__user__pk=user.pk, groep__lidjaar=Lichting.get_max_lidjaar())\
+          .exists()
+      elif cond == 'bestuur':
+        if role is None: role = GROUP_STATUS_CHOICES.HT
+        if role is not None and role in GROUP_STATUS_CHOICES:
+          bestuur = Bestuur.objects.filter(status=role)
+          return bestuur.leden.filter(user__user__pk=user.pk).exists()
+      elif cond == 'commissie':
+        if role is None: role = GROUP_STATUS_CHOICES.HT
+        if role in GROUP_STATUS_CHOICES:
+          com = Commissie.objects.filter(status=role, familie=value)
+          return com.leden.filter(user__user__pk=user.pk).exists()
+
+      # emulation of old mandatory access control permissions
+      elif condition == 'P_LOGGED_IN':
+        # non-authenticated users cannot gain dynamic access at all
+        return True
 
       return False
+
     except Exception as e:
       return False

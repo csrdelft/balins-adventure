@@ -1,8 +1,14 @@
 from django.db import models
+from django.db.models import Max
 from django.contrib.auth.models import User
-from enum import Enum
 
 from base.utils import Choices
+
+GROUP_STATUS_CHOICES = Choices(
+  OT='ot',
+  HT='ht',
+  FT='ft'
+)
 
 class Profiel(models.Model):
   class Meta:
@@ -176,6 +182,10 @@ class Ketzer(GroepDoodlijnenMixin, AbstractGroep):
 
 class Lichting(AbstractGroep):
   lidjaar = models.IntegerField(unique=True)
+
+  @classmethod
+  def get_max_lidjaar(cls):
+    return cls.objects.all().aggregate(Max('lidjaar'))['lidjaar__max']
 
   def __str__(self):
     return "Lichting: %s" % self.naam
