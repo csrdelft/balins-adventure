@@ -69,7 +69,7 @@ let api_obj = {
     }),
 
     // get the currently logged in user
-    get: () => Q.xhr.get(`${api}/auth`),
+    get: () => Q.xhr.get(`${api}/auth`)
   },
 
   // the forum resource
@@ -121,7 +121,7 @@ let api_obj = {
       create: (data) => post(`${api}/forum/threads/`, data),
 
       // delete a forum draadje
-      delete: (pk) => del(`${api}/forum/threads/:pk`, { params: {pk: pk}}),
+      delete: (pk) => del(`${api}/forum/threads/:pk`, { params: {pk: pk}})
     },
 
     posts: {
@@ -129,7 +129,7 @@ let api_obj = {
       create: (data) => post(`${api}/forum/posts/`, data),
 
       // delete a forum draadje
-      delete: (pk) => del(`${api}/forum/posts/:pk`, { params: {pk: pk}}),
+      delete: (pk) => del(`${api}/forum/posts/:pk`, { params: {pk: pk}})
     }
 
   },
@@ -141,6 +141,20 @@ let api_obj = {
       return Q.xhr
         .get(`${api}/profiel/:pk`, {
           params: {pk: pk}
+        });
+    },
+
+    search: (search_text) => {
+      return Q.xhr
+        .get(`${api}/profiel/`, {
+          params: {search: search_text}
+        });
+    },
+
+    list: (page=1, pagesize=50) => {
+      return Q.xhr
+        .get(`${api}/profiel/`, {
+          params: {page: page, pagesize: pagesize}
         });
     }
 

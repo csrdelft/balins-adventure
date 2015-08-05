@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from .serializers import *
 
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, filters
 from rest_framework.response import Response
 from rest_framework.decorators import list_route, api_view
 from rest_framework.permissions import IsAuthenticated
@@ -14,6 +14,7 @@ import logging
 import json
 
 logger = logging.getLogger(__name__)
+
 
 class StekPaginator(PageNumberPagination):
   page_size = 100
@@ -28,6 +29,7 @@ class StekPaginator(PageNumberPagination):
 
     return resp
 
+
 class StekViewSet(viewsets.GenericViewSet):
 
   pagination_class = StekPaginator
@@ -38,7 +40,8 @@ class StekViewSet(viewsets.GenericViewSet):
     if self.__class__.serializer_class is not None:
       cls = self.__class__.serializer_class
     else:
-      if self.action == 'list' and hasattr(self.__class__, 'list_serializer_class'):
+      if self.action == 'list' and hasattr(self.__class__,
+                           'list_serializer_class'):
         cls = self.__class__.list_serializer_class
       elif hasattr(self.__class__, 'detail_serializer_class'):
         cls = self.__class__.detail_serializer_class
@@ -51,10 +54,13 @@ class StekViewSet(viewsets.GenericViewSet):
 
     return cls(*args, **kwargs)
 
-class ProfielApi(mixins.RetrieveModelMixin, StekViewSet):
+
+class ProfielApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
 
   permission_classes = [IsAuthenticated]
   serializer_class = ProfielSerializer
+  filter_backends = (filters.SearchFilter,)
+  search_fields = ('pk', 'voornaam', 'achternaam',)
 
   def get_queryset(self):
     return Profiel.objects.all()
@@ -65,7 +71,7 @@ class LichtingApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
   serializer_class = LichtingSerializer
 
   def get_queryset(self):
-    return Lichting.objects.all();
+    return Lichting.objects.all()
 
   @list_route(methods=["get"])
   def demooiste(self, request):
@@ -74,7 +80,9 @@ class LichtingApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         omit_serializer: true
     """
     # throws mooiste lichting not found when 2013 is missing
-    return Response(self.get_serializer(Lichting.objects.get(lidjaar=2013)).data)
+    return Response(self.get_serializer(Lichting.objects.get(
+      lidjaar=2013)).data)
+
 
 @api_view(["GET"])
 def user_get(request):
@@ -82,6 +90,7 @@ def user_get(request):
     return Response(ShortProfielSerializer(request.profiel).data)
   else:
     return Response({})
+
 
 @api_view(["POST"])
 def user_login(request):
@@ -97,6 +106,7 @@ def user_login(request):
       raise PermissionDenied(detail="Inactieve gebruiker")
   else:
     raise AuthenticationFailed()
+
 
 router = DefaultRouter()
 router.register("lichtingen", LichtingApi, base_name="lichtingen")

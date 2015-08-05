@@ -10,7 +10,7 @@ class PostForm extends React.Component {
   static get propTypes() {
     return {
       thread: React.PropTypes.number.isRequired,
-      threadPage: React.PropTypes.number.isRequired,
+      threadPage: React.PropTypes.number.isRequired
     };
   }
 
@@ -30,7 +30,7 @@ class PostForm extends React.Component {
           this.refs.postForm.clear()
         )
         .done();
-    }
+    };
 
     let formBuilder = () => {
       return (

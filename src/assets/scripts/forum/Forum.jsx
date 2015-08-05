@@ -5,6 +5,8 @@ let { Link, RouteHandler } = require('react-router');
 let api = require("api");
 
 let Layout = require("Layout");
+let mui = require('material-ui');
+let { List, ListItem } = mui;
 
 class ForumSideMenu extends React.Component {
 
@@ -18,14 +20,22 @@ class ForumSideMenu extends React.Component {
     super(props, context);
 
     this.state = {
-      fora: []
+      fora: [],
+      // defaults to open
+      categories_open: {}
     };
   }
 
   update() {
+
     api.forum.list()
       .then(
-        (resp) => this.setState({fora: resp.data}),
+        (resp) => {
+          let grouped_fora = _(resp.data)
+              .groupBy((forum) => forum.categorie.pk);
+          let categories = _(grouped_fora).map((fora) => fora[0].categorie);
+          this.setState({fora: grouped_fora, categories: categories});
+        },
         (resp) => console.error("Failed to get sub fora with status " + resp.status)
       );
   }
@@ -34,22 +44,32 @@ class ForumSideMenu extends React.Component {
     this.update();
   }
 
-  render() {
+  goTo(forum_pk) {
+    this.context.router.transitionTo("forum-thread-list", {pk: forum_pk});
+  }
 
+  render() {
     return (
-      <ul>
+      <List>
         {
-          _.map(this.state.fora, (forum) => {
-            return (
-              <li key={forum.pk}>
-                <Link to="forum-thread-list" params={{pk: forum.pk}}>
-                {forum.titel}
-                </Link>
-              </li>
-            );
-          })
+          _.map(this.state.fora, (fora, cat_pk) =>
+            <ListItem
+                key={cat_pk}
+                primaryText={this.state.categories[cat_pk].titel}
+                open={true}
+                >
+              {
+                _.map(fora, (forum) => 
+                   <ListItem
+                      key={forum.pk}
+                      onClick={this.goTo.bind(this, forum.pk)}
+                      primaryText={forum.titel} />
+                )
+              }
+            </ListItem>
+          )
         }
-      </ul>
+      </List>
     );
   }
 }

@@ -8,7 +8,7 @@ let mixin = require("mixin");
 let moment = require("moment");
 
 let { Link, RouteHandler } = require('react-router');
-let ProfielLink = require('groepen/ProfielLink.jsx')
+let ProfielLink = require('groepen/ProfielLink.jsx');
 let ThreadForm = require("forum/ThreadForm");
 let stores = require("forum/stores");
 let actions = require("forum/actions");
@@ -20,19 +20,19 @@ class ForumList extends React.Component {
       // because passed as route parameter, these are strings
       pk: React.PropTypes.string.isRequired,
       page: React.PropTypes.string
-    }
+    };
   }
 
   static get defaultProps() {
     return {
       page: "1"
-    }
+    };
   }
 
   static get contextTypes() {
     return {
       router: React.PropTypes.func.isRequired
-    }
+    };
   }
 
   constructor(props, context) {

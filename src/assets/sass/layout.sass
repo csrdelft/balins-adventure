@@ -118,16 +118,27 @@ div#app
 
     #page-content
 
-    $action-menu-h: 40px
+    $action-menu-h: 60px
+    $action-menu-padding: 10px
     #page-action-menu
       ul
         width: 100%
         border-bottom: 1px solid #ddd
         margin: 0px
+        padding: 0px
 
         li
           display: inline
           vertical-align: middle
+          list-style-type: none
+
+        .action-input
+          display: inline-block
+          border: none
+            right: 1px solid #ddd
+          padding:
+            left: 10px
+            right: 10px
 
         .action
           display: inline-block

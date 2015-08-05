@@ -209,6 +209,43 @@ class PasswordField extends CharField {
   }
 }
 
+class InlineTextInput extends React.Component {
+
+  static get propTypes() {
+    return {
+      label: React.PropTypes.string,
+      validator: React.PropTypes.func,
+      onChange: React.PropTypes.func.isRequired,
+      errorText: React.PropTypes.string
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      validator: (val) => [],
+      label: "",
+      error_text: ""
+    };
+  }
+
+  constructor(props) {
+    super(props);
+  }
+
+  onChange() {
+    this.props.onChange(this.refs.input.getValue());
+  }
+
+  render() {
+    return <mui.TextField
+            ref="input"
+            hintText={this.props.label || this.props.name}
+            errorText={this.props.error_text}
+            onChange={this.onChange.bind(this)} />;
+  }
+  
+}
+
 class TextField extends CharField {
 
   render() {
@@ -243,5 +280,6 @@ module.exports = {
   TextField: TextField,
   SubmitButton: SubmitButton,
   PasswordField: PasswordField,
+  InlineTextInput: InlineTextInput,
   validators: validators
 };
