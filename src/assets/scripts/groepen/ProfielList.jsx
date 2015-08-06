@@ -63,7 +63,6 @@ class ProfielList extends React.Component {
       this.filters[name] = value;
     }
 
-    debugger;
     this.do_search(this.search_text, this.filters);
   }
 

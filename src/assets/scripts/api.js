@@ -145,7 +145,6 @@ let api_obj = {
     },
 
     search: (search_text, filters={}) => {
-      debugger;
       return Q.xhr
         .get(`${api}/profiel/`, {
           params: _.defaults({search: search_text}, filters)
