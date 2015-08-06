@@ -10,6 +10,7 @@ let actions = Reflux.createActions({
 });
 
 actions.loadProfielen.listenAndPromise((page) => api.profiel.list(page));
-actions.searchProfielen.listenAndPromise((search_text) => api.profiel.search(search_text));
+actions.searchProfielen.listenAndPromise((search_text, filters) =>
+                                         api.profiel.search(search_text, filters));
 
 module.exports = actions;

@@ -17,8 +17,8 @@ class ForumPost extends React.Component {
   static get propTypes() {
     return {
       post: React.PropTypes.object.isRequired,
-      threadPage: React.PropTypes.number.isRequired,
-    }
+      threadPage: React.PropTypes.number.isRequired
+    };
   }
 
   constructor(props) {
@@ -32,7 +32,7 @@ class ForumPost extends React.Component {
     actions
       .deletePost(this.props.post.pk)
       .then(() => {
-        return actions.loadThread(this.props.post.draad, this.props.threadPage)
+        return actions.loadThread(this.props.post.draad, this.props.threadPage);
       });
   }
 

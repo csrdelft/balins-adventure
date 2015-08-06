@@ -8,8 +8,6 @@ let forms = require('forms');
 // view stuff
 let { Link, RouteHandler } = require('react-router');
 let Layout = require("Layout");
-let mui = require('material-ui');
-let { Table } = mui;
 
 class ProfielList extends React.Component {
 
@@ -27,8 +25,13 @@ class ProfielList extends React.Component {
   constructor(props) {
     super(props);
 
+    this.search_text = "";
+    this.filters = {};
+
     this.state = {
-      profielen: []
+      profielen: [],
+      search_profielen: [],
+      searching: false
     };
   }
 
@@ -49,19 +52,37 @@ class ProfielList extends React.Component {
   }
 
   search(search_text) {
-    if(search_text === "") {
+    this.search_text = search_text;
+    this.do_search(this.search_text, this.filters);
+  }
+
+  filter(name, value) {
+    if(value == "") {
+      delete this.filters[name];
+    } else {
+      this.filters[name] = value;
+    }
+
+    debugger;
+    this.do_search(this.search_text, this.filters);
+  }
+
+  do_search(search_text, filters) {
+    if(search_text === "" && filters === {}) {
+      // go back to usual paged mode
       this.setState({
         searching: false,
         search_profielen: []
       });
     } else {
+      // conduct the search
       actions
-        .searchProfielen(search_text)
+        .searchProfielen(search_text, filters)
         .then((resp) => {
-            this.setState({
-              searching: true,
-              search_profielen: resp.data.results
-            });
+          this.setState({
+            searching: true,
+            search_profielen: resp.data.results
+          });
         })
         .done();
     }
@@ -83,6 +104,11 @@ class ProfielList extends React.Component {
                 <forms.InlineTextInput
                   label="zoeken..."
                   onChange={_.debounce(this.search, 1000).bind(this)}/>
+              </li>
+              <li className="action-input">
+                <forms.InlineTextInput
+                  label="lichting..."
+                  onChange={_.debounce(this.filter, 1000).bind(this, "lichting")}/>
               </li>
             </ul>
           </div>

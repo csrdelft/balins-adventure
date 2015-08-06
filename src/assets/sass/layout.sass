@@ -128,14 +128,22 @@ div#app
         padding: 0px
 
         li
-          display: inline
+          display: inline-block
           vertical-align: middle
           list-style-type: none
+          height: $action-menu-h
+          border: none
+
+        .action-label
+          display: inline-block
+          line-height: $action-menu-h
+          margin: 0px
+          padding:
+            left: 15px
+            right: 15px
 
         .action-input
           display: inline-block
-          border: none
-            right: 1px solid #ddd
           padding:
             left: 10px
             right: 10px
@@ -146,8 +154,6 @@ div#app
           height: $action-menu-h
           line-height: $action-menu-h
           background-color: transparent
-          border: none
-            right: 1px solid #ddd
           padding:
             left: 15px
             right: 15px

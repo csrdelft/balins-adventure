@@ -144,10 +144,11 @@ let api_obj = {
         });
     },
 
-    search: (search_text) => {
+    search: (search_text, filters={}) => {
+      debugger;
       return Q.xhr
         .get(`${api}/profiel/`, {
-          params: {search: search_text}
+          params: _.defaults({search: search_text}, filters)
         });
     },
 
