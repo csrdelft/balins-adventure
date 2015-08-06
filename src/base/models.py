@@ -268,7 +268,7 @@ class Commissie(AbstractGroep):
     db_table = 'commissies'
 
 class AbstractLid(models.Model):
-  user = models.ForeignKey(Profiel, db_column='uid', related_name='+')
+  user = models.OneToOneField(Profiel, db_column='uid', related_name='%(class)s')
   opmerking = models.CharField(max_length=255, blank=True)
   lid_sinds = models.DateTimeField()
   door_user = models.ForeignKey(Profiel, db_column='door_uid', related_name='+')
@@ -321,6 +321,10 @@ class Bewoners(AbstractLid):
 
 class LichtingLid(AbstractLid):
   groep = models.ForeignKey(Lichting, related_name="leden")
+
+  @property
+  def lichting(self):
+    return self.groep
 
   class Meta:
     db_table = 'lichting_leden'

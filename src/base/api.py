@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.routers import DefaultRouter
 from rest_framework.pagination import PageNumberPagination
 
+import django_filters
 import logging
 import json
 
@@ -57,9 +58,18 @@ class StekViewSet(viewsets.GenericViewSet):
 
 class ProfielApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
 
+  
+  class ProfielFilter(django_filters.FilterSet):
+    lichting = django_filters.CharFilter(name="lichtinglid__groep__lidjaar")
+
+    class Meta:
+      model = Profiel
+      fields = ['lichting']
+
   permission_classes = [IsAuthenticated]
   serializer_class = ProfielSerializer
-  filter_backends = (filters.SearchFilter,)
+  filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend)
+  filter_class = ProfielFilter
   search_fields = ('pk', 'voornaam', 'achternaam',)
 
   def get_queryset(self):
