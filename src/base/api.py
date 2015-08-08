@@ -117,9 +117,18 @@ def user_login(request):
   else:
     raise AuthenticationFailed()
 
+class VerticaleApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
+
+  permission_classes = [IsAuthenticated]
+  serializer_class = VerticaleSerializer
+  pagination_class = None
+
+  def get_queryset(self):
+    return Verticale.objects.all()
 
 router = DefaultRouter()
 router.register("lichtingen", LichtingApi, base_name="lichtingen")
+router.register("verticalen", VerticaleApi, base_name="verticalen")
 router.register("profiel", ProfielApi, base_name="profiel")
 urls = [
   url(r'^auth/$', user_get, name="auth-retrieve"),

@@ -7,7 +7,7 @@ let Grid = require("bootstrap");
 // routing
 let Router = require('react-router');
 let { Route, DefaultRoute, Link, RouteHandler } = Router;
-let ProfielRouter = require('groepen/ProfielRouter');
+let LedenRouter = require('groepen/LedenRouter');
 let ForumRouter = require("forum/Router");
 let MededelingRouter = require('mededelingen/MededelingRouter');
 
@@ -32,7 +32,7 @@ Reflux.setPromiseFactory(require('q').Promise);
 class App extends React.Component {
 
   static get childContextTypes() {
-    return { muiTheme: React.PropTypes.object }
+    return { muiTheme: React.PropTypes.object };
   }
 
   componentWillMount() {
@@ -89,7 +89,7 @@ let routes = (
     <Route path="/" handler={App}>
       <DefaultRoute handler={NotFound} />
       <Route path="mededelingen">{MededelingRouter}</Route>
-      <Route path="profiel">{ProfielRouter}</Route>
+      <Route path="leden" name="leden">{LedenRouter}</Route>
       <Route path="forum">{ForumRouter}</Route>
       <Route path="*" handler={NotFound} />
     </Route>

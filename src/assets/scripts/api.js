@@ -160,6 +160,22 @@ let api_obj = {
 
   },
 
+  verticalen: {
+
+    get: (pk) => {
+      return Q.xhr
+        .get(`${api}/verticalen/:pk`, {
+          params: {pk: pk}
+        });
+    },
+
+    list: () => {
+      return Q.xhr
+        .get(`${api}/verticalen/`);
+    }
+
+  },
+
   maaltijden: {
 
     get_upcoming: (at) => {

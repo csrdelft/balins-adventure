@@ -19,6 +19,26 @@ let profielListStore = Reflux.createStore({
   }
 });
 
+let verticaleListStore = Reflux.createStore({
+  listenables : actions,
+
+  init: function() {
+    this.verticalen= {};
+  },
+
+  // getters
+
+  getAll: function() { return this.verticalen; },
+
+  // handlers
+
+  onLoadVerticalenCompleted: function(resp) {
+    this.verticalen = resp.data;
+    this.trigger(this.verticalen);
+  }
+});
+
 module.exports = {
-  profielListStore: profielListStore
+  profielListStore: profielListStore,
+  verticaleListStore: verticaleListStore
 };

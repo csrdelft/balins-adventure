@@ -51,3 +51,29 @@ body
   font-size: $font-default
   font-weight: 300
   overflow: hidden
+
+.nav-tabs
+  background-color: #2aa198
+  color: white
+  font-size: $font-medium
+  height: 40px
+
+  & > li
+    text-align: center
+    line-height: 40px
+    height: 40px
+    font-weight: lighter
+    border-bottom: 4px solid #2aa198
+    background-color: #2aa198
+
+    &, &.active
+      & > a, a:hover, a.active, a.active:focus, a.active:hover, a:focus
+        display: inline
+        background: none
+        border: none
+          bottom: none !important
+        margin: 0px
+        outline: none
+
+  li.active
+    border-bottom: 4px solid white

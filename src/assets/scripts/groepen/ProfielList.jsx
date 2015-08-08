@@ -7,13 +7,16 @@ let forms = require('forms');
 
 // view stuff
 let { Link, RouteHandler } = require('react-router');
-let Layout = require("Layout");
 
 class ProfielList extends React.Component {
 
   static get propTypes() {
     // string because it's a route parameter
-    return {page: React.PropTypes.string.isRequired };
+    return {page: React.PropTypes.string};
+  }
+
+  static get defaultProps() {
+    return {page: "1"};
   }
 
   static get contextTypes() {
@@ -95,46 +98,47 @@ class ProfielList extends React.Component {
       profielen = this.state.profielen[this.props.page];
 
     return (
-      <Layout title="Leden Lijst">
-        <div id="profiel-list">
-          <div id="page-action-menu">
-            <ul>
-              <li className="action-input">
-                <forms.InlineTextInput
-                  label="zoeken..."
-                  onChange={_.debounce(this.search, 1000).bind(this)}/>
-              </li>
-              <li className="action-input">
-                <forms.InlineTextInput
-                  label="lichting..."
-                  onChange={_.debounce(this.filter, 1000).bind(this, "lichting")}/>
-              </li>
-            </ul>
-          </div>
-          <div id="profiel-table">
-            <table className="table table-bordered table-striped" id="profiel-list">
-              <thead>
-                <tr>
-                  <th>Lidno.</th>
-                  <th>Naam</th>
-                  <th>E-mail</th>
-                </tr>
-              </thead>
-              <tbody>
-                { _.map(profielen, (profiel) => (
-                    <tr>
-                      <td>{profiel.pk}</td>
-                      <td>
-                          <Link to="profiel-detail" params={{pk: profiel.pk}}>{profiel.full_name}</Link>
-                      </td>
-                      <td>{profiel.email}</td>
-                    </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      <div id="profiel-list">
+        <div id="page-action-menu">
+          <ul>
+            <li className="action-input">
+              <forms.InlineTextInput
+                label="zoeken..."
+                onChange={_.debounce(this.search, 1000).bind(this)}/>
+            </li>
+            <li className="action-input">
+              <forms.InlineTextInput
+                label="lichting..."
+                onChange={_.debounce(this.filter, 1000).bind(this, "lichting")}/>
+            </li>
+          </ul>
         </div>
-      </Layout>
+
+        <div id="profiel-table">
+          <table className="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Lidno.</th>
+                <th>Naam</th>
+                <th>E-mail</th>
+              </tr>
+            </thead>
+            <tbody>
+              { _.map(profielen, (profiel) => (
+                  <tr>
+                    <td>{profiel.pk}</td>
+                    <td>
+                        <Link to="profiel-detail" params={{pk: profiel.pk}}>
+                          {profiel.full_name}
+                        </Link>
+                    </td>
+                    <td>{profiel.email}</td>
+                  </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     );
   }
 };
