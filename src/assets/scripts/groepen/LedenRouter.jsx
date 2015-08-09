@@ -5,7 +5,6 @@ let Profiel = require('./Profiel');
 let ProfielList = require('./ProfielList');
 let VerticaleList = require('./VerticaleList');
 let ProfielLink = require('./ProfielLink.jsx');
-console.log(ProfielList);
 
 let mui = require("material-ui");
 let Layout = require("Layout");

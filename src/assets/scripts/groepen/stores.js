@@ -10,6 +10,12 @@ let profielListStore = Reflux.createStore({
     this.profielen = {};
   },
 
+  // getters
+
+  getAll: function() { return this.profielen; },
+
+  // handlers
+
   onLoadProfielenCompleted: function(resp) {
     let page = resp.data.pageno;
     let profielen_page = resp.data.results;

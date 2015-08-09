@@ -63,9 +63,9 @@ class Menu extends React.Component {
     if(authStore.isAuthenticated()) {
       let user = authStore.getCurrentUser();
       return [
-        <Link to="leden">Leden</Link>,
-        <Link to="mededelingen">Mededelingen</Link>,
-        <Link to="profiel-detail" params={{pk: user.pk}}>Profiel</Link>
+        <Link key="leden-link" to="leden">Leden</Link>,
+        <Link key="mededelingen-link" to="mededelingen">Mededelingen</Link>,
+        <Link key="profiel-link" to="profiel-detail" params={{pk: user.pk}}>Profiel</Link>
       ];
     } else {
       return [];

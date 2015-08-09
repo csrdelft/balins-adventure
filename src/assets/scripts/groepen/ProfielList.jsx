@@ -39,12 +39,20 @@ class ProfielList extends React.Component {
   }
 
   componentWillMount() {
-    // listen to updates to the profielen list store
-    stores.profielListStore
-      .listen((profielen) => this.setState({profielen: profielen}));
-
     // kick of initial load
     actions.loadProfielen(this.props.page);
+  }
+
+  componentDidMount() {
+    // initial data
+    this.setState({profielen: stores.profielListStore.getAll()});
+    // listen to updates to the profielen list store
+    this.unsubscribe = stores.profielListStore
+      .listen((profielen) => this.setState({profielen: profielen}));
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -125,7 +133,7 @@ class ProfielList extends React.Component {
             </thead>
             <tbody>
               { _.map(profielen, (profiel) => (
-                  <tr>
+                  <tr key={profiel.pk}>
                     <td>{profiel.pk}</td>
                     <td>
                         <Link to="profiel-detail" params={{pk: profiel.pk}}>
