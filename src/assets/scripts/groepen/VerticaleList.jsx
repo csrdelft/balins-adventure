@@ -40,8 +40,10 @@ class VerticaleList extends React.Component {
         {
             _.map(this.state.verticalen, (vert) => 
                 <tr key={vert.pk}>
-                  <td>{vert.naam}</td>
-                  <td>?</td>
+                  <td>
+                    <Link to="verticale-detail" params={{pk: vert.pk}}>{vert.naam}</Link>
+                  </td>
+                  <td>{vert.aantal_leden}</td>
                 </tr>
             )
         }

@@ -4,6 +4,7 @@ let { Link, Route, DefaultRoute, RouteHandler} = require('react-router');
 let Profiel = require('./Profiel');
 let ProfielList = require('./ProfielList');
 let VerticaleList = require('./VerticaleList');
+let VerticaleDetail = require('./VerticaleDetail');
 let ProfielLink = require('./ProfielLink.jsx');
 
 let mui = require("material-ui");
@@ -25,7 +26,7 @@ class Leden extends React.Component {
           <Link to="leden">Ledenlijst</Link>
         </li>
         <li role="presentation">
-          <Link to="verticalen">Verticalen</Link>
+          <Link to="verticale-list">Verticalen</Link>
         </li>
         <li role="presentation">
           Kringen
@@ -51,7 +52,12 @@ module.exports =
   <Route>
     <Route handler={Leden}>
       <DefaultRoute name='leden-list' handler={ProfielList}/>
-      <Route name='verticalen' handler={VerticaleList}/>
+
+      <Route name='verticale-list' path="verticale" handler={VerticaleList}/>
+
     </Route>
+
 		<Route name='profiel-detail' path=":pk" handler={Profiel}/>
+    <Route name='verticale-detail' path="verticale/:pk" handler={VerticaleDetail}/>
+
   </Route>;

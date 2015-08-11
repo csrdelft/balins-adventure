@@ -10,9 +10,15 @@ class KringSerializer(serializers.ModelSerializer):
   class Meta:
     model = Kring
 
-class VerticaleSerializer(serializers.ModelSerializer):
+class VerticaleListSerializer(serializers.ModelSerializer):
+  aantal_leden = serializers.SerializerMethodField()
+
+  def get_aantal_leden(self, verticale):
+    return verticale.leden.count()
+
   class Meta:
     model = Verticale
+    fields = ("pk", "naam", "aantal_leden")
 
 class CommissieSerializer(serializers.ModelSerializer):
   class Meta:
@@ -30,8 +36,9 @@ class GroepSerializer(serializers.ModelSerializer):
   class Meta:
     model = Groep
 
-
 class ShortProfielSerializer(serializers.ModelSerializer):
+
+  lidjaar = serializers.ReadOnlyField()
 
   class Meta:
     model = Profiel
@@ -40,13 +47,14 @@ class ShortProfielSerializer(serializers.ModelSerializer):
       'pk',
       'voornaam',
       'achternaam',
-      'full_name'
+      'full_name',
+      'lidjaar'
     )
-    read_only_fields = ('full_name', )
+    read_only_fields = ('full_name', 'lidjaar')
 
 class ProfielSerializer(serializers.ModelSerializer):
   kring = KringSerializer()
-  verticale = VerticaleSerializer()
+  verticale = VerticaleListSerializer()
   commissies = CommissieSerializer(many=True)
   werkgroepen = WerkgroepSerializer(many=True)
   onderverenigingen = OnderverenigingSerializer(many=True)
@@ -115,3 +123,22 @@ class ProfielSerializer(serializers.ModelSerializer):
       "onderverenigingen",
       "overige_groepen"
     )
+
+class VerticaleLidSerializer(serializers.ModelSerializer):
+  user = ShortProfielSerializer()
+
+  class Meta:
+    model = VerticaleLid
+    fields = ("user",)
+
+class VerticaleDetailSerializer(serializers.ModelSerializer):
+  leden = serializers.SerializerMethodField()
+
+  def get_leden(self, verticale):
+    # restrict shown members by status
+    leden = verticale.leden.filter(user__status=Profiel.STATUS.LID)
+    return VerticaleLidSerializer(leden, many=True).data
+
+  class Meta:
+    model = Verticale
+    fields = ("pk", "naam", "leden")

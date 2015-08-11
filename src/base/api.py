@@ -58,7 +58,6 @@ class StekViewSet(viewsets.GenericViewSet):
 
 class ProfielApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
 
-  
   class ProfielFilter(django_filters.FilterSet):
     lichting = django_filters.CharFilter(name="lichtinglid__groep__lidjaar")
 
@@ -120,11 +119,12 @@ def user_login(request):
 class VerticaleApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
 
   permission_classes = [IsAuthenticated]
-  serializer_class = VerticaleSerializer
+  list_serializer_class = VerticaleListSerializer
+  detail_serializer_class = VerticaleDetailSerializer
   pagination_class = None
 
   def get_queryset(self):
-    return Verticale.objects.all()
+    return Verticale.objects.all().exclude(naam="Geen")
 
 router = DefaultRouter()
 router.register("lichtingen", LichtingApi, base_name="lichtingen")

@@ -29,7 +29,7 @@ let verticaleListStore = Reflux.createStore({
   listenables : actions,
 
   init: function() {
-    this.verticalen= {};
+    this.verticalen= [];
   },
 
   // getters
@@ -44,7 +44,27 @@ let verticaleListStore = Reflux.createStore({
   }
 });
 
+let verticaleDetailStore = Reflux.createStore({
+  listenables : actions,
+
+  init: function() {
+    this.verticalen = {};
+  },
+
+  // getters
+
+  get: function(pk) { return this.verticalen[pk]; },
+
+  // handlers
+
+  onLoadVerticaleCompleted: function(resp) {
+    this.verticalen[resp.data.pk] = resp.data;
+    this.trigger(this.verticalen);
+  }
+});
+
 module.exports = {
   profielListStore: profielListStore,
-  verticaleListStore: verticaleListStore
+  verticaleListStore: verticaleListStore,
+  verticaleDetailStore: verticaleDetailStore
 };

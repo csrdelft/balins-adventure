@@ -3,6 +3,7 @@ let Cookies = require('cookies-js');
 let _ = require('underscore');
 
 let api = '/api/v1';
+let static_url = '/static';
 
 Q.xhr.interceptors = [
   // interceptor to load the url parameters into the url
@@ -209,7 +210,9 @@ let api_obj = {
       return Q.xhr
         .get(`${api}/mededelingen/:pk/`, {params: {pk: pk}});
     }
-  }
+  },
+
+  photo_url: (pk) => `${static_url}/images/pasfotos/${pk}.jpg`
 };
 
 // make api available globally
