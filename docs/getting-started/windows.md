@@ -8,14 +8,14 @@
    as described by the file `requirements`:
 
     python -m venv .virtualenv
-	  .virtualenv\Scripts\activate.ps
-	  python -m pip install -r requirements
+    .virtualenv\Scripts\activate.ps
+    python -m pip install -r requirements
 
 6. Run the following commands to install the node sandbox with the dependencies as described by the
    `package.json`:
 
-	  npm install
-	  npm install -g gulp
+    npm install
+    npm install -g gulp
 
 7. Run the build for the client side files
 
