@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     'permission',
     'base',
     'forum',
+    'soccie',
     'maaltijden',
     'mededelingen',
     'autofixture'
