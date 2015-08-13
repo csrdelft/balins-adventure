@@ -41,8 +41,10 @@ npm install -g gulp
 12. You can now run django tasks `Tools > Run manage.py Task`. Execute the following in the prompt
     that opens:
 
-    migrate
-	  runserver
+```
+migrate
+runserver
+```
 
 13. You should now be able to visit `localhost:8000` (and `localhost:8000/admin/`) in your browser
     (might get an error on browsing because the notifications server isn't running yet).
