@@ -9,7 +9,7 @@
 
 ```
 python -m venv .virtualenv
-.virtualenv\Scripts\activate.ps
+.virtualenv\Scripts\activate.ps1
 python -m pip install -r requirements
 ```
 
