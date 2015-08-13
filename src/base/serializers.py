@@ -20,7 +20,7 @@ class VerticaleListSerializer(serializers.ModelSerializer):
     model = Verticale
     fields = ("pk", "naam", "aantal_leden")
 
-class CommissieSerializer(serializers.ModelSerializer):
+class CommissieListSerializer(serializers.ModelSerializer):
   class Meta:
     model = Commissie
 
@@ -56,7 +56,7 @@ class ShortProfielSerializer(serializers.ModelSerializer):
 class ProfielSerializer(serializers.ModelSerializer):
   kring = KringSerializer()
   verticale = VerticaleListSerializer()
-  commissies = CommissieSerializer(many=True)
+  commissies = CommissieListSerializer(many=True)
   werkgroepen = WerkgroepSerializer(many=True)
   onderverenigingen = OnderverenigingSerializer(many=True)
   overige_groepen = GroepSerializer(many=True)
@@ -124,6 +124,25 @@ class ProfielSerializer(serializers.ModelSerializer):
       "onderverenigingen",
       "overige_groepen"
     )
+
+class CommissieLidSerializer(serializers.ModelSerializer):
+  user = ShortProfielSerializer()
+
+  class Meta:
+    model = VerticaleLid
+    fields = ("user",)
+
+class CommissieDetailSerializer(serializers.ModelSerializer):
+  leden = serializers.SerializerMethodField()
+
+  def get_leden(self, verticale):
+    # restrict shown members by status
+    leden = verticale.leden.filter(user__status=Profiel.STATUS.LID)
+    return CommissieLidSerializer(leden, many=True).data
+
+  class Meta:
+    model = Commissie
+    fields = ("pk", "naam", "leden", "status")
 
 class VerticaleLidSerializer(serializers.ModelSerializer):
   user = ShortProfielSerializer()
