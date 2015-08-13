@@ -27,7 +27,7 @@ class Layout extends React.Component {
 
   render() {
     return (
-      <div className="row">
+      <div {...this.props} className="row">
 
         { this.sidemenu() }
 

@@ -43,12 +43,13 @@ class ShortProfielSerializer(serializers.ModelSerializer):
   class Meta:
     model = Profiel
     fields = (
-      'user',
       'pk',
+      'user',
       'voornaam',
       'achternaam',
       'full_name',
-      'lidjaar'
+      'lidjaar',
+      'email'
     )
     read_only_fields = ('full_name', 'lidjaar')
 

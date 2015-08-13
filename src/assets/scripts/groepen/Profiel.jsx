@@ -2,6 +2,7 @@ let React = require("react");
 let $ = require("jquery");
 let _ = require("underscore");
 let Layout = require("Layout");
+let LidPhoto = require("groepen/LidPhoto");
 
 let api = require("api");
 
@@ -61,13 +62,14 @@ class Profiel extends React.Component {
           A.K.A. {profiel.nickname}
         </h3>
         <div className="gegevens">
+          <LidPhoto size="lg" pk={profiel.pk} />
           <table className="table table-bordered">
             <tr>
-              <th>Verticale</th>
+              <td>Verticale</td>
               <td>{ profiel.verticale.naam }</td>
             </tr>
             <tr>
-              <th>Kring</th>
+              <td>Kring</td>
               <td>{ profiel.kring ? profiel.kring.naam : "Geen" }</td>
             </tr>
           </table>
@@ -108,7 +110,7 @@ class Profiel extends React.Component {
   render() {
     if(this.state.profiel) {
       return (
-        <Layout title={`Profiel van ${this.state.profiel.full_name}`}>
+        <Layout id="profiel-detail" title={`Profiel van ${this.state.profiel.full_name}`}>
           { this.template() }
         </Layout>
       );

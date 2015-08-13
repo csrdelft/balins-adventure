@@ -3,6 +3,7 @@ let { Link } = require('react-router');
 let _ = require("underscore");
 let actions = require("./actions");
 let stores = require("./stores");
+let LidPhoto = require("groepen/LidPhoto");
 
 class VerticaleList extends React.Component {
 
@@ -43,7 +44,11 @@ class VerticaleList extends React.Component {
                   <td>
                     <Link to="verticale-detail" params={{pk: vert.pk}}>{vert.naam}</Link>
                   </td>
-                  <td>{vert.aantal_leden}</td>
+                  <td>{
+                    _.map(vert.leden, (lid) =>
+                      <LidPhoto size="sm" key={lid.user.pk} pk={lid.user.pk} name={lid.user.full_name} />
+                    )
+                  }</td>
                 </tr>
             )
         }

@@ -1,8 +1,7 @@
 let React = require("react");
 let $ = require("jquery");
 let _ = require("underscore");
-let PropTypes = require('react-router').PropTypes;
-let api = require("api")
+let api = require("api");
 
 let Civikaartje = require("./Civikaartje");
 let {Link} = require('react-router');
@@ -12,7 +11,15 @@ class LidPhoto extends React.Component {
   static get propTypes() {
     return {
       pk: React.PropTypes.string.isRequired,
-      name: React.PropTypes.string
+      name: React.PropTypes.string,
+      size: React.PropTypes.string
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      size: 'md',
+      name: ''
     };
   }
 
@@ -22,13 +29,9 @@ class LidPhoto extends React.Component {
     };
   }
 
-  constructor(props, context) {
-    super(props, context);
-  }
-
   render() {
     return (
-      <div className="lid-photo">
+      <div className={`lid-photo ${this.props.size}`}>
         <Link
            to="profiel-detail"
            params={{pk: this.props.pk}}

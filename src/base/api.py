@@ -66,10 +66,11 @@ class ProfielApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
       fields = ['lichting']
 
   permission_classes = [IsAuthenticated]
-  serializer_class = ProfielSerializer
+  list_serializer_class = ShortProfielSerializer
+  detail_serializer_class = ProfielSerializer
   filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend)
   filter_class = ProfielFilter
-  search_fields = ('pk', 'voornaam', 'achternaam',)
+  search_fields = ('pk', 'voornaam', 'achternaam','email')
 
   def get_queryset(self):
     return Profiel.objects.all()
@@ -119,8 +120,7 @@ def user_login(request):
 class VerticaleApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
 
   permission_classes = [IsAuthenticated]
-  list_serializer_class = VerticaleListSerializer
-  detail_serializer_class = VerticaleDetailSerializer
+  serializer_class = VerticaleDetailSerializer
   pagination_class = None
 
   def get_queryset(self):
