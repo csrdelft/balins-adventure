@@ -177,6 +177,22 @@ let api_obj = {
 
   },
 
+  commissies: {
+
+    get: (pk) => {
+      return Q.xhr
+        .get(`${api}/commissies/:pk`, {
+          params: {pk: pk}
+        });
+    },
+
+    list: (filter) => {
+      return Q.xhr
+        .get(`${api}/commissies/`, {params: filter});
+    }
+
+  },
+
   maaltijden: {
 
     get_upcoming: (at) => {

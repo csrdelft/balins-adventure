@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from .serializers import *
 
-from rest_framework import mixins, viewsets, filters
+from rest_framework import mixins, viewsets, filters, metadata
 from rest_framework.response import Response
 from rest_framework.decorators import list_route, api_view
 from rest_framework.permissions import IsAuthenticated
@@ -16,6 +16,13 @@ import json
 
 logger = logging.getLogger(__name__)
 
+class MinimalMetadata(metadata.BaseMetadata):
+
+  def determine_metadata(self, request, view):
+    return dict(
+      name=view.get_view_name(),
+      description=view.get_view_description()
+    )
 
 class StekPaginator(PageNumberPagination):
   page_size = 100
@@ -30,10 +37,10 @@ class StekPaginator(PageNumberPagination):
 
     return resp
 
-
 class StekViewSet(viewsets.GenericViewSet):
 
   pagination_class = StekPaginator
+  metadata_class = MinimalMetadata
 
   def get_serializer(self, *args, **kwargs):
     """ Improved get_serializer that will look for list_/detail_serializer_class properties

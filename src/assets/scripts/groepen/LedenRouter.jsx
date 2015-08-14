@@ -10,6 +10,7 @@ let ProfielLink = require('./ProfielLink.jsx');
 let mui = require("material-ui");
 let Layout = require("Layout");
 let LedenList = require("./ProfielList");
+let CommissieList = require("./CommissieList");
 
 class Leden extends React.Component {
 
@@ -32,7 +33,7 @@ class Leden extends React.Component {
           Kringen
         </li>
         <li role="presentation">
-          Commissies
+          <Link to="commissie-list">Commissies</Link>
         </li>
         <li role="presentation">
           Besturen
@@ -54,6 +55,7 @@ module.exports =
       <DefaultRoute name='leden-list' handler={ProfielList}/>
 
       <Route name='verticale-list' path="verticale" handler={VerticaleList}/>
+      <Route name='commissie-list' path="commissie" handler={CommissieList}/>
 
     </Route>
 
