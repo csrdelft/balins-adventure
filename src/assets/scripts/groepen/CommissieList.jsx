@@ -21,8 +21,8 @@ class CommissieList extends React.Component {
   componentDidMount() {
     // parse initial filter
     // and default it
-    let filter = _.chain(queryString.parse(location.search))
-          .pick('jaar', 'com')
+    let filter = _.chain(queryString.parse(window.location.search))
+          .pick('status', 'familie')
           .defaults({
             status: "ht"
           })

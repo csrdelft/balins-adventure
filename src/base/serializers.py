@@ -142,7 +142,7 @@ class CommissieDetailSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Commissie
-    fields = ("pk", "naam", "leden", "status")
+    fields = ("pk", "naam", "leden", "status", "begin_moment", "eind_moment")
 
 class VerticaleLidSerializer(serializers.ModelSerializer):
   user = ShortProfielSerializer()

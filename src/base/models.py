@@ -266,6 +266,7 @@ class Commissie(AbstractGroep):
 
   class Meta:
     db_table = 'commissies'
+    ordering = ['-eind_moment']
 
 class AbstractLid(models.Model):
   user = models.OneToOneField(Profiel, db_column='uid', related_name='%(class)s')

@@ -138,7 +138,7 @@ class CommissieApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet
   permission_classes = [IsAuthenticated]
   serializer_class = CommissieDetailSerializer
   pagination_class = None
-  filter_fields = ('status',)
+  filter_fields = ('status','familie')
 
   def get_queryset(self):
     return Commissie.objects.all()
