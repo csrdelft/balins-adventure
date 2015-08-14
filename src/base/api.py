@@ -135,10 +135,24 @@ class VerticaleApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet
 
 class CommissieApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
 
+  class CommissieMetadata(metadata.BaseMetadata):
+    def determine_metadata(self, request, view):
+      metadict = dict(
+          name=view.get_view_name(),
+          description=view.get_view_description())
+
+      if request.user.is_authenticated():
+        metadict['families'] = [
+          o['familie'] for o in Commissie.objects.order_by().values('familie').distinct()
+        ]
+
+      return metadict
+
   permission_classes = [IsAuthenticated]
   serializer_class = CommissieDetailSerializer
   pagination_class = None
   filter_fields = ('status','familie')
+  metadata_class = CommissieMetadata
 
   def get_queryset(self):
     return Commissie.objects.all()

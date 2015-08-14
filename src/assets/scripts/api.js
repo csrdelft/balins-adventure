@@ -56,6 +56,15 @@ function del(url, options={}) {
   return Q.xhr.delete(url, options);
 }
 
+function meta(url, options={}) {
+  _.extend(options, {
+    url: url,
+    method: 'OPTIONS'
+  });
+
+  return Q.xhr(options);
+}
+
 //
 // api functions
 //
@@ -189,7 +198,9 @@ let api_obj = {
     list: (filter) => {
       return Q.xhr
         .get(`${api}/commissies/`, {params: filter});
-    }
+    },
+
+    metadata: () => meta(`${api}/commissies`)
 
   },
 
