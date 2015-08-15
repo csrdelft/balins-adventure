@@ -135,15 +135,13 @@ class VerticaleApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet
 
 class CommissieApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
 
-  class CommissieMetadata(metadata.BaseMetadata):
+  class CommissieMetadata(MinimalMetadata):
     def determine_metadata(self, request, view):
-      metadict = dict(
-          name=view.get_view_name(),
-          description=view.get_view_description())
+      metadict = super().determine_metadata(request,view)
 
       if request.user.is_authenticated():
         metadict['families'] = [
-          o['familie'] for o in Commissie.objects.order_by().values('familie').distinct()
+          o['familie'] for o in Commissie.objects.order_by('familie').values('familie').distinct()
         ]
 
       return metadict
