@@ -133,6 +133,15 @@ class VerticaleApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet
   def get_queryset(self):
     return Verticale.objects.all().exclude(naam="Geen")
 
+class KringApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
+
+  permission_classes = [IsAuthenticated]
+  serializer_class = KringDetailSerializer
+  pagination_class = None
+
+  def get_queryset(self):
+    return Kring.objects.all().order_by("naam")
+
 class CommissieApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
 
   class CommissieMetadata(MinimalMetadata):
@@ -159,6 +168,7 @@ router = DefaultRouter()
 router.register("lichtingen", LichtingApi, base_name="lichtingen")
 router.register("verticalen", VerticaleApi, base_name="verticalen")
 router.register("commissies", CommissieApi, base_name="commissies")
+router.register("kringen", KringApi, base_name="kringen")
 router.register("profiel", ProfielApi, base_name="profiel")
 urls = [
   url(r'^auth/$', user_get, name="auth-retrieve"),

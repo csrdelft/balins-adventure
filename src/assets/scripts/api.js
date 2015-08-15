@@ -204,6 +204,22 @@ let api_obj = {
 
   },
 
+  kringen: {
+
+    get: (pk) => {
+      return Q.xhr
+        .get(`${api}/kringen/:pk`, {
+          params: {pk: pk}
+        });
+    },
+
+    list: (filter) => {
+      return Q.xhr
+        .get(`${api}/kringen/`);
+    }
+
+  },
+
   maaltijden: {
 
     get_upcoming: (at) => {

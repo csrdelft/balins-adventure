@@ -10,7 +10,9 @@ let actions = Reflux.createActions({
   loadVerticale: {asyncResult: true},
   loadVerticalen: {asyncResult: true},
 
-  loadCommissies : {asyncResult: true}
+  loadCommissies : {asyncResult: true},
+
+  loadKringen: {asyncResult: true}
 });
 
 actions.loadProfielen.listenAndPromise((page) => api.profiel.list(page));
@@ -20,5 +22,7 @@ actions.loadVerticale.listenAndPromise((pk) => api.verticalen.get(pk));
 actions.loadVerticalen.listenAndPromise(() => api.verticalen.list());
 
 actions.loadCommissies.listenAndPromise((filter) => api.commissies.list(filter));
+
+actions.loadKringen.listenAndPromise((filter) => api.kringen.list());
 
 module.exports = actions;

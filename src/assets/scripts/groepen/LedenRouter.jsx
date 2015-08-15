@@ -11,6 +11,7 @@ let mui = require("material-ui");
 let Layout = require("Layout");
 let LedenList = require("./ProfielList");
 let CommissieList = require("./CommissieList");
+let KringList = require("./KringList");
 
 class Leden extends React.Component {
 
@@ -30,7 +31,7 @@ class Leden extends React.Component {
           <Link to="verticale-list">Verticalen</Link>
         </li>
         <li role="presentation">
-          Kringen
+          <Link to="kring-list">Kringen</Link>
         </li>
         <li role="presentation">
           <Link to="commissie-list">Commissies</Link>
@@ -56,6 +57,7 @@ module.exports =
 
       <Route name='verticale-list' path="verticale" handler={VerticaleList}/>
       <Route name='commissie-list' path="commissie" handler={CommissieList}/>
+      <Route name='kring-list' path="kring" handler={KringList}/>
 
     </Route>
 

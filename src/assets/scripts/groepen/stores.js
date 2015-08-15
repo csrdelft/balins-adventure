@@ -63,8 +63,36 @@ let verticaleDetailStore = Reflux.createStore({
   }
 });
 
+let kringListStore = Reflux.createStore({
+  listenables : actions,
+
+  init: function() {
+    this.kringen = [];
+  },
+
+  // getters
+
+  getAll: function() { return this.kringen; },
+
+  getVerticaleChoices: function() {
+    return _.chain(this.kringen).map((k) => k.verticale).uniq().value();
+  },
+
+  getFamilieChoices: function() {
+    return _.chain(this.kringen).map((k) => k.familie).uniq().value();
+  },
+
+  // handlers
+
+  onLoadKringenCompleted: function(resp) {
+    this.kringen = resp.data;
+    this.trigger(this.kringen);
+  }
+});
+
 module.exports = {
   profielListStore: profielListStore,
   verticaleListStore: verticaleListStore,
-  verticaleDetailStore: verticaleDetailStore
+  verticaleDetailStore: verticaleDetailStore,
+  kringListStore: kringListStore
 };

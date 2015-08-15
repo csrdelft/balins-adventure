@@ -6,7 +6,7 @@ class LichtingSerializer(serializers.ModelSerializer):
   class Meta:
     model = Lichting
 
-class KringSerializer(serializers.ModelSerializer):
+class KringListSerializer(serializers.ModelSerializer):
   class Meta:
     model = Kring
 
@@ -54,7 +54,7 @@ class ShortProfielSerializer(serializers.ModelSerializer):
     read_only_fields = ('full_name', 'lidjaar')
 
 class ProfielSerializer(serializers.ModelSerializer):
-  kring = KringSerializer()
+  kring = KringListSerializer()
   verticale = VerticaleListSerializer()
   commissies = CommissieListSerializer(many=True)
   werkgroepen = WerkgroepSerializer(many=True)
@@ -143,6 +143,26 @@ class CommissieDetailSerializer(serializers.ModelSerializer):
   class Meta:
     model = Commissie
     fields = ("pk", "naam", "leden", "status", "begin_moment", "eind_moment")
+
+class KringLidSerializer(serializers.ModelSerializer):
+  user = ShortProfielSerializer()
+
+  class Meta:
+    model = KringLid
+    fields = ("user",)
+
+class KringDetailSerializer(serializers.ModelSerializer):
+  leden = serializers.SerializerMethodField()
+  verticale = VerticaleListSerializer()
+
+  def get_leden(self, kring):
+    # restrict shown members by status
+    leden = kring.leden.filter(user__status=Profiel.STATUS.LID)
+    return KringLidSerializer(leden, many=True).data
+
+  class Meta:
+    model = Kring
+    fields = ("pk", "naam", "leden", "verticale", "kring_nummer", "familie")
 
 class VerticaleLidSerializer(serializers.ModelSerializer):
   user = ShortProfielSerializer()
