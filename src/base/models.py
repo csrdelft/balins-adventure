@@ -269,7 +269,7 @@ class Commissie(AbstractGroep):
     ordering = ['-eind_moment']
 
 class AbstractLid(models.Model):
-  user = models.OneToOneField(Profiel, db_column='uid', related_name='%(class)s')
+  user = models.ForeignKey(Profiel, db_column='uid', related_name='%(class)s')
   opmerking = models.CharField(max_length=255, blank=True)
   lid_sinds = models.DateTimeField()
   door_user = models.ForeignKey(Profiel, db_column='door_uid', related_name='+')
