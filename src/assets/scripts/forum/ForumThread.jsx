@@ -17,7 +17,7 @@ class ForumPost extends React.Component {
   static get propTypes() {
     return {
       post: React.PropTypes.object.isRequired,
-      threadPage: React.PropTypes.number.isRequired
+      threadPage: React.PropTypes.string.isRequired
     };
   }
 
@@ -43,7 +43,7 @@ class ForumPost extends React.Component {
         <th>
           <ProfielLink pk={post.user.pk}>{post.user.full_name}</ProfielLink>
           <i>{moment(post.laatst_gewijzigd).fromNow()}</i>
-          <div class="post-actions">
+          <div className="post-actions">
             { post.can_delete
               ? <button onClick={this.deletePost.bind(this)}>X</button>
               : false
@@ -83,7 +83,8 @@ class ForumThread extends React.Component {
 
     // initial state
     this.state = {
-      thread: undefined
+      thread: undefined,
+      last_page: 1
     };
   }
 
@@ -100,8 +101,10 @@ class ForumThread extends React.Component {
   componentWillMount() {
     // listen to thread store
     stores.threadDetailStore.listen((threads) => {
+      let thread = threads[this.props.pk];
       this.setState({
-        thread: threads[this.props.pk]
+        thread: thread,
+        last_page: thread.last_page
       });
     });
 
@@ -110,6 +113,17 @@ class ForumThread extends React.Component {
   }
 
   render() {
+    let min_page = Math.max(parseInt(this.props.page) - 4, 1);
+    let max_page = Math.min(parseInt(this.props.page) + 4, this.state.last_page);
+    let pages = _.map(_.range(min_page, max_page + 1), (pageno) => [pageno, pageno]);
+    if(min_page > 1)
+      pages.unshift([1, "<<"]);
+    if(max_page < this.state.last_page)
+      pages.push([this.state.last_page, ">>"]);
+    let page_links = pages.map((page) =>
+      <Link key={page} className="action" to="forum-thread-detail-page"
+        params={{pk: this.props.pk, page: page[0]}}>{page[1]}</Link>);
+
     // make sure that the thread and the right posts page are loaded
     if(this.state.thread && this.state.thread.posts[this.props.page]) {
       let posts_page = this.state.thread.posts[this.props.page];
@@ -121,14 +135,7 @@ class ForumThread extends React.Component {
                 <button className="action">
                   <strong>+</strong> bericht
                 </button>
-                <Link className="action" to="forum-thread-detail-page"
-                  params={{pk: this.props.pk, page: Math.max(1, parseInt(this.props.page) - 1)}} >
-                  &lt;
-                </Link>
-                <Link className="action" to="forum-thread-detail-page"
-                  params={{pk: this.props.pk, page: parseInt(this.props.page) + 1}} >
-                  &gt;
-                </Link>
+                {page_links}
               </li>
             </ul>
           </div>

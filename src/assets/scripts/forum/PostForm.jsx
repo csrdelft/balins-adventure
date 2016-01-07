@@ -9,8 +9,8 @@ class PostForm extends React.Component {
 
   static get propTypes() {
     return {
-      thread: React.PropTypes.number.isRequired,
-      threadPage: React.PropTypes.number.isRequired
+      thread: React.PropTypes.string.isRequired,
+      threadPage: React.PropTypes.string.isRequired
     };
   }
 

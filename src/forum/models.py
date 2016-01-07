@@ -136,3 +136,4 @@ class ForumPost(LiveModel):
 
   class Meta:
     db_table = 'forum_posts'
+    ordering = ('-datum_tijd',)

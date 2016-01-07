@@ -112,12 +112,12 @@ class ProfielList extends React.Component {
             <li className="action-input">
               <forms.InlineTextInput
                 label="zoeken..."
-                onChange={_.debounce(this.search, 1000).bind(this)}/>
+                onChange={_.throttle(this.search, 500).bind(this)}/>
             </li>
             <li className="action-input">
               <forms.InlineTextInput
                 label="lichting..."
-                onChange={_.debounce(this.filter, 1000).bind(this, "lichting")}/>
+                onChange={_.throttle(this.filter, 500).bind(this, "lichting")}/>
             </li>
           </ul>
         </div>

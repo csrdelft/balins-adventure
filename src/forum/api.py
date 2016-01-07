@@ -1,6 +1,7 @@
 from django.views.decorators.http import condition
 from django.utils.decorators import method_decorator
 from django.conf import settings
+from django.db.models import Prefetch
 
 from rest_framework import mixins, status, viewsets
 from rest_framework.exceptions import ValidationError
@@ -77,7 +78,7 @@ class ForumDraadViewSet(
   list_serializer_class = ListForumDraadSerializer
 
   queryset = ForumDraad.objects\
-    .prefetch_related("posts", "forum")\
+    .prefetch_related("forum", "posts")\
     .order_by("-laatste_post__laatst_gewijzigd")
   filter_fields = ('forum',)
 
@@ -149,7 +150,7 @@ class ForumDraadViewSet(
     # make sure the user can view the forum draad
     deny_on_fail(request.user.has_perm('forum.view_forumdeel', draad.forum))
 
-    return Response(self.get_serializer(instance=draad).data)
+    return Response(self.get_serializer(draad).data)
 
 class ForumPostViewSet(
   mixins.DestroyModelMixin,

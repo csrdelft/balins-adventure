@@ -34,6 +34,7 @@ class StekPaginator(PageNumberPagination):
 
     # include the current page number
     resp.data['pageno'] = self.page.number
+    resp.data['last_page'] = self.page.paginator.num_pages
 
     return resp
 

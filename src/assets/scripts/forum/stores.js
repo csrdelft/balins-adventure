@@ -3,7 +3,6 @@ let actions = require('./actions.js');
 let Reflux = require('reflux');
 
 // Store that specializes in paginated thread lists
-// updates from this store are tuples [ page, threads ]
 let threadListStore = Reflux.createStore({
 
   // listen to all forum action
@@ -83,21 +82,18 @@ let threadListStore = Reflux.createStore({
           this.trigger(this.threads);
         }
       })
-    )
-
-  },
+    );
+  }
 });
 
-// Store that specializes in threads by pk
-// Updates from this store are a Map[pk -> thread]
-// Each thread has a field 'posts' that is a Map[page -> posts_page]
+// paginated detail store for threads
 let threadDetailStore = Reflux.createStore({
 
   // listen to all forum action
   listenables: actions,
 
   init: function() {
-    // thread store state
+    // threadpk -> [ page -> posts ]
     this.threads = {};
   },
 
@@ -109,6 +105,7 @@ let threadDetailStore = Reflux.createStore({
 
     // update the state
     this.threads[thread.pk] = thread;
+    this.threads[thread.pk].last_page = posts_page.last_page;
 
     this.trigger(this.threads);
   },
@@ -138,14 +135,9 @@ let threadDetailStore = Reflux.createStore({
 
     // if the thread or posts page is not in the store, no one is interested
     if(thread !== undefined && page !== undefined) {
-      // optimistic update
-      this.threads[post.draad].posts[page].push(post);
-
       // reload that page of this thread
-      actions.loadThread(thread.pk, page);
-
-      // notify listeners
-      this.trigger(this.threads);
+      // this will eventually kick the listeners
+      actions.loadThread(thread.pk, page.pageno);
     }
   },
 

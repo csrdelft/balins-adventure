@@ -96,7 +96,7 @@ class DetailForumDraadSerializer(ListForumDraadSerializer):
   posts = serializers.SerializerMethodField()
 
   def get_posts(self, draad):
-    posts_query = draad.posts.all().order_by("datum_tijd")
+    posts_query = draad.posts.all().order_by("-datum_tijd")
     paginator = StekPaginator()
 
     serializer = ForumPostSerializer(

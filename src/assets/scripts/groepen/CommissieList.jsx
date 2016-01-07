@@ -14,7 +14,7 @@ class CommissieList extends React.Component {
     super(props);
 
     this.state = {
-      commissies: undefined,
+      commissies: [],
       families: [],
       filter: {}
     };
@@ -24,11 +24,8 @@ class CommissieList extends React.Component {
     // parse initial filter
     // and default it
     let filter = _.chain(queryString.parse(window.location.search))
-          .pick('status', 'familie')
-          .defaults({
-            status: "ht"
-          })
-          .value();
+      .pick('familie')
+      .value();
 
     // load the metadata
     // this only happens once for the page
@@ -58,53 +55,44 @@ class CommissieList extends React.Component {
     }, () => this.update());
   }
 
-  handleStatusChange(e) {
-    this.setState({
-      filter: _.defaults({
-        status: e.target.value
-      }, this.state.filter)
-    }, () => this.update());
-  }
-
   render() {
+    let commissies = _(this.state.commissies)
+      .chain()
+      .groupBy('status')
+      .mapObject((comms, status) =>
+         <div>
+          <h1>{status}</h1>
+          <table className="table table-bordered table-striped">
+            <tbody>
+              {
+                _(comms).map((c) => <tr key={c.pk}><td>{c.naam}</td></tr>)
+              }
+            </tbody>
+          </table>
+        </div>
+      )
+      .value();
+
+    let familie_options = _(this.state.families)
+      .map((fam) => <option key={fam} value={fam}>{fam}</option>);
+    familie_options.unshift(<option key={-1} value="">-- Familie --</option>);
+
     return (
      <div id="commissie-list">
        <div id="page-action-menu">
          <ul>
            <li>
-             <select onChange={this.handleFamilieChange.bind(this)}>
-               <option value=""
-                       selected={this.state.filter.familie == ""}>
-                 -- Familie --
-               </option>
-               { _.map(this.state.families, (fam) =>
-                 <option selected={this.state.filter.familie == fam}>{fam}</option>
-               )}
-             </select>
-           </li>
-           <li>
-             <select onChange={this.handleStatusChange.bind(this)}>
-               <option value="ot">OT</option>
-               <option value="ht" selected={true}>HT</option>
-               <option value="ft">FT</option>
+             <select onChange={this.handleFamilieChange.bind(this)} defaultValue={this.state.filter.familie}>
+               { familie_options }
              </select>
            </li>
          </ul>
        </div>
 
        <div id="page-content">
-         <table className="table table-bordered table-striped">
-           <tbody>
-             {
-               _.map(this.state.commissies, (c) =>
-                 <tr>
-                    <td>{c.naam}</td>
-                    <td>{c.status}</td>
-                 </tr>
-               )
-             }
-           </tbody>
-         </table>
+         {commissies.ft ? commissies.ft : null}
+         {commissies.ht ? commissies.ht : null}
+         {commissies.ot ? commissies.ot : null}
        </div>
      </div>
     );
