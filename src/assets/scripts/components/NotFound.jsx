@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from 'Layout';
+import Layout from './Layout';
 
 // simple 404 child view
 export default class NotFound extends React.Component {

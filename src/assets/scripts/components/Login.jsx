@@ -1,17 +1,15 @@
-let React = require("react");
-let Reflux = require('reflux');
-let $ = require("jquery");
-let _ = require("underscore");
+import React from "react";
+import Reflux from 'reflux';
+import $ from "jquery";
+import _ from "underscore";
 
 // ui
-let Grid = require("bootstrap");
-let mui = require('material-ui');
-let forms = require('forms');
+import Grid from "../components/bootstrap";
+import forms from '../components/forms';
 
-// data
-let actions = require("auth/actions");
+// import actions from "auth/actions";
 
-class Login extends React.Component {
+export default class Login extends React.Component {
 
   constructor(props) {
     super(props);
@@ -29,13 +27,14 @@ class Login extends React.Component {
 
   submit(data) {
     // simply kick of the login actions
+    /*
     actions
       .login(data.username, data.password)
       // and listen for it to complete/fail
       .then(
         (resp) => this.context.router.transitionTo("/"),
         (resp) => this.setError(resp.data.detail)
-      );
+      );*/
 
   }
 
@@ -72,5 +71,3 @@ class Login extends React.Component {
     );
   }
 }
-
-module.exports = Login;

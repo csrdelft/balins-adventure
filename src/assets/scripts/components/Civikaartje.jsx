@@ -1,7 +1,7 @@
 import React from "react";
 import $ from "jquery";
 import _ from "underscore";
-import api from "api";
+import api from "../utils/api";
 import { Link } from 'react-router';
 
 class Civikaartje extends React.Component {

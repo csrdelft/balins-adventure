@@ -1,10 +1,11 @@
 import React from "react";
 import $ from "jquery";
 import _ from "underscore";
-import Layout from "Layout";
-import LidPhoto from "groepen/LidPhoto";
 
-import api from "api";
+import Layout from "../components/Layout";
+import LidPhoto from "../components/LidPhoto";
+
+import api from "../utils/api";
 
 class Profiel extends React.Component {
 

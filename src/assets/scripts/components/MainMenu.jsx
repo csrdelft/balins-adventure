@@ -2,17 +2,15 @@ import React from "react";
 import Reflux from 'reflux';
 import $ from "jquery";
 import _ from "underscore";
-import Grid from "bootstrap";
 
 import { Router, Route, IndexRoute, Link } from 'react-router';
 
 // data
 import io from 'socket.io-client';
-import { authStore } from "auth/authStore";
 
 // the top menu
 // where we use the Link element from the router to activate different views
-class Menu extends React.Component {
+export default class Menu extends React.Component {
 
   constructor(props) {
     super(props);
@@ -28,11 +26,11 @@ class Menu extends React.Component {
   componentWillMount() {
     // listen to auth changes
     // because the menu contents depends on auth state
-    this.unsubscribe = authStore.listen((currentUser) => {
+    /*this.unsubscribe = authStore.listen((currentUser) => {
       this.setState({
         user: currentUser
       });
-    });
+    });*/
   }
 
   componentDidMount() {
@@ -59,6 +57,8 @@ class Menu extends React.Component {
   }
 
   privateLinks() {
+    return [];
+    // todo fixme
     if(authStore.isAuthenticated()) {
       let user = authStore.getCurrentUser();
       return [
@@ -83,5 +83,3 @@ class Menu extends React.Component {
     );
   }
 }
-
-module.exports = Menu;

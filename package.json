@@ -28,6 +28,7 @@
     "jquery": "^2.1.x",
     "material-ui": "^0.14.1",
     "moment": "^2.10.6",
+    "normalizr": "^1.4.1",
     "object-assign": "^4.0.x",
     "q": "^1.4.x",
     "q-xhr": "^1.0.0",
@@ -39,7 +40,7 @@
     "react-tap-event-plugin": "^0.2.1",
     "redux": "3.0.x",
     "redux-devtools": "^3.0.x",
-    "reflux": "^0.3.0",
+    "redux-thunk": "^1.0.3",
     "socket.io-client": "^1.4.2",
     "underscore": "^1.8.3",
     "utf-8-validate": "^1.2.1"

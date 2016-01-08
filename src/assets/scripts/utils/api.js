@@ -260,5 +260,4 @@ let api_obj = {
 
 // make api available globally
 window.api = api_obj;
-
-module.exports = api_obj;
+export default api_obj;
