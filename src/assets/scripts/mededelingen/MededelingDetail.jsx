@@ -3,15 +3,9 @@ let $ = require("jquery");
 let _ = require("underscore");
 let api = require("api");
 
-let ProfielLink = require('../groepen/ProfielLink')
+let ProfielLink = require('../groepen/ProfielLink');
 
 class MededelingDetail extends React.Component {
-
-  static get propTypes() {
-    return {
-      pk: React.PropTypes.string.isRequired
-    }
-  }
 
   constructor(props) {
     super(props);
@@ -31,13 +25,13 @@ class MededelingDetail extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.pk != nextProps.pk) {
-      this.update(nextProps.pk);
+    if(this.props.params.pk != nextProps.params.pk) {
+      this.update(nextProps.params.pk);
     }
   }
 
   componentWillMount() {
-    this.update(this.props.pk);
+    this.update(this.props.params.pk);
   }
 
   render() {
@@ -45,7 +39,7 @@ class MededelingDetail extends React.Component {
     if(mededeling) {
       return <div>
         <h1>{mededeling.titel}</h1>
-        <p><ProfielLink pk={mededeling.user.pk}>{mededeling.user.full_name}</ProfielLink></p>
+        <ProfielLink pk={mededeling.user.pk}>{mededeling.user.full_name}</ProfielLink>
         <p>{mededeling.tekst}</p>
       </div>;
     } else {

@@ -1,6 +1,6 @@
-let _ = require('underscore');
-let actions = require('./actions.js');
-let Reflux = require('reflux');
+import _ from 'underscore';
+import actions from './actions.js';
+import Reflux from 'reflux';
 
 // Store that specializes in paginated thread lists
 let threadListStore = Reflux.createStore({

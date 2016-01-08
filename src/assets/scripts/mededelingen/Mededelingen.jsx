@@ -1,11 +1,11 @@
-let React = require("react");
-let $ = require("jquery");
-let _ = require("underscore");
-let mixin = require("mixin");
-let { RouteHandler, State } = require('react-router');
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
+import { State } from 'react-router';
+import api from 'api';
 
-let MededelingList = require('./MededelingList');
-let Layout = require("Layout");
+import MededelingList from './MededelingList';
+import Layout from "Layout";
 
 class MededelingenSidemenu extends React.Component {
 
@@ -18,7 +18,7 @@ class MededelingenSidemenu extends React.Component {
   }
 }
 
-class Mededelingen extends React.Component {
+export default class Mededelingen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -46,13 +46,9 @@ class Mededelingen extends React.Component {
     let props = {mededelingen: this.state.mededelingen};
 
     return (
-      <Layout title="Mededelingen"
-        sidemenu={MededelingList} sidemenuProps={props}
-      >
-        <RouteHandler {...this.props.params} />
+      <Layout title="Mededelingen" sidemenu={MededelingList} sidemenuProps={props}>
+        {this.props.children}
       </Layout>
     );
   }
 }
-
-module.exports = Mededelingen;

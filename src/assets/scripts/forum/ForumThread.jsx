@@ -3,7 +3,7 @@ let Reflux = require("reflux");
 let $ = require("jquery");
 let _ = require("underscore");
 let Layout = require("Layout");
-let { Link, RouteHandler } = require('react-router');
+let { Link } = require('react-router');
 let moment = require("moment");
 
 let ProfielLink = require("groepen/ProfielLink");
@@ -72,14 +72,8 @@ class ForumThread extends React.Component {
     };
   }
 
-  static get contextTypes() {
-    return {
-      router: React.PropTypes.func.isRequired
-    }
-  }
-
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     // initial state
     this.state = {

@@ -6,28 +6,12 @@ let _ = require("underscore");
 // ui
 let Grid = require("bootstrap");
 let mui = require('material-ui');
-let ThemeManager = new mui.Styles.ThemeManager();
 let forms = require('forms');
 
 // data
 let actions = require("auth/actions");
 
 class Login extends React.Component {
-
-  static get contextTypes() {
-    return { router: React.PropTypes.object.isRequired }
-  }
-
-  static get childContextTypes() {
-    return { muiTheme: React.PropTypes.object }
-  }
-
-  getChildContext() {
-    return {
-      // set the mui theme on the children through the context
-      muiTheme: ThemeManager.getCurrentTheme()
-    };
-  }
 
   constructor(props) {
     super(props);

@@ -1,25 +1,15 @@
-let React = require("react");
-let $ = require("jquery");
-let _ = require("underscore");
-let Layout = require("Layout");
-let LidPhoto = require("groepen/LidPhoto");
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
+import Layout from "Layout";
+import LidPhoto from "groepen/LidPhoto";
 
-let api = require("api");
+import api from "api";
 
 class Profiel extends React.Component {
 
-  static get contextTypes() {
-    return {
-      router: React.PropTypes.func.isRequired
-    }
-  }
-
-  static get propTypes() {
-    return { pk: React.PropTypes.string.isRequired };
-  }
-
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     // initial state
     this.state = {
@@ -32,20 +22,20 @@ class Profiel extends React.Component {
       .then(
       (resp) => {
         console.debug("Profile loaded...");
-        this.setState({profiel: resp.data})
+        this.setState({profiel: resp.data});
       },
       (resp) => console.error('Getting profiel failed with status ' + resp.status)
     );
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.pk != nextProps.pk) {
-      this.update(nextProps.pk);
+    if(this.props.params.pk != nextProps.params.pk) {
+      this.update(nextProps.params.pk);
     }
   }
 
   componentWillMount() {
-    this.update(this.props.pk);
+    this.update(this.props.params.pk);
   }
 
   template() {
@@ -64,6 +54,7 @@ class Profiel extends React.Component {
         <div className="gegevens">
           <LidPhoto size="lg" pk={profiel.pk} />
           <table className="table table-bordered">
+            <tbody>
             <tr>
               <td>Verticale</td>
               <td>{ profiel.verticale.naam }</td>
@@ -72,6 +63,7 @@ class Profiel extends React.Component {
               <td>Kring</td>
               <td>{ profiel.kring ? profiel.kring.naam : "Geen" }</td>
             </tr>
+            </tbody>
           </table>
         </div>
 

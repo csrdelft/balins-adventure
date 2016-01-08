@@ -1,23 +1,12 @@
-var React = require("react");
-var $ = require("jquery");
-var _ = require("underscore");
-var api = require("api");
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
+import api from "api";
+import { Router, Link } from 'react-router';
 
-var PropTypes = require('react-router').PropTypes;
+let PropTypes = Router.PropTypes;
 
 class MededelingList extends React.Component {
-
-
-  constructor(props, context) {
-    super(props);
-
-    this.context = context;
-  }
-
-  go(event) {
-    let pk = $(event.target).data('pk');
-    this.context.router.transitionTo("mededeling-detail", {pk: pk});
-  }
 
   render() {
     return <div>
@@ -26,7 +15,7 @@ class MededelingList extends React.Component {
         {
           _.map(this.props.mededelingen, (mededeling, i) =>
             <li key={mededeling.pk}>
-              <a data-pk={mededeling.pk} onClick={this.go.bind(this)}>{mededeling.titel}</a>
+              <Link to={`mededelingen/${mededeling.pk}`}>{mededeling.titel}</Link>
             </li>
           )
         }
@@ -34,10 +23,6 @@ class MededelingList extends React.Component {
     </div>;
   }
 }
-
-MededelingList.contextTypes = {
-  router: React.PropTypes.func.isRequired
-};
 
 // the component takes an attribute to manipulate the update interval
 MededelingList.propTypes = {

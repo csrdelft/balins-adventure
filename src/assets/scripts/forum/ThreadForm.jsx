@@ -1,15 +1,15 @@
-let React = require("react");
-let _ = require('underscore');
-let api = require('api');
-let mui = require("material-ui");
-let forms = require('forms');
-let actions = require('forum/actions');
+import React from "react";
+import _ from 'underscore';
+import api from 'api';
+import mui from "material-ui";
+import forms from 'forms';
+import actions from 'forum/actions';
 
-class ThreadForm extends React.Component {
+export default class ThreadForm extends React.Component {
 
   static get propTypes() {
     return {
-      forum: React.PropTypes.number.isRequired,
+      forum: React.PropTypes.string.isRequired,
       onCancel: React.PropTypes.func
     };
   }
@@ -28,7 +28,7 @@ class ThreadForm extends React.Component {
         .catch((resp) => console.error(resp.data))
         .then(() => this.refs.form.clear())
         .done();
-    }
+    };
 
     let formBuilder = () => {
       return (
@@ -50,5 +50,3 @@ class ThreadForm extends React.Component {
     return <forms.Form ref="form" formBuilder={formBuilder} onSubmit={handleSubmit} />;
   }
 }
-
-module.exports = ThreadForm;

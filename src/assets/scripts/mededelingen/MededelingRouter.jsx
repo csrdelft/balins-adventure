@@ -1,9 +1,11 @@
-let React = require('react');
-let { Route, DefaultRoute } = require('react-router');
+import React from 'react';
+import { IndexRoute, Route } from 'react-router';
 
-let Mededelingen = require('./Mededelingen');
-let MededelingDetail = require('./MededelingDetail');
+import Mededelingen from './Mededelingen';
+import MededelingDetail from './MededelingDetail';
 
-module.exports = <Route name="mededelingen" handler={Mededelingen}>
-  <Route path=":pk" name="mededeling-detail" handler={MededelingDetail} />
+export default <Route component={Mededelingen}>
+  <IndexRoute component={null} />
+
+  <Route path=":pk" component={MededelingDetail} />
 </Route>;

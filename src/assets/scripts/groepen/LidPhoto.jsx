@@ -23,12 +23,6 @@ class LidPhoto extends React.Component {
     };
   }
 
-  static get contextTypes() {
-    return {
-      router: React.PropTypes.func.isRequired
-    };
-  }
-
   render() {
     return (
       <div className={`lid-photo ${this.props.size}`}>

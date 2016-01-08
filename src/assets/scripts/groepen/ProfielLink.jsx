@@ -15,14 +15,8 @@ class ProfielLink extends React.Component {
     };
   }
 
-  static get contextTypes() {
-    return {
-      router: React.PropTypes.func.isRequired
-    }
-  }
-
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.pk = props.pk;
     this.name = props.children;
 
@@ -68,8 +62,7 @@ class ProfielLink extends React.Component {
       <div className="profielLinkDiv">
         <Link
            className="profielLinkName"
-           to="profiel-detail"
-           params={{pk: this.pk}}
+           to={`/leden/${this.pk}`}
            onMouseEnter={this.link.bind(this)}>
           { this.name }
         </Link>

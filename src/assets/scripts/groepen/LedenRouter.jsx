@@ -1,40 +1,33 @@
-let React = require('react');
-let { Link, Route, DefaultRoute, RouteHandler} = require('react-router');
+import React from 'react';
+import { Link, Route, IndexRoute } from 'react-router';
 
-let Profiel = require('./Profiel');
-let ProfielList = require('./ProfielList');
-let VerticaleList = require('./VerticaleList');
-let VerticaleDetail = require('./VerticaleDetail');
-let ProfielLink = require('./ProfielLink.jsx');
+import Profiel from './Profiel';
+import ProfielList from './ProfielList';
+import VerticaleList from './VerticaleList';
+import VerticaleDetail from './VerticaleDetail';
+import ProfielLink from './ProfielLink.jsx';
 
-let mui = require("material-ui");
-let Layout = require("Layout");
-let LedenList = require("./ProfielList");
-let CommissieList = require("./CommissieList");
-let KringList = require("./KringList");
+import mui from "material-ui";
+import Layout from "Layout";
+import CommissieList from "./CommissieList";
+import KringList from "./KringList";
 
 class Leden extends React.Component {
 
-  static get contextTypes() {
-    return {
-      router: React.PropTypes.func.isRequired
-    };
-  }
-  
   render() {
     return <Layout title="Leden">
       <ul className="nav nav-tabs nav-justified">
         <li>
-          <Link to="leden">Ledenlijst</Link>
+          <Link to="/leden">Ledenlijst</Link>
         </li>
         <li role="presentation">
-          <Link to="verticale-list">Verticalen</Link>
+          <Link to="/leden/groepen/verticale">Verticalen</Link>
         </li>
         <li role="presentation">
-          <Link to="kring-list">Kringen</Link>
+          <Link to="/leden/groepen/kring">Kringen</Link>
         </li>
         <li role="presentation">
-          <Link to="commissie-list">Commissies</Link>
+          <Link to="/leden/groepen/commissie">Commissies</Link>
         </li>
         <li role="presentation">
           Besturen
@@ -44,24 +37,30 @@ class Leden extends React.Component {
         </li>
       </ul>
       <div id="page-content">
-        <RouteHandler />
+        {this.props.children}
       </div>
     </Layout>;
   }
 }
 
-module.exports =
-  <Route>
-    <Route handler={Leden}>
-      <DefaultRoute name='leden-list' handler={ProfielList}/>
+// wraps profiel list in the Leden layout
+class LedenList extends React.Component {
+  render() {
+    return <Leden><ProfielList /></Leden>;
+  }
+}
 
-      <Route name='verticale-list' path="verticale" handler={VerticaleList}/>
-      <Route name='commissie-list' path="commissie" handler={CommissieList}/>
-      <Route name='kring-list' path="kring" handler={KringList}/>
+export default <Route>
+  <IndexRoute component={LedenList}/>
 
-    </Route>
+  <Route path="groepen" component={Leden}>
+    <Route path="verticale" component={VerticaleList}/>
+    <Route path="commissie" component={CommissieList}/>
+    <Route path="kring" component={KringList}/>
 
-		<Route name='profiel-detail' path=":pk" handler={Profiel}/>
-    <Route name='verticale-detail' path="verticale/:pk" handler={VerticaleDetail}/>
+  </Route>
 
-  </Route>;
+  <Route path=":pk" component={Profiel}/>
+  <Route path="verticale/:pk" component={VerticaleDetail}/>
+
+</Route>;

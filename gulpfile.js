@@ -31,7 +31,7 @@ gulp.task('sass', function() {
 
 // initiates the scripts bundler
 function compileScripts(watch) {
-  var entryFile = path.join(assets, 'app.jsx');
+  var entryFile = path.join(assets, 'scripts/index.jsx');
 
   // we use browserify to bundle node style modules into a
   // script ready for the browser
@@ -46,7 +46,7 @@ function compileScripts(watch) {
 
   // we use babel to transpile es6 syntax and the react jsx syntax
   // down to es5
-  bundler.transform(babelify);
+  bundler.transform(babelify, {presets: ['es2015', 'react']});
 
   function bundle() {
     var stream = bundler

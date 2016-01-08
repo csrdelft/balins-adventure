@@ -4,8 +4,7 @@ let $ = require("jquery");
 let _ = require("underscore");
 let Grid = require("bootstrap");
 
-let Router = require('react-router');
-let { Route, DefaultRoute, Link, RouteHandler } = Router;
+import { Router, Route, IndexRoute, Link } from 'react-router';
 
 // data
 let io = require('socket.io-client');
@@ -65,14 +64,13 @@ class Menu extends React.Component {
       return [
         <Link key="leden-link" to="leden">Leden</Link>,
         <Link key="mededelingen-link" to="mededelingen">Mededelingen</Link>,
-        <Link key="profiel-link" to="profiel-detail" params={{pk: user.pk}}>Profiel</Link>
+        <Link key="profiel-link" to={`/leden/${user.pk}`}>Profiel</Link>
       ];
     } else {
       return [];
     }
   }
 
-  //TODO: uid to profiel should contain the uid of the current user
   render() {
     return (
       <div className="container">

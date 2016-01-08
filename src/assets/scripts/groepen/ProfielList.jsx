@@ -6,7 +6,7 @@ let stores = require("./stores");
 let forms = require('forms');
 
 // view stuff
-let { Link, RouteHandler } = require('react-router');
+import { Link } from 'react-router';
 
 class ProfielList extends React.Component {
 
@@ -17,12 +17,6 @@ class ProfielList extends React.Component {
 
   static get defaultProps() {
     return {page: "1"};
-  }
-
-  static get contextTypes() {
-    return {
-      router: React.PropTypes.func.isRequired
-    };
   }
 
   constructor(props) {

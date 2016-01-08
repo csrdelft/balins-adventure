@@ -1,22 +1,24 @@
-let React = require("react");
-let $ = require("jquery");
-let _ = require("underscore");
-let { Route, DefaultRoute, Link, RouteHandler } = require('react-router');
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
+import { Route, IndexRoute, Link } from 'react-router';
 
-let Forum = require("forum/Forum");
-let ForumList = require("forum/ForumList");
-let ForumThread = require("forum/ForumThread");
+import Forum from "forum/Forum";
+import ForumList from "forum/ForumList";
+import ForumThread from "forum/ForumThread";
 
 module.exports = (
-  <Route handler={Forum}>
+  <Route component={Forum}>
+    <IndexRoute component={null} />
+
     <Route path="parts">
-      <Route path=":pk" name="forum-thread-list" handler={ForumList}/>
-      <Route path=":pk/:page" name="forum-thread-list-page" handler={ForumList}/>
+      <Route path=":pk" component={ForumList}/>
+      <Route path=":pk/:page" component={ForumList}/>
     </Route>
 
     <Route path="threads">
-      <Route path=":pk" name="forum-thread-detail" handler={ForumThread}/>
-      <Route path=":pk/:page" name="forum-thread-detail-page" handler={ForumThread}/>
+      <Route path=":pk" component={ForumThread}/>
+      <Route path=":pk/:page" component={ForumThread}/>
     </Route>
   </Route>
 );

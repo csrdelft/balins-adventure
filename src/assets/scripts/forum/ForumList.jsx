@@ -1,46 +1,25 @@
-let React = require("react");
-let Reflux = require("reflux");
-let $ = require("jquery");
-let _ = require("underscore");
-let cs = require("classnames");
-let api = require("api");
-let mixin = require("mixin");
-let moment = require("moment");
+import React from "react";
+import Reflux from "reflux";
+import $ from "jquery";
+import _ from "underscore";
+import cs from "classnames";
+import api from "api";
+import moment from "moment";
 
-let { Link, RouteHandler } = require('react-router');
-let ProfielLink = require('groepen/ProfielLink.jsx');
-let ThreadForm = require("forum/ThreadForm");
-let stores = require("forum/stores");
-let actions = require("forum/actions");
+import { Link } from 'react-router';
+import ProfielLink from 'groepen/ProfielLink.jsx';
+import ThreadForm from "forum/ThreadForm";
+import ForumThreadList from "forum/ForumThreadList";
+import stores from "forum/stores";
+import actions from "forum/actions";
 
-class ForumList extends React.Component {
+export default class ForumList extends React.Component {
 
-  static get propTypes() {
-    return {
-      // because passed as route parameter, these are strings
-      pk: React.PropTypes.string.isRequired,
-      page: React.PropTypes.string
-    };
-  }
+  constructor(props) {
+    super(props);
 
-  static get defaultProps() {
-    return {
-      page: "1"
-    };
-  }
-
-  static get contextTypes() {
-    return {
-      router: React.PropTypes.func.isRequired
-    };
-  }
-
-  constructor(props, context) {
-    super(props, context);
-
-    // initial state
     this.state = {
-      threads: {},
+      threads: [],
       show_create: false
     };
   }
@@ -51,12 +30,13 @@ class ForumList extends React.Component {
       .threadListStore
       .listen((threads) =>
         this.setState({
-          threads: stores.threadListStore.getForumPage(this.props.pk, this.props.page)
+          // TODO Fixme
+          threads: [] // stores.threadListStore.getForumPage(this.props.pk, this.props.page)
         })
       );
 
     // force fresh load of forum threads
-    this.update(this.props.pk, this.props.page);
+    this.update(this.props.params.pk, this.props.params.page);
   }
 
 
@@ -70,8 +50,8 @@ class ForumList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.pk != this.props.pk || nextProps.page != this.props.page) {
-      this.update(nextProps.pk, nextProps.page);
+    if(nextProps.params.pk != this.props.params.pk || nextProps.params.page != this.props.params.page) {
+      this.update(nextProps.params.pk, nextProps.params.page);
     }
   }
 
@@ -98,54 +78,19 @@ class ForumList extends React.Component {
              <button className="action" onClick={this.showCreate.bind(this, true)}>
                + draadje
              </button>
-             <Link className="action" to="forum-thread-list-page"
-                   params={{pk: this.props.pk, page: Math.max(1, parseInt(this.props.page) - 1)}}>
-               &lt;
-             </Link>
-             <Link className="action" to="forum-thread-list-page"
-                   params={{pk: this.props.pk, page: parseInt(this.props.page) + 1}}>
-               &gt;
-             </Link>
            </li>
          </ul>
        </div>
 
        <div id="thread-form" className={create_classes} >
          <h2>Nieuw draadje</h2>
-         <ThreadForm forum={this.props.pk} onCancel={this.showCreate.bind(this, false)}/>
+         <ThreadForm forum={this.props.params.pk} onCancel={this.showCreate.bind(this, false)}/>
        </div>
 
        <div id="page-content">
-         <table>
-           <tbody>
-           { _.map(this.state.threads, (thread) => (
-              <tr key={thread.pk}>
-                <td>
-                  <ProfielLink pk={thread.user.pk}>
-                    { thread.user.full_name }
-                  </ProfielLink>
-                  <i>{ moment(thread.laatst_gewijzigd).fromNow() }</i>
-                </td>
-                <td>
-                  <Link to="forum-thread-detail" params={{pk: thread.pk}}>
-                    { thread.titel }
-                  </Link>
-                </td>
-                <td>
-                  { thread.can_delete
-                    ? <button onClick={this.deleteThread.bind(this, thread.pk)} >X</button>
-                    : false
-                  }
-                </td>
-              </tr>
-             ))
-           }
-           </tbody>
-         </table>
+        <ForumThreadList threads={this.state.threads} />
        </div>
      </div>
     );
   }
 }
-
-module.exports = ForumList;

@@ -1,8 +1,8 @@
-var React = require("react");
-var $ = require("jquery");
-var _ = require("underscore");
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
 
-class Layout extends React.Component {
+export default class Layout extends React.Component {
 
   constructor(props) {
     super(props);
@@ -27,7 +27,7 @@ class Layout extends React.Component {
 
   render() {
     return (
-      <div {...this.props} className="row">
+      <div className="row">
 
         { this.sidemenu() }
 
@@ -44,5 +44,3 @@ class Layout extends React.Component {
     );
   }
 }
-
-module.exports = Layout;

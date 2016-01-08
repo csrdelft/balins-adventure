@@ -1,23 +1,16 @@
-let React = require("react");
-let $ = require("jquery");
-let _ = require("underscore");
-let { Link, RouteHandler } = require('react-router');
-let api = require("api");
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
+import { Link } from 'react-router';
+import api from "api";
 
-let Layout = require("Layout");
-let mui = require('material-ui');
-let { List, ListItem } = mui;
+import Layout from "Layout";
+import mui, { List, ListItem } from 'material-ui';
 
 class ForumSideMenu extends React.Component {
 
-  static get contextTypes() {
-    return {
-      router: React.PropTypes.func.isRequired
-    }
-  }
-
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.state = {
       fora: [],
@@ -50,38 +43,34 @@ class ForumSideMenu extends React.Component {
 
   render() {
     return (
-      <List>
+      <ul>
         {
           _.map(this.state.fora, (fora, cat_pk) =>
-            <ListItem
-                key={cat_pk}
-                primaryText={this.state.categories[cat_pk].titel}
-                open={true}
-                >
+            <li key={cat_pk}>
+              <p>{this.state.categories[cat_pk].titel}</p>
+              <ul>
               {
                 _.map(fora, (forum) => 
-                   <ListItem
-                      key={forum.pk}
-                      onClick={this.goTo.bind(this, forum.pk)}
-                      primaryText={forum.titel} />
+                   <li key={forum.pk}>
+                     <Link to={`/forum/parts/${forum.pk}`}>{forum.titel}</Link>
+                   </li>
                 )
               }
-            </ListItem>
+              </ul>
+            </li>
           )
         }
-      </List>
+      </ul>
     );
   }
 }
 
-class Forum extends React.Component {
+export default class Forum extends React.Component {
   render() {
     return (
       <Layout title="Reformaforum" sidemenu={ForumSideMenu}>
-        <RouteHandler {...this.props.params} />
+        {this.props.children}
       </Layout>
     );
   }
 }
-
-module.exports = Forum;
