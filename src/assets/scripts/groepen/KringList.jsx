@@ -1,14 +1,14 @@
-let React = require('react');
-let { Link } = require('react-router');
-let _ = require("underscore");
-let api = require("api");
-let actions = require("./actions");
-let stores = require("./stores");
-let LidPhoto = require("groepen/LidPhoto");
-let moment = require("moment");
-let queryString = require("query-string");
+import React from 'react';
+import { Link } from 'react-router';
+import _ from "underscore";
+import api from "api";
+import actions from "./actions";
+import stores from "./stores";
+import LidPhoto from "groepen/LidPhoto";
+import moment from "moment";
+import queryString from "query-string";
 
-class KringList extends React.Component {
+export default class KringList extends React.Component {
 
   constructor(props) {
     super(props);
@@ -90,5 +90,3 @@ class KringList extends React.Component {
     );
   }
 }
-
-module.exports = KringList;

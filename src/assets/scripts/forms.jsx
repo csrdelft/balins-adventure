@@ -1,13 +1,12 @@
-let React = require('react');
-let _ = require('underscore');
+import React from 'react';
+import _ from 'underscore';
 
-let mui = require('material-ui');
-let { RaisedButton, Styles } = mui;
+import mui, { RaisedButton, Styles } from 'material-ui';
 
 /**
  * Validation functions
  */
-let validators = {
+export let validators = {
   /* Composes all passed validators into a single validator
    */
   compose(...validators) {
@@ -40,7 +39,7 @@ let validators = {
   }
 };
 
-class Form extends React.Component {
+export class Form extends React.Component {
 
   static get propTypes() {
     return {
@@ -110,7 +109,7 @@ class Form extends React.Component {
 /**
  * Abstract over some boilerplate that is common in all fields of a form.
  */
-class Field extends React.Component {
+export class Field extends React.Component {
 
   static get contextTypes() {
     return { form: React.PropTypes.object.isRequired };
@@ -146,7 +145,7 @@ class Field extends React.Component {
   }
 }
 
-class CharField extends Field {
+export class CharField extends Field {
 
   static get defaultProps() {
     return _.extend(Field.defaultProps, {
@@ -196,7 +195,7 @@ class CharField extends Field {
   }
 }
 
-class PasswordField extends CharField {
+export class PasswordField extends CharField {
 
   render() {
     return <mui.TextField
@@ -209,7 +208,7 @@ class PasswordField extends CharField {
   }
 }
 
-class InlineTextInput extends React.Component {
+export class InlineTextInput extends React.Component {
 
   static get propTypes() {
     return {
@@ -246,7 +245,7 @@ class InlineTextInput extends React.Component {
   
 }
 
-class TextField extends CharField {
+export class TextField extends CharField {
 
   render() {
     return <mui.TextField
@@ -258,7 +257,7 @@ class TextField extends CharField {
   }
 }
 
-class SubmitButton extends React.Component {
+export class SubmitButton extends React.Component {
 
   static get contextTypes() {
     return { form: React.PropTypes.object.isRequired };
@@ -272,14 +271,3 @@ class SubmitButton extends React.Component {
     return <mui.RaisedButton onClick={this.submitForm.bind(this)}>OK</mui.RaisedButton>;
   }
 }
-
-module.exports = {
-  Form: Form,
-  Field: Field,
-  CharField: CharField,
-  TextField: TextField,
-  SubmitButton: SubmitButton,
-  PasswordField: PasswordField,
-  InlineTextInput: InlineTextInput,
-  validators: validators
-};

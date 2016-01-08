@@ -1,14 +1,14 @@
-let React = require("react");
-let Reflux = require('reflux');
-let $ = require("jquery");
-let _ = require("underscore");
-let Grid = require("bootstrap");
+import React from "react";
+import Reflux from 'reflux';
+import $ from "jquery";
+import _ from "underscore";
+import Grid from "bootstrap";
 
 import { Router, Route, IndexRoute, Link } from 'react-router';
 
 // data
-let io = require('socket.io-client');
-let { authStore } = require("auth/authStore");
+import io from 'socket.io-client';
+import { authStore } from "auth/authStore";
 
 // the top menu
 // where we use the Link element from the router to activate different views

@@ -1,8 +1,8 @@
-let _ = require('underscore');
-let actions = require('./actions.js');
-let Reflux = require('reflux');
+import _ from 'underscore';
+import actions from './actions.js';
+import Reflux from 'reflux';
 
-let profielListStore = Reflux.createStore({
+export let profielListStore = Reflux.createStore({
   listenables : actions,
 
   init: function() {
@@ -25,7 +25,7 @@ let profielListStore = Reflux.createStore({
   }
 });
 
-let verticaleListStore = Reflux.createStore({
+export let verticaleListStore = Reflux.createStore({
   listenables : actions,
 
   init: function() {
@@ -44,7 +44,7 @@ let verticaleListStore = Reflux.createStore({
   }
 });
 
-let verticaleDetailStore = Reflux.createStore({
+export let verticaleDetailStore = Reflux.createStore({
   listenables : actions,
 
   init: function() {
@@ -63,7 +63,7 @@ let verticaleDetailStore = Reflux.createStore({
   }
 });
 
-let kringListStore = Reflux.createStore({
+export let kringListStore = Reflux.createStore({
   listenables : actions,
 
   init: function() {
@@ -89,10 +89,3 @@ let kringListStore = Reflux.createStore({
     this.trigger(this.kringen);
   }
 });
-
-module.exports = {
-  profielListStore: profielListStore,
-  verticaleListStore: verticaleListStore,
-  verticaleDetailStore: verticaleDetailStore,
-  kringListStore: kringListStore
-};

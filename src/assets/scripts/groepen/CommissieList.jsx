@@ -1,14 +1,14 @@
-let React = require('react');
-let { Link } = require('react-router');
-let _ = require("underscore");
-let api = require("api");
-let actions = require("./actions");
-let stores = require("./stores");
-let LidPhoto = require("groepen/LidPhoto");
-let moment = require("moment");
-let queryString = require("query-string");
+import React from 'react';
+import _ from "underscore";
+import { Link } from 'react-router';
+import api from "api";
+import actions from "./actions";
+import stores from "./stores";
+import LidPhoto from "groepen/LidPhoto";
+import moment from "moment";
+import queryString from "query-string";
 
-class CommissieList extends React.Component {
+export default class CommissieList extends React.Component {
 
   constructor(props) {
     super(props);
@@ -98,5 +98,3 @@ class CommissieList extends React.Component {
     );
   }
 }
-
-module.exports = CommissieList;

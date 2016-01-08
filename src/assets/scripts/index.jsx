@@ -1,6 +1,7 @@
 import React from "react";
 import $ from "jquery";
 import { render } from 'react-dom';
+import Q from 'q';
 import {
   Router,
   IndexRoute,

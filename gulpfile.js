@@ -56,7 +56,7 @@ function compileScripts(watch) {
           title: "Error building scripts"
       }))
       .pipe(source(entryFile))
-      .pipe(rename('app.js'))
+      .pipe(rename('index.js'))
       .pipe(gulp.dest(path.join(dist, 'scripts')));
 
     stream.on('end', function() { gutil.log("Done building scripts"); });

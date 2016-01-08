@@ -1,10 +1,8 @@
-let React = require("react");
-let $ = require("jquery");
-let _ = require("underscore");
-let api = require("api");
-let PropTypes = require('react-router').PropTypes;
-
-let {Link} = require('react-router');
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
+import api from "api";
+import { Link } from 'react-router';
 
 class Civikaartje extends React.Component {
 
@@ -21,8 +19,7 @@ class Civikaartje extends React.Component {
 
     this.state = {
       profiel: undefined
-    }
-
+    };
   }
 
    update(pk) {

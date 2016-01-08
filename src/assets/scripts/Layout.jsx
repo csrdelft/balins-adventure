@@ -4,11 +4,7 @@ import _ from "underscore";
 
 export default class Layout extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
-  sidemenu() {
+  renderSidemenu() {
     if(this.props.sidemenu) {
       return (
         <div id="side-column" className="col-xs-3">
@@ -29,7 +25,7 @@ export default class Layout extends React.Component {
     return (
       <div className="row">
 
-        { this.sidemenu() }
+        { this.renderSidemenu() }
 
         <div id="content-column" className={this.props.sidemenu ? "col-xs-9" : "col-xs-12" }>
           <div id="header-bg"></div>

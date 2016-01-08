@@ -1,8 +1,13 @@
-var React = require("react");
-var $ = require("jquery");
-var _ = require("underscore");
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
 
-class RatingField extends React.Component {
+export default class RatingField extends React.Component {
+
+  static get propTypes() { return { max: React.PropTypes.number };}
+
+  static get defaultProps() { return { max: 5 };}
+
   constructor(props) {
     super(props);
 
@@ -48,8 +53,3 @@ class RatingField extends React.Component {
     );
   }
 }
-
-RatingField.propTypes = { max: React.PropTypes.number };
-RatingField.defaultProps = { max: 5 };
-
-module.exports = RatingField;

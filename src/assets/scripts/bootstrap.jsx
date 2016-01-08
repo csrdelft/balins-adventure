@@ -1,21 +1,21 @@
-let React = require("react");
-let $ = require("jquery");
-let _ = require("underscore");
-let cs = require("classnames");
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
+import cs from "classnames";
 
-class Container extends React.Component {
+export class Container extends React.Component {
   render() {
     return <div {...this.props} className="container">{this.props.children}</div>;
   }
 }
 
-class Row extends React.Component {
+export class Row extends React.Component {
   render() {
     return <div {...this.props} className="row">{this.props.children}</div>;
   }
 }
 
-class Col extends React.Component {
+export class Col extends React.Component {
   render() {
     let classnames = cs({
       [`col-xs-${this.props.xs}`]: this.props.xs,
@@ -30,9 +30,3 @@ class Col extends React.Component {
     return <div {...this.props} className={classnames}>{this.props.children}</div>;
   }
 }
-
-module.exports = {
-  Container: Container,
-  Row: Row,
-  Col: Col
-};

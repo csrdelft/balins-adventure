@@ -1,13 +1,13 @@
-let React = require('react');
-let { Link } = require('react-router');
-let _ = require("underscore");
-let actions = require("./actions");
-let stores = require("./stores");
-let bs = require("bootstrap");
-let Layout = require("Layout");
-let LidPhoto = require("groepen/LidPhoto");
+import React from 'react';
+import { Link } from 'react-router';
+import _ from "underscore";
+import actions from "./actions";
+import stores from "./stores";
+import bs from "bootstrap";
+import Layout from "Layout";
+import LidPhoto from "groepen/LidPhoto";
 
-class VerticaleDetail extends React.Component {
+export default class VerticaleDetail extends React.Component {
 
   static get propTypes() {
     return {pk: React.PropTypes.string.isRequired};
@@ -68,5 +68,3 @@ class VerticaleDetail extends React.Component {
     </Layout>;
   }
 }
-
-module.exports = VerticaleDetail;

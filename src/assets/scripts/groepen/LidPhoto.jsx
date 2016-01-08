@@ -1,12 +1,12 @@
-let React = require("react");
-let $ = require("jquery");
-let _ = require("underscore");
-let api = require("api");
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
+import api from "api";
 
-let Civikaartje = require("./Civikaartje");
-let {Link} = require('react-router');
+import Civikaartje from "./Civikaartje";
+import {Link} from 'react-router';
 
-class LidPhoto extends React.Component {
+export default class LidPhoto extends React.Component {
 
   static get propTypes() {
     return {
@@ -36,5 +36,3 @@ class LidPhoto extends React.Component {
     );
   }
 }
-
-module.exports = LidPhoto;

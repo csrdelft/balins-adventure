@@ -1,12 +1,11 @@
-let React = require("react");
-let $ = require("jquery");
-let _ = require("underscore");
-let PropTypes = require('react-router').PropTypes;
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
 
-let Civikaartje = require("./Civikaartje");
-let {Link} = require('react-router');
+import Civikaartje from "./Civikaartje";
+import {Link} from 'react-router';
 
-class ProfielLink extends React.Component {
+export default class ProfielLink extends React.Component {
 
   static get propTypes() {
     return {
@@ -38,7 +37,7 @@ class ProfielLink extends React.Component {
   unlink() {
     //Uses delay to let animation finish before hiding element
     const delay = 500;
-    setTimeout(() => {
+    window.setTimeout(() => {
       this.setState({
         show_civikaartje: false
       });
@@ -71,5 +70,3 @@ class ProfielLink extends React.Component {
     );
   }
 }
-
-module.exports = ProfielLink;

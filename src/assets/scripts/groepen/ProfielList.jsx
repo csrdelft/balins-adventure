@@ -1,14 +1,12 @@
-let React = require("react");
-let $ = require("jquery");
-let _ = require("underscore");
-let actions = require("./actions");
-let stores = require("./stores");
-let forms = require('forms');
-
-// view stuff
+import React from "react";
+import $ from "jquery";
+import _ from "underscore";
+import actions from "./actions";
+import stores from "./stores";
+import forms from 'forms';
 import { Link } from 'react-router';
 
-class ProfielList extends React.Component {
+export default class ProfielList extends React.Component {
 
   static get propTypes() {
     // string because it's a route parameter
@@ -144,5 +142,3 @@ class ProfielList extends React.Component {
     );
   }
 };
-
-module.exports = ProfielList;

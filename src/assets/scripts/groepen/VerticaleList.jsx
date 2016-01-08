@@ -1,11 +1,11 @@
-let React = require('react');
-let { Link } = require('react-router');
-let _ = require("underscore");
-let actions = require("./actions");
-let stores = require("./stores");
-let LidPhoto = require("groepen/LidPhoto");
+import React from 'react';
+import { Link } from 'react-router';
+import _ from "underscore";
+import actions from "./actions";
+import stores from "./stores";
+import LidPhoto from "groepen/LidPhoto";
 
-class VerticaleList extends React.Component {
+export default class VerticaleList extends React.Component {
 
   constructor(props) {
     super(props);
@@ -57,5 +57,3 @@ class VerticaleList extends React.Component {
     </div>;
   }
 }
-
-module.exports = VerticaleList;

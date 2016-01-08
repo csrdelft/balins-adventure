@@ -1,6 +1,6 @@
-let Reflux = require('reflux');
-let api = require('api');
-let _ = require('underscore');
+import Reflux from 'reflux';
+import api from 'api';
+import _ from 'underscore';
 
 let actions = Reflux.createActions({
 
@@ -25,4 +25,4 @@ actions.loadCommissies.listenAndPromise((filter) => api.commissies.list(filter))
 
 actions.loadKringen.listenAndPromise((filter) => api.kringen.list());
 
-module.exports = actions;
+export default actions;
