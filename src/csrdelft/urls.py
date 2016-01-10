@@ -26,11 +26,13 @@ api_urls = patterns('',
 )
 
 urlpatterns = patterns('',
-  # app views
-  url(r'^', include(base.views.urls)),
-
   # app apis
   url(r'^api/v1/', include(api_urls)),
 
+  # admin
   url(r'^admin/', include(admin.site.urls)),
+
+  # app views
+  # contains a catch all
+  url(r'^', include(base.views.urls)),
 )

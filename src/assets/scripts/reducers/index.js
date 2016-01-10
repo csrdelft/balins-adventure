@@ -1,3 +1,8 @@
-let nullReducer = (state, action) => { return state; };
+import initialState from '../store';
 
-export default nullReducer;
+export function entities(state = {profielen: {}}, action) {
+  switch (action.type) {
+    default:
+      return state;
+  }
+}

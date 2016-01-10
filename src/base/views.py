@@ -27,6 +27,7 @@ def end_su(request):
   return hijack.release_hijack(request)
 
 urls = patterns('',
-  url(r'^$', index, name='index'),
   url(r'^su/(.{4})/$', su, name='base.su'),
-  url(r'^endsu/$', end_su, name='base.end_su'), )
+  url(r'^endsu/$', end_su, name='base.end_su'),
+  url(r'^.*$', index, name='index')
+)

@@ -40,6 +40,7 @@
     "react-tap-event-plugin": "^0.2.1",
     "redux": "3.0.x",
     "redux-devtools": "^3.0.x",
+    "redux-simple-router": "^1.0.2",
     "redux-thunk": "^1.0.3",
     "socket.io-client": "^1.4.2",
     "underscore": "^1.8.3",

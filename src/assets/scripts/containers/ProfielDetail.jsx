@@ -1,49 +1,35 @@
 import React from "react";
 import $ from "jquery";
 import _ from "underscore";
+import { connect } from "react-redux";
+import * as actions from '../actions';
 
 import Layout from "../components/Layout";
 import LidPhoto from "../components/LidPhoto";
 
 import api from "../utils/api";
 
-class Profiel extends React.Component {
+function loadData(props) {
+  const { pk } = props;
+  actions.loadProfielDetail(pk);
+}
 
-  constructor(props) {
-    super(props);
+class ProfielDetail extends React.Component {
 
-    // initial state
-    this.state = {
-      profiel: undefined
-    };
-  }
-
-  update(pk) {
-    api.profiel.get(pk)
-      .then(
-      (resp) => {
-        console.debug("Profile loaded...");
-        this.setState({profiel: resp.data});
-      },
-      (resp) => console.error('Getting profiel failed with status ' + resp.status)
-    );
+  componentWillMount() {
+    console.debug("Loading profile");
+    loadData(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.params.pk != nextProps.params.pk) {
-      this.update(nextProps.params.pk);
+    if (nextProps.pk !== this.props.pk) {
+      loadData(nextProps.pk);
     }
   }
 
-  componentWillMount() {
-    this.update(this.props.params.pk);
-  }
+  renderProfiel() {
+    let { profiel, dispatch } = this.props;
 
-  template() {
-    // helper to make setters for profiel attributes
-    let profiel = this.state.profiel;
-
-    // actual template based on the state
     return (
       <div>
         <h1>
@@ -101,10 +87,10 @@ class Profiel extends React.Component {
   }
 
   render() {
-    if(this.state.profiel) {
+    if(this.props.profiel) {
       return (
         <Layout id="profiel-detail" title={`Profiel van ${this.state.profiel.full_name}`}>
-          { this.template() }
+          { this.renderProfiel() }
         </Layout>
       );
     } else {
@@ -117,4 +103,15 @@ class Profiel extends React.Component {
   }
 }
 
-module.exports = Profiel;
+function select(state, props) {
+  let { pk } = props.params;
+  let { entities: { profielen }} = state;
+
+  let profiel = profielen[pk] || undefined;
+
+  return {
+    profiel
+  };
+}
+
+export default connect(select)(ProfielDetail);

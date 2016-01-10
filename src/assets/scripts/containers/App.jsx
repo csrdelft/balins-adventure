@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import {Provider} from 'react-redux';
+import {Router, browserHistory} from 'react-router';
 import $ from "jquery";
 import _ from "underscore";
 
@@ -11,7 +12,8 @@ export default class App extends Component {
 
   static get propTypes() {
     return {
-      store: PropTypes.object.isRequired
+      store: PropTypes.object.isRequired,
+      history: PropTypes.object.isRequired
     };
   }
 
@@ -26,11 +28,13 @@ export default class App extends Component {
   }
 
   render() {
-    let { store } = this.props;
+    let { store, history } = this.props;
 
     return (
       <Provider store={store}>
-        {routes}
+        <Router history={history}>
+          {routes}
+        </Router>
       </Provider>
     );
   }

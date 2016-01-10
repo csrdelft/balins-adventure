@@ -4,8 +4,8 @@ import $ from "jquery";
 import _ from "underscore";
 
 // ui
-import Grid from "../components/bootstrap";
-import forms from '../components/forms';
+import * as Grid from "../components/bootstrap";
+import * as forms from '../components/forms';
 
 // import actions from "auth/actions";
 

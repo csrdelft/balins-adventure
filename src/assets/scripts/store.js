@@ -1,10 +1,8 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import routes from 'routes';
 import thunk from 'redux-thunk';
-import rootReducer from 'reducers';
 
-const finalCreateStore = compose(applyMiddleware(thunk))(createStore);
-
-export default function configureStore(initialState) {
+export default function configureStore(rootReducer, initialState, ...middleware) {
+  let finalCreateStore = applyMiddleware(thunk, ...middleware)(createStore);
   return finalCreateStore(rootReducer, initialState);
 }

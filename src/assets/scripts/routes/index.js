@@ -20,16 +20,10 @@ import NotFound from "../components/NotFound";
 // <Route path="mededelingen">{MededelingRouter}</Route>
 // <Route path="forum">{ForumRouter}</Route>
 export default (
-  <Router history={browserHistory}>
-    <Route path="/login" component={Login} />
-
-    <Route path="/" component={Root}>
-      <IndexRoute component={NotFound} />
-      <Route path="leden">
-        {GroepenRouter}
-      </Route>
-      <Route path="*" component={NotFound} />
-    </Route>
-
-  </Router>
+  <Route path="/" component={Root}>
+    <IndexRoute component={NotFound} />
+    <Route path="login" component={Login} />
+    <Route path="leden">{GroepenRouter}</Route>
+    <Route path="*" component={NotFound} />
+  </Route>
 );
