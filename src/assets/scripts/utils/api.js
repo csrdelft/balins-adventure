@@ -1,6 +1,8 @@
-let Q = require('q-xhr')(window.XMLHttpRequest, require('q'));
-let Cookies = require('cookies-js');
-let _ = require('underscore');
+import q from 'q';
+import qXHR from 'q-xhr';
+let Q = qXHR(window.XMLHttpRequest, q);
+import Cookies from 'cookies-js';
+import _ from 'underscore';
 
 let api = '/api/v1';
 let static_url = '/static';
@@ -148,10 +150,7 @@ let api_obj = {
   profiel: {
 
     get: (pk) => {
-      return Q.xhr
-        .get(`${api}/profiel/:pk`, {
-          params: {pk: pk}
-        });
+      return Q.xhr.get(`${api}/profiel/${pk}/`);
     },
 
     search: (search_text, filters={}) => {

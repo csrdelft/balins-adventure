@@ -10,14 +10,13 @@ import LidPhoto from "../components/LidPhoto";
 import api from "../utils/api";
 
 function loadData(props) {
-  const { pk } = props;
-  actions.loadProfielDetail(pk);
+  const { pk } = props.params;
+  props.dispatch(actions.loadProfielDetail(pk));
 }
 
 class ProfielDetail extends React.Component {
 
   componentWillMount() {
-    console.debug("Loading profile");
     loadData(this.props);
   }
 
@@ -28,7 +27,16 @@ class ProfielDetail extends React.Component {
   }
 
   renderProfiel() {
-    let { profiel, dispatch } = this.props;
+    let {
+      profiel,
+      verticale,
+      commissies,
+      kring,
+      overigeGroepen,
+      onderverenigingen,
+      werkgroepen,
+      dispatch
+    } = this.props;
 
     return (
       <div>
@@ -39,16 +47,16 @@ class ProfielDetail extends React.Component {
           A.K.A. {profiel.nickname}
         </h3>
         <div className="gegevens">
-          <LidPhoto size="lg" pk={profiel.pk} />
+          <LidPhoto size="lg" pk={profiel.id} />
           <table className="table table-bordered">
             <tbody>
             <tr>
               <td>Verticale</td>
-              <td>{ profiel.verticale.naam }</td>
+              <td>{ verticale ? verticale.naam : "Geen" }</td>
             </tr>
             <tr>
               <td>Kring</td>
-              <td>{ profiel.kring ? profiel.kring.naam : "Geen" }</td>
+              <td>{ kring ? kring.naam : "Geen" }</td>
             </tr>
             </tbody>
           </table>
@@ -58,7 +66,7 @@ class ProfielDetail extends React.Component {
           <h2>Commissies</h2>
           <table className="table table-bordered">
             <tbody>
-            { _.map(profiel.commissies, (c, i) =>
+            { _.map(commissies, (c, i) =>
               <tr key={i}><td>{ c.naam }</td></tr>
             )}
             </tbody>
@@ -67,7 +75,7 @@ class ProfielDetail extends React.Component {
           <h2>Werkgroepen</h2>
           <table className="table table-bordered">
             <tbody>
-            { _.map(profiel.werkgroepen, (c, i) =>
+            { _.map(werkgroepen, (c, i) =>
               <tr key={i}><td>{ c.naam }</td></tr>
             )}
             </tbody>
@@ -76,7 +84,7 @@ class ProfielDetail extends React.Component {
           <h2>Overige Groepen</h2>
           <table className="table table-bordered">
             <tbody>
-            { _.map(profiel.groepen, (c, i) =>
+            { _.map(overigeGroepen, (c, i) =>
               <tr key={i}><td>{ c.naam }</td></tr>
             )}
             </tbody>
@@ -89,7 +97,7 @@ class ProfielDetail extends React.Component {
   render() {
     if(this.props.profiel) {
       return (
-        <Layout id="profiel-detail" title={`Profiel van ${this.state.profiel.full_name}`}>
+        <Layout id="profiel-detail" title={`Profiel van ${this.props.profiel.full_name}`}>
           { this.renderProfiel() }
         </Layout>
       );
@@ -105,13 +113,27 @@ class ProfielDetail extends React.Component {
 
 function select(state, props) {
   let { pk } = props.params;
-  let { entities: { profielen }} = state;
+  let { entities: {
+    profielen,
+    commissies,
+    onderverenigingen,
+    kringen,
+    overigeGroepen,
+    verticalen,
+    werkgroepen
+  }} = state;
 
-  let profiel = profielen[pk] || undefined;
+  let profiel = profielen[pk];
+  let profielRelations = profiel ? {
+    kring: kringen[profiel.kring],
+    verticale: verticalen[profiel.verticale],
+    commissies: _.map(profiel.commissies, (id) => commissies[id]),
+    overigeGroepen: _.map(profiel.overigeGroepen, (id) => overigeGroepen[id]),
+    werkgroepen: _.map(profiel.werkgroepen, (id) => werkgroepen[id]),
+    onderverenigingen: _.map(profiel.onderverenigingen, (id) => werkgroepen[id])
+  } : {};
 
-  return {
-    profiel
-  };
+  return Object.assign({profiel: profiel}, profielRelations);
 }
 
 export default connect(select)(ProfielDetail);
