@@ -3,6 +3,7 @@ import {Provider} from 'react-redux';
 import {Router, browserHistory} from 'react-router';
 import $ from "jquery";
 import _ from "underscore";
+import DevDock from "./DevDock";
 
 import routes from '../routes';
 
@@ -32,9 +33,12 @@ export default class App extends Component {
 
     return (
       <Provider store={store}>
-        <Router history={history}>
-          {routes}
-        </Router>
+        <div>
+          <Router history={history}>
+            {routes}
+          </Router>
+          <DevDock />
+        </div>
       </Provider>
     );
   }

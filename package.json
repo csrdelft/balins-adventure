@@ -13,6 +13,8 @@
     "gulp-sass": "^2.0.2",
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.2.4",
+    "redux-devtools-dock-monitor": "^1.0.1",
+    "redux-devtools-log-monitor": "^1.0.1",
     "rename": "^1.0.3",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.3"
