@@ -9,20 +9,23 @@ import LidPhoto from "../components/LidPhoto";
 
 import api from "../utils/api";
 
-function loadData(props) {
-  const { pk } = props.params;
-  props.dispatch(actions.loadProfielDetail(pk));
-}
-
 class ProfielDetail extends React.Component {
 
+  // Method to load the target profile into the store
+  loadData() {
+    const { pk } = this.props.params;
+    this.props.dispatch(actions.loadProfielDetail(pk));
+  }
+
   componentWillMount() {
-    loadData(this.props);
+    // make sure that the profile is loaded on mount
+    this.loadData(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.pk !== this.props.pk) {
-      loadData(nextProps.pk);
+    // We have to reload our profile if the primary key from the route changes
+    if (nextProps.params.pk !== this.props.params.pk) {
+      this.loadData(nextProps.pk);
     }
   }
 
@@ -95,6 +98,7 @@ class ProfielDetail extends React.Component {
   }
 
   render() {
+    // only render if profile is loaded
     if(this.props.profiel) {
       return (
         <Layout id="profiel-detail" title={`Profiel van ${this.props.profiel.full_name}`}>
@@ -111,6 +115,8 @@ class ProfielDetail extends React.Component {
   }
 }
 
+// select everything from the global store that is relevant to
+// profiel detail
 function select(state, props) {
   let { pk } = props.params;
   let { entities: {
@@ -136,4 +142,8 @@ function select(state, props) {
   return Object.assign({profiel: profiel}, profielRelations);
 }
 
+// Using redux we 'connect' ProfielDetail to the store through the select function.
+// All selected state is injected into the props of ProfielDetail.
+// Everytime the store is updated, the properties will update and React will make sure
+// that ProfielDetail re-renders.
 export default connect(select)(ProfielDetail);
