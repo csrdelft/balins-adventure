@@ -1,17 +1,17 @@
 import React from "react";
 import $ from "jquery";
 import { render } from 'react-dom';
-import { createHistory } from 'history';
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
 import { combineReducers } from 'redux';
 
-import configureStore from 'store';
+import configureStore from 'store/configureStore';
+import history from 'store/history';
+
 import App from 'containers/App';
 import * as reducers from 'reducers';
 
 let initialState = {};
 
-let history = createHistory();
 let reducer = combineReducers(Object.assign({}, reducers, {routing: routeReducer}));
 let store = configureStore(reducer, initialState);
 

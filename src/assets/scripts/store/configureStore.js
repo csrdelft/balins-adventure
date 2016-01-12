@@ -1,7 +1,7 @@
 import { compose, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import routes from './routes';
-import DevDock from './containers/DevDock';
+import routes from '../routes';
+import DevDock from '../containers/DevDock';
 
 export default function configureStore(rootReducer, initialState, ...middleware) {
   let finalCreateStore =

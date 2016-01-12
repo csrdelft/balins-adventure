@@ -8,6 +8,7 @@ import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 import qs from 'query-string';
+import history from '../store/history';
 
 let loadData = _.throttle((props, filter) => {
   return props.dispatch(
@@ -61,8 +62,10 @@ export default class ProfielList extends React.Component {
     });
 
     // update the url
-    this.props.dispatch(
-      pushPath(Object.assign({}, location, {search: `?${qs.stringify(nextFilter)}`}))
+    // we can push directly because we don't have to reload the page
+    // we're only updating the query string for future reference
+    history.push(
+      Object.assign({}, location, {search: `?${qs.stringify(nextFilter)}`})
     );
 
     loadData(this.props, nextFilter);
