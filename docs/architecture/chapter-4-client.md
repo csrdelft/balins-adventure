@@ -15,7 +15,7 @@ to the server is finished.
 So we make the request asynchronously and return a promise that we will call you when the data is in.
 
 Here are the [q.xhr docs](https://github.com/nathanboktae/q-xhr)
-and here is our [api implementation](https://github.com/csrdelft/balins-adventure/blob/master/src/assets/scripts/api.js).
+and here is our [api implementation](https://github.com/csrdelft/balins-adventure/blob/master/src/assets/scripts/utils/api.js).
 
 ## UIs using ReactJS
 
@@ -40,6 +40,9 @@ To determine which client side page we want to render, we use [react-router](htt
 It has the same function as the server side router: it looks at the route and then renders the
 specified handler, passing it any url parameters as react properties.
 
+All you have to know about routes is in [here](https://github.com/csrdelft/balins-adventure/blob/master/src/assets/scripts/routes/index.js).
+Links are created with the `<Link to="some/path/to/somwhere" />` component from the `react-router` module.
+
 #### Props? State? Updating?
 
 Sooo, components have both properties and state.
@@ -52,6 +55,24 @@ If you have to update the state when a property changes, you can do this using t
 `componentWillReceiveProps(Object nextProps)` handler on the component.
 
 More reading can be found [here](https://github.com/uberVU/react-guide/blob/master/props-vs-state.md).
+
+#### Flux & Redux
+
+To manage the state on the client we use the Flux architecture from Facebook.
+The goal of this architecture is to prevent spaghetti code due to state pileup in different places.
+If you worked with heavy clients in the browser before you know this is a risk: many components manage parts of the state, and will eventually all rely on each other. Terrible.
+
+So Flux (and the implementation Redux in particular) manage this inversely: a global, central *store* manages all the application state.
+The state is updated in response to actions, which act as global *events*. 
+Actions are fired using `dispatch(event(eventParameters))` and may fire other events in effect. 
+
+Actions are just objects that carry some data and may be caught by so called *reducers*, who are in charge of modifying the store in response to actions.
+They are just functions that take the current store state and an action and return a new state.
+
+Finally it's worthwile to point out that UI components fall in one of two categories: smart components (aka containers) and dumb ones (from now on just referred to as components):
+
+- (Dumb) Components do not ask for state from the store and are unaware of Redux/Flux/The store in general.
+- Containers *are* connected to the store using the function `connect`. Connect will inject part of the store state into the component as props. When the store changes (because action > reducer > change) the component will automagically update itself.
 
 ## Push notifications
 
