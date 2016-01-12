@@ -9,23 +9,26 @@ import LidPhoto from "../components/LidPhoto";
 
 import api from "../utils/api";
 
-class ProfielDetail extends React.Component {
+// this function lives outside ProfielDetail to ensure that we are not
+// tempted to directly use this.props or state.
+// This in turn ensures we can call it with future properties from componentWillReceiveProps
+function loadData(props) {
+  const { pk } = props;
+  props.dispatch(actions.loadProfielDetail(pk));
+}
 
-  // Method to load the target profile into the store
-  loadData() {
-    const { pk } = this.props.params;
-    this.props.dispatch(actions.loadProfielDetail(pk));
-  }
+
+class ProfielDetail extends React.Component {
 
   componentWillMount() {
     // make sure that the profile is loaded on mount
-    this.loadData(this.props);
+    loadData(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
     // We have to reload our profile if the primary key from the route changes
     if (nextProps.params.pk !== this.props.params.pk) {
-      this.loadData(nextProps.pk);
+      loadData(nextProps);
     }
   }
 
