@@ -7,8 +7,8 @@
    dependencies.
 
     make install
-	  source .virtualenv/bin/activate
-	  pip install -r requirements
+    source .virtualenv/bin/activate
+    pip install -r requirements
 
 5. Install gulp globally using npm: `sudo npm install -g gulp`
 
@@ -22,7 +22,7 @@
     run the development server; from the `src/` run:
 
     python manage.py migrate
-	  python manage.py runserver
+    python manage.py runserver
 
 9.  You should now be able to visit `localhost:8000` (and `localhost:8000/admin/`) in your browser
     (might get an error on browsing because the notifications server isn't running yet).
