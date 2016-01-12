@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     notify = require('gulp-notify'),
     watchify = require('watchify'),
     browserify = require('browserify'),
+    transform = require('vinyl-transform'),
     babelify = require('babelify');
 
 var assets = path.join(__dirname, 'src/assets');
@@ -35,42 +36,69 @@ function compileScripts(watch) {
 
   // we use browserify to bundle node style modules into a
   // script ready for the browser
-  var bundler = browserify({
-    entries: [entryFile],
+  var bundler = browserify(entryFile, {
+    cache: {},
+    packageCache: {},
     debug: true,
-    paths: ['./node_modules/', path.join(assets, 'scripts'), assets],
+    paths: [
+      './node_modules/',
+      path.join(assets, 'scripts')
+    ],
     extensions: ['.jsx', '.js'],
-    cache: {}, packageCache: {}, fullPaths: true,
+    fullPaths: true,
     sourceMaps: true
   });
 
-  // we use babel to transpile es6 syntax and the react jsx syntax
-  // down to es5
-  bundler.transform(babelify, {presets: ['es2015', 'react']});
+  // browserify transforms
+  bundler.transform(babelify, {
+    presets: ['es2015', 'react'],
+    "env": {
+      // only enable it when process.env.NODE_ENV is
+      // 'development' or undefined
+      "development": {
+        "plugins": [["react-transform", {
+            "transforms": [{
+                "transform": "react-transform-hmr",
+              "imports": ["react"],
+              "locals": ["module"]
+              },
+              {
+                "transform": "react-transform-catch-errors",
+                "imports": [
+                  "react",
+                  "redbox-react"
+                ]
+              }
+            ]
+          }]]
+      }
+    }
+  });
 
-  function bundle() {
-    var stream = bundler
-      .bundle()
+  function rebundle() {
+    var stream = bundler.bundle();
+    return stream
       .on("error", notify.onError({
-          message: "Error: <%= error.message %>",
-          title: "Error building scripts"
+        message: "Error: <%= error.message %>",
+        title: "Error building scripts"
       }))
+      .on('end', function() { gutil.log("Done building scripts"); })
       .pipe(source(entryFile))
       .pipe(rename('index.js'))
       .pipe(gulp.dest(path.join(dist, 'scripts')));
-
-    stream.on('end', function() { gutil.log("Done building scripts"); });
-
-    return stream;
   };
 
-  // use watchify for fast rebuilds using browserify
   if(watch) {
     bundler = watchify(bundler);
-    bundler.on('update', bundle);
+
+    // make sure we rebundle on update events
+    bundler.on('update', rebundle);
+
+    // watchify plugins
+    bundler.plugin('browserify-hmr', {});
   }
 
-  return bundle();
+  return rebundle();
 }
 
 // watch assets and build on changes
