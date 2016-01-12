@@ -68,17 +68,18 @@ class ProfielApi(mixins.ListModelMixin, mixins.RetrieveModelMixin, StekViewSet):
 
   class ProfielFilter(django_filters.FilterSet):
     lichting = django_filters.CharFilter(name="lichtinglid__groep__lidjaar")
+    verticale = django_filters.CharFilter(name="verticalelid__groep__naam")
 
     class Meta:
       model = Profiel
-      fields = ['lichting']
+      fields = ['lichting', 'verticale']
 
   permission_classes = [IsAuthenticated]
   list_serializer_class = ShortProfielSerializer
   detail_serializer_class = ProfielSerializer
   filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend)
   filter_class = ProfielFilter
-  search_fields = ('pk', 'voornaam', 'achternaam','email')
+  search_fields = ('pk', 'voornaam', 'achternaam', 'email')
 
   def get_queryset(self):
     return Profiel.objects.all()

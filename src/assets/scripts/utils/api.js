@@ -153,17 +153,16 @@ let api_obj = {
       return Q.xhr.get(`${api}/profiel/${pk}/`);
     },
 
-    search: (search_text, filters={}) => {
-      return Q.xhr
-        .get(`${api}/profiel/`, {
-          params: _.defaults({search: search_text}, filters)
-        });
+    search: (page, search_text, filters={}) => {
+      return api_obj.profiel.list(page, Object.assign({search_text: search_text}, filters));
     },
 
-    list: (page=1, pagesize=50) => {
+    // extra params can be django filters or even a {search: "search text"}
+    // and/or pagesize
+    list: (page=1, extra_params={}) => {
       return Q.xhr
         .get(`${api}/profiel/`, {
-          params: {page: page, pagesize: pagesize}
+          params: _.defaults({page: page}, extra_params)
         });
     }
 
