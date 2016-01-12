@@ -6,12 +6,14 @@ import {InlineTextInput} from '../components/forms';
 import LedenLayout from '../components/LedenLayout';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
+import qs from 'query-string';
 
-function loadData(props, filters) {
+let loadData = _.throttle((props, filter) => {
   return props.dispatch(
-    actions.loadProfielList(props.page, filters)
+    actions.loadProfielList(props.page, filter)
   );
-}
+}, 1000);
 
 export default class ProfielList extends React.Component {
 
@@ -20,43 +22,50 @@ export default class ProfielList extends React.Component {
       page: React.PropTypes.number.isRequired,
       shortProfielen: React.PropTypes.object.isRequired,
       shortProfielenByFilter: React.PropTypes.object.isRequired,
+      initialFilter: React.PropTypes.object.isRequired
     };
   }
 
   constructor(props) {
     super(props);
+
     this.state = {
-      filters: {}
+      filter: this.props.initialFilter
     };
 
-    this.onFilter = _.throttle(this.filter, 1000).bind(this);
+    this.onFilter = this.filter.bind(this);
   }
 
   componentWillMount() {
-    loadData(this.props, this.state.filters);
+    loadData(this.props, this.state.filter);
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.page != this.props.page) {
-      loadData(nextProps, this.state.filters);
+      loadData(nextProps, this.state.filter);
     }
   }
 
   filter(name, value) {
-    // create new filters object
-    let filters = Object.assign({}, this.state.filters);
+    // create new filter object
+    let nextFilter = Object.assign({}, this.state.filter);
     if(value == "") {
-      delete filters[name];
+      delete nextFilter[name];
     } else {
-      filters[name] = value;
+      nextFilter[name] = value;
     }
 
     // update the state
     this.setState({
-      filters: filters
+      filter: nextFilter
     });
 
-    loadData(this.props, filters);
+    // update the url
+    this.props.dispatch(
+      pushPath(Object.assign({}, location, {search: `?${qs.stringify(nextFilter)}`}))
+    );
+
+    loadData(this.props, nextFilter);
   }
 
   render() {
@@ -70,16 +79,19 @@ export default class ProfielList extends React.Component {
               <li className="action-input">
                 <InlineTextInput
                   label="Zoeken..."
+                  value={this.state.filter.search}
                   onChange={this.onFilter.bind(this, "search")}/>
               </li>
               <li className="action-input">
                 <InlineTextInput
                   label="Lichting..."
+                  value={this.state.filter.lichting}
                   onChange={this.onFilter.bind(this, "lichting")}/>
               </li>
               <li className="action-input">
                 <InlineTextInput
                   label="Verticale..."
+                  value={this.state.filter.verticale}
                   onChange={this.onFilter.bind(this, "verticale")}/>
               </li>
             </ul>
@@ -95,7 +107,7 @@ export default class ProfielList extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                { _.map(shortProfielenByFilter.get(this.state.filters), (id) => {
+                { _.map(shortProfielenByFilter.get(this.state.filter), (id) => {
                     let profiel = shortProfielen[id];
                     return <tr key={id}>
                       <td>{profiel.id}</td>
@@ -120,11 +132,11 @@ export default class ProfielList extends React.Component {
 function select(state, props) {
   let page = parseInt(props.params.page) || 1;
   let { entities: {shortProfielen}, shortProfielenByFilter } = state;
-
   return {
     shortProfielen,
     shortProfielenByFilter,
-    page
+    page,
+    initialFilter: props.location.query
   };
 }
 

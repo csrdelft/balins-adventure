@@ -215,7 +215,8 @@ export class InlineTextInput extends React.Component {
       label: React.PropTypes.string,
       validator: React.PropTypes.func,
       onChange: React.PropTypes.func.isRequired,
-      errorText: React.PropTypes.string
+      errorText: React.PropTypes.string,
+      value: React.PropTypes.string
     };
   }
 
@@ -223,7 +224,8 @@ export class InlineTextInput extends React.Component {
     return {
       validator: (val) => [],
       label: "",
-      error_text: ""
+      error_text: "",
+      value: ""
     };
   }
 
@@ -238,6 +240,7 @@ export class InlineTextInput extends React.Component {
   render() {
     return <mui.TextField
             ref="input"
+            value={this.props.value}
             hintText={this.props.label || this.props.name}
             errorText={this.props.error_text}
             onChange={this.onChange.bind(this)} />;
