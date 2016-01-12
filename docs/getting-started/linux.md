@@ -7,8 +7,6 @@
    dependencies.
 
     make install
-    source .virtualenv/bin/activate
-    pip install -r requirements
 
 5. Install gulp globally using npm: `sudo npm install -g gulp`
 
