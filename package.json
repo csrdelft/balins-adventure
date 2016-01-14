@@ -33,6 +33,7 @@
     "classnames": "^2.1.x",
     "cookies-js": "^1.2.x",
     "history": "^1.17.x",
+    "humps": "^1.0.0",
     "immutable": "^3.7.6",
     "jquery": "^2.1.x",
     "lodash": "^3.10.1",

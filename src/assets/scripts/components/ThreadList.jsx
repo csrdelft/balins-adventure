@@ -1,7 +1,6 @@
 import React from "react";
 import $ from "jquery";
 import _ from "underscore";
-import api from "api";
 import moment from 'moment';
 
 export default class ForumThreadList extends React.Component {

@@ -14,7 +14,7 @@ import api from "../utils/api";
 // This in turn ensures we can call it with future properties from componentWillReceiveProps
 function loadData(props) {
   const { pk } = props;
-  props.dispatch(actions.loadProfielDetail(pk));
+  props.dispatch(actions.profielDetail.load(pk));
 }
 
 
@@ -142,7 +142,7 @@ function select(state, props) {
     onderverenigingen: _.map(profiel.onderverenigingen, (id) => werkgroepen[id])
   } : {};
 
-  return Object.assign({profiel: profiel}, profielRelations);
+  return Object.assign({pk: pk, profiel: profiel}, profielRelations);
 }
 
 // Using redux we 'connect' ProfielDetail to the store through the select function.

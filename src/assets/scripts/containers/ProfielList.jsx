@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 import qs from 'query-string';
 import history from '../store/history';
+import { fromJS } from 'immutable';
 
 let loadData = _.throttle((props, filter) => {
   return props.dispatch(
@@ -21,9 +22,7 @@ export default class ProfielList extends React.Component {
   static get propTypes() {
     return {
       page: React.PropTypes.number.isRequired,
-      shortProfielen: React.PropTypes.object.isRequired,
-      shortProfielenByFilter: React.PropTypes.object.isRequired,
-      initialFilter: React.PropTypes.object.isRequired
+      shortProfielen: React.PropTypes.array.isRequired
     };
   }
 
@@ -72,7 +71,7 @@ export default class ProfielList extends React.Component {
   }
 
   render() {
-    let { shortProfielen, page, shortProfielenByFilter } = this.props;
+    let { shortProfielen, page } = this.props;
 
     return (
       <LedenLayout>
@@ -110,12 +109,11 @@ export default class ProfielList extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                { _.map(shortProfielenByFilter.get(this.state.filter), (id) => {
-                    let profiel = shortProfielen[id];
-                    return <tr key={id}>
-                      <td>{profiel.id}</td>
+                { _.map(shortProfielen, (profiel) => {
+                    return <tr key={profiel.pk}>
+                      <td>{profiel.pk}</td>
                       <td>
-                          <Link to={`/leden/${profiel.id}`}>
+                          <Link to={`/leden/${profiel.pk}`}>
                             {profiel.full_name}
                           </Link>
                       </td>
@@ -134,12 +132,15 @@ export default class ProfielList extends React.Component {
 
 function select(state, props) {
   let page = parseInt(props.params.page) || 1;
+  let initialFilter = props.location.query;
   let { entities: {shortProfielen}, shortProfielenByFilter } = state;
+  let ids = shortProfielenByFilter.get(fromJS(initialFilter));
+  let profielen = _(ids).map((id) => shortProfielen[id]);
+
   return {
-    shortProfielen,
-    shortProfielenByFilter,
+    shortProfielen: profielen,
     page,
-    initialFilter: props.location.query
+    initialFilter
   };
 }
 

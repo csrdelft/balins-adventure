@@ -1,9 +1,9 @@
 import React from "react";
 import _ from 'underscore';
-import api from 'api';
+import api from '../utils/api';
 import mui from "material-ui";
-import forms from 'forms';
-import actions from 'forum/actions';
+import * as forms from './forms';
+import actions from '../actions';
 
 export default class ThreadForm extends React.Component {
 
@@ -21,13 +21,7 @@ export default class ThreadForm extends React.Component {
         gesloten: false
       });
 
-      // kick of the create actions
-      // TODO error handling
-      actions
-        .createThread(data)
-        .catch((resp) => console.error(resp.data))
-        .then(() => this.refs.form.clear())
-        .done();
+      // TODO
     };
 
     let formBuilder = () => {

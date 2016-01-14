@@ -3,15 +3,14 @@ import Reflux from "reflux";
 import $ from "jquery";
 import _ from "underscore";
 import cs from "classnames";
-import api from "api";
+import api from "../utils/api";
 import moment from "moment";
 
 import { Link } from 'react-router';
-import ProfielLink from 'groepen/ProfielLink.jsx';
-import ThreadForm from "forum/ThreadForm";
-import ForumThreadList from "forum/ForumThreadList";
-import stores from "forum/stores";
-import actions from "forum/actions";
+import ProfielLink from '../components/ProfielLink.jsx';
+import ThreadForm from "../components/ThreadForm";
+import ForumThreadList from "../components/ThreadList";
+import actions from "../actions";
 
 export default class ForumList extends React.Component {
 
@@ -25,18 +24,6 @@ export default class ForumList extends React.Component {
   }
 
   componentWillMount() {
-    // subscribe at the thread store
-    this.unsubscribe = stores
-      .threadListStore
-      .listen((threads) =>
-        this.setState({
-          // TODO Fixme
-          threads: [] // stores.threadListStore.getForumPage(this.props.pk, this.props.page)
-        })
-      );
-
-    // force fresh load of forum threads
-    this.update(this.props.params.pk, this.props.params.page);
   }
 
 

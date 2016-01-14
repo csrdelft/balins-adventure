@@ -18,7 +18,7 @@ class VerticaleListSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Verticale
-    fields = ("id", "naam", "aantal_leden")
+    fields = ("pk", "naam", "aantal_leden")
 
 class CommissieListSerializer(serializers.ModelSerializer):
   class Meta:
@@ -39,12 +39,11 @@ class GroepSerializer(serializers.ModelSerializer):
 class ShortProfielSerializer(serializers.ModelSerializer):
 
   lidjaar = serializers.ReadOnlyField()
-  id = serializers.CharField(source='pk')
 
   class Meta:
     model = Profiel
     fields = (
-      'id',
+      'pk',
       'user',
       'voornaam',
       'achternaam',
@@ -61,12 +60,11 @@ class ProfielSerializer(serializers.ModelSerializer):
   werkgroepen = WerkgroepSerializer(many=True)
   onderverenigingen = OnderverenigingSerializer(many=True)
   overige_groepen = GroepSerializer(many=True)
-  id = serializers.CharField(source='pk')
 
   class Meta:
     model = Profiel
     fields = (
-      'id',
+      'pk',
       'user',
       'full_name',
       'nickname',
@@ -144,7 +142,7 @@ class CommissieDetailSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Commissie
-    fields = ("id", "naam", "leden", "status", "begin_moment", "eind_moment")
+    fields = ("pk", "naam", "leden", "status", "begin_moment", "eind_moment")
 
 class KringLidSerializer(serializers.ModelSerializer):
   user = ShortProfielSerializer()
@@ -164,7 +162,7 @@ class KringDetailSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Kring
-    fields = ("id", "naam", "leden", "verticale", "kring_nummer", "familie")
+    fields = ("pk", "naam", "leden", "verticale", "kring_nummer", "familie")
 
 class VerticaleLidSerializer(serializers.ModelSerializer):
   user = ShortProfielSerializer()
@@ -183,4 +181,4 @@ class VerticaleDetailSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Verticale
-    fields = ("id", "naam", "leden")
+    fields = ("pk", "naam", "leden")

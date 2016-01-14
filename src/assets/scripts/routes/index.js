@@ -8,7 +8,7 @@ import {
 
 // routing
 import GroepenRouter from './Groepen';
-//import ForumRouter from "./Forum";
+import ForumRouter from "./Forum";
 //import MededelingRouter from './Mededelingen';
 
 // view components
@@ -18,12 +18,12 @@ import Login from "../components/Login";
 import NotFound from "../components/NotFound";
 
 // <Route path="mededelingen">{MededelingRouter}</Route>
-// <Route path="forum">{ForumRouter}</Route>
 export default (
   <Route path="/" component={Root}>
     <IndexRoute component={NotFound} />
     <Route path="login" component={Login} />
     <Route path="leden">{GroepenRouter}</Route>
+    <Route path="forum">{ForumRouter}</Route>
     <Route path="*" component={NotFound} />
   </Route>
 );

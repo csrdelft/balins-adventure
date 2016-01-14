@@ -90,7 +90,7 @@ let api_obj = {
     // get subfora
     list: (page=1, page_size=25) => {
       return Q.xhr
-          .get(`${api}/forum/parts/`, {
+          .get(`${api}/forum/forums/`, {
             params: {
               page_size: page_size,
               page: page
@@ -98,18 +98,18 @@ let api_obj = {
           });
     },
 
-    threads : {
+    draadjes: {
       // query the n most recent forum posts
       get_recent: (n = 5) => {
         return Q.xhr
-          .get(`${api}/forum/threads/recent`, {
+          .get(`${api}/forum/draadjes/recent`, {
             params: {n: n}
           });
       },
 
       get: (pk, page=1, page_size=25) => {
         return Q.xhr
-          .get(`${api}/forum/threads/:pk`, {
+          .get(`${api}/forum/draadjes/:pk/`, {
             params: {
               page_size: page_size,
               page: page,
@@ -120,7 +120,7 @@ let api_obj = {
 
       list: (forum=undefined, page=1, page_size=25) => {
         return Q.xhr
-          .get(`${api}/forum/threads/`, {
+          .get(`${api}/forum/draadjes/`, {
             params: {
               forum: forum,
               page_size: page_size,
@@ -130,10 +130,10 @@ let api_obj = {
       },
 
       // create a new forum draadje
-      create: (data) => post(`${api}/forum/threads/`, data),
+      create: (data) => post(`${api}/forum/draadjes/`, data),
 
       // delete a forum draadje
-      delete: (pk) => del(`${api}/forum/threads/:pk`, { params: {pk: pk}})
+      delete: (pk) => del(`${api}/forum/draadjes/:pk/`, { params: {pk: pk}})
     },
 
     posts: {
@@ -141,7 +141,7 @@ let api_obj = {
       create: (data) => post(`${api}/forum/posts/`, data),
 
       // delete a forum draadje
-      delete: (pk) => del(`${api}/forum/posts/:pk`, { params: {pk: pk}})
+      delete: (pk) => del(`${api}/forum/posts/:pk/`, { params: {pk: pk}})
     }
 
   },

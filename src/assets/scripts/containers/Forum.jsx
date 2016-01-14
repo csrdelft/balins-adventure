@@ -2,9 +2,9 @@ import React from "react";
 import $ from "jquery";
 import _ from "underscore";
 import { Link } from 'react-router';
-import api from "api";
+import api from "../utils/api";
 
-import Layout from "Layout";
+import Layout from "../components/Layout";
 import mui, { List, ListItem } from 'material-ui';
 
 class ForumSideMenu extends React.Component {
