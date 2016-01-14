@@ -1,6 +1,6 @@
 # Windooooows, getting started
 
-1. Install **Python 3** (including pip) from the python site
+1. Install **Python 3.4** (including pip) from the python site
 2. Install **NodeJS** (including npm)
 3. Clone this repository
 4. Open Powershell at the root of the repository
