@@ -196,7 +196,7 @@ class ForumPostViewSet(
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 router = DefaultRouter()
-router.register('parts', ForumViewSet, base_name="forum-part")
-router.register('threads', ForumDraadViewSet, base_name="forum-thread")
+router.register('forums', ForumViewSet, base_name="forum-part")
+router.register('draadjes', ForumDraadViewSet, base_name="forum-thread")
 router.register('posts', ForumPostViewSet, base_name="forum-post")
 urls = router.urls

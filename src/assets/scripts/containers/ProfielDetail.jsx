@@ -53,7 +53,7 @@ class ProfielDetail extends React.Component {
           A.K.A. {profiel.nickname}
         </h3>
         <div className="gegevens">
-          <LidPhoto size="lg" pk={profiel.id} />
+          <LidPhoto size="lg" pk={profiel.pk} />
           <table className="table table-bordered">
             <tbody>
             <tr>

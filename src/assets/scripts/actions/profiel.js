@@ -3,11 +3,16 @@ import { normalize, Schema, arrayOf } from 'normalizr';
 import createDetailActions from './createDetailActions';
 import * as meta from './meta';
 
+// Action types:
+// Used to identify the action uniquely from the listeners (i.e. reducers)
 export const RECEIVE_PROFIEL = 'RECEIVE_PROFIEL';
 export const REQUEST_PROFIEL = 'REQUEST_PROFIEL';
 export const RECEIVE_PROFIEL_LIST = 'RECEIVE_PROFIEL_LIST';
 export const REQUEST_PROFIEL_LIST = 'REQUEST_PROFIEL_LIST';
 
+// Schemas
+// Describe the JSON structure that we get back from the API.
+// Primarily used to normalize the nested reponses into a flat structure using normalizr
 const Profiel = new Schema('profielen', {idAttribute: 'pk'});
 const ShortProfiel = new Schema('shortProfielen', {idAttribute: 'pk'});
 const Werkgroep = new Schema('werkgroepen', {idAttribute: 'pk'});
@@ -25,6 +30,12 @@ Profiel.define({
   werkgroepen: arrayOf(Werkgroep),
   overige_groepen: arrayOf(OverigeGroep)
 });
+
+/* Action Creators */
+
+//
+// ProfielDetail
+//
 
 export let profielDetail = createDetailActions('Profiel', Profiel, api.profiel.get);
 

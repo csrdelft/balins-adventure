@@ -5,10 +5,18 @@ from .models import *
 class LichtingSerializer(serializers.ModelSerializer):
   class Meta:
     model = Lichting
+    fields = (
+      "pk", "naam", "status", "familie", "samenvatting",
+      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+    )
 
 class KringListSerializer(serializers.ModelSerializer):
   class Meta:
     model = Kring
+    fields = (
+      "pk", "naam", "status", "familie", "samenvatting",
+      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+    )
 
 class VerticaleListSerializer(serializers.ModelSerializer):
   aantal_leden = serializers.SerializerMethodField()
@@ -18,23 +26,43 @@ class VerticaleListSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Verticale
-    fields = ("pk", "naam", "aantal_leden")
+    fields = (
+      "pk", "naam", "status", "familie", "samenvatting",
+      "begin_moment", "eind_moment", "maker_user", "keuzelijst",
+      "aantal_leden"
+    )
 
 class CommissieListSerializer(serializers.ModelSerializer):
   class Meta:
     model = Commissie
+    fields = (
+      "pk", "naam", "status", "familie", "samenvatting",
+      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+    )
 
 class WerkgroepSerializer(serializers.ModelSerializer):
   class Meta:
     model = Werkgroep
+    fields = (
+      "pk", "naam", "status", "familie", "samenvatting",
+      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+    )
 
 class OnderverenigingSerializer(serializers.ModelSerializer):
   class Meta:
     model = Ondervereniging
+    fields = (
+      "pk", "naam", "status", "familie", "samenvatting",
+      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+    )
 
 class GroepSerializer(serializers.ModelSerializer):
   class Meta:
     model = Groep
+    fields = (
+      "pk", "naam", "status", "familie", "samenvatting",
+      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+    )
 
 class ShortProfielSerializer(serializers.ModelSerializer):
 
@@ -142,7 +170,11 @@ class CommissieDetailSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Commissie
-    fields = ("pk", "naam", "leden", "status", "begin_moment", "eind_moment")
+    fields = (
+      "pk", "naam", "status", "familie", "samenvatting",
+      "begin_moment", "eind_moment", "maker_user", "keuzelijst",
+      "leden"
+    )
 
 class KringLidSerializer(serializers.ModelSerializer):
   user = ShortProfielSerializer()
@@ -162,7 +194,11 @@ class KringDetailSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Kring
-    fields = ("pk", "naam", "leden", "verticale", "kring_nummer", "familie")
+    fields = (
+      "pk", "naam", "status", "familie", "samenvatting",
+      "begin_moment", "eind_moment", "maker_user", "keuzelijst",
+      "leden"
+    )
 
 class VerticaleLidSerializer(serializers.ModelSerializer):
   user = ShortProfielSerializer()
@@ -181,4 +217,6 @@ class VerticaleDetailSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Verticale
-    fields = ("pk", "naam", "leden")
+    fields = (
+      "pk", "naam", "samenvatting", "leden"
+    )
