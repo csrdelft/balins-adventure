@@ -1,8 +1,8 @@
-var React = require("react");
-var $ = require("jquery");
-var _ = require("underscore");
+import React from 'react';
+import $ from 'jquery';
+import _ from 'underscore';
 
-class InlineInput extends React.Component {
+export default class InlineInput extends React.Component {
 
   constructor(props) {
     super(props);
@@ -44,5 +44,3 @@ class InlineInput extends React.Component {
     }
   }
 }
-
-module.exports = InlineInput;
