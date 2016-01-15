@@ -1,7 +1,14 @@
 import api from '../utils/api';
 import { normalize, Schema, arrayOf } from 'normalizr';
 import createDetailActions from './createDetailActions';
+import createListActions from './createListActions';
 import * as meta from './meta';
+
+function paginated(schema) {
+  return {
+    results: arrayOf(schema)
+  };
+};
 
 // Action types:
 // Used to identify the action uniquely from the listeners (i.e. reducers)
@@ -37,41 +44,7 @@ Profiel.define({
 // ProfielDetail
 //
 
-export let profielDetail = createDetailActions('Profiel', Profiel, api.profiel.get);
-
-//
-// ProfielList
-//
-
-export function requestProfielList(page, filter={}) {
-  return {
-    type: REQUEST_PROFIEL_LIST,
-    metatype: meta.REQUEST_ENTITIES,
-    page,
-    filter
-  };
-}
-
-export function receiveProfielList(response, filter={}) {
-  return {
-    type: RECEIVE_PROFIEL_LIST,
-    metatype: meta.RECEIVE_ENTITIES,
-    response: normalize(response, {data: { results: arrayOf(ShortProfiel)}}),
-    filter: filter
-  };
-}
-
-export function fetchProfielList(page, filter={}) {
-  return dispatch => {
-    dispatch(requestProfielList(page, filter));
-    return api.profiel.list(page, filter)
-      .catch((err) => console.error(err))
-      .then(resp => {
-        dispatch(receiveProfielList(resp, filter));
-      });
-  };
-}
-
-export function loadProfielList(page, filters={}) {
-  return fetchProfielList(page, filters);
-}
+export let profiel= Object.assign({},
+  createDetailActions('Profiel', Profiel, api.profiel.get),
+  createListActions('Profiel', paginated(ShortProfiel), api.profiel.list)
+);

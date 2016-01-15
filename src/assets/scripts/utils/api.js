@@ -154,16 +154,14 @@ let api_obj = {
     },
 
     search: (page, search_text, filters={}) => {
-      return api_obj.profiel.list(page, Object.assign({search_text: search_text}, filters));
+      return api_obj.profiel.list(Object.assign({page: page, search_text: search_text}, filters));
     },
 
     // extra params can be django filters or even a {search: "search text"}
-    // and/or pagesize
-    list: (page=1, extra_params={}) => {
+    // and/or page/pagesize
+    list: (extra_params={}) => {
       return Q.xhr
-        .get(`${api}/profiel/`, {
-          params: _.defaults({page: page}, extra_params)
-        });
+        .get(`${api}/profiel/`, {params: extra_params});
     }
 
   },

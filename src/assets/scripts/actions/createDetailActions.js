@@ -17,7 +17,7 @@ import * as meta from './meta';
  */
 export default function createDetailActions(name, schema, getPromise) {
   let REQ = 'REQUEST_' + (decamelize(name)).toUpperCase() + '_DETAIL';
-  let REC = 'RECEIVE' + (decamelize(name)).toUpperCase() + '_DETAIL';
+  let REC = 'RECEIVE_' + (decamelize(name)).toUpperCase() + '_DETAIL';
 
   let actions = {
     REQUEST : REQ,

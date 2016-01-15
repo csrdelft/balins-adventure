@@ -13,7 +13,7 @@ import { fromJS } from 'immutable';
 
 let loadData = _.throttle((props, filter) => {
   return props.dispatch(
-    actions.loadProfielList(props.page, filter)
+    actions.profiel.loadList(Object.assign({}, {page: props.page}, filter))
   );
 }, 1000);
 
@@ -133,8 +133,9 @@ export default class ProfielList extends React.Component {
 function select(state, props) {
   let page = parseInt(props.params.page) || 1;
   let initialFilter = props.location.query;
-  let { entities: {shortProfielen}, shortProfielenByFilter } = state;
-  let ids = shortProfielenByFilter.get(fromJS(initialFilter));
+  let { entities: {shortProfielen}, shortProfielenByParams } = state;
+  let ids = shortProfielenByParams.get(fromJS(
+    Object.assign({}, initialFilter, {page: page})));
   let profielen = _(ids).map((id) => shortProfielen[id]);
 
   return {

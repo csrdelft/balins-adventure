@@ -44,14 +44,15 @@ export function entities(state = {
   return state;
 };
 
-export function shortProfielenByFilter(state=Map(), action) {
+export function shortProfielenByParams(state=Map(), action) {
   switch(action.type) {
     case (actions.RECEIVE_PROFIEL_LIST):
-      let { filter, response: {entities} } = action;
-      // paginage by filter
+      let { params, response: {entities} } = action;
+
+      // paginage by params
       // gotta use immutable JS Maps instead of plain JS objects,
       // because only the former has value semantics
-      return state.set(fromJS(filter), _.keys(entities.shortProfielen));
+      return state.set(fromJS(params), _.keys(entities.shortProfielen));
 
     default:
       return state;
@@ -61,7 +62,7 @@ export function shortProfielenByFilter(state=Map(), action) {
 export function postsByThreadParams(state=Map(), action) {
   switch(action.type) {
     case (actions.forumDraad.RECEIVE):
-      // paginate by thread pk & page
+      // paginate posts by thread pk & page
       return state.set(fromJS(action.params), _(action.response.entities.posts).keys());
 
     default:

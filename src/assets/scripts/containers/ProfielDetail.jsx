@@ -14,7 +14,7 @@ import api from "../utils/api";
 // This in turn ensures we can call it with future properties from componentWillReceiveProps
 function loadData(props) {
   const { pk } = props;
-  props.dispatch(actions.profielDetail.load(pk));
+  props.dispatch(actions.profiel.load(pk));
 }
 
 

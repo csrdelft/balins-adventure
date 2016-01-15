@@ -4,7 +4,8 @@ import * as meta from './meta';
 
 /* E.g.:
  *   name: Profiel (camelcase!)
- *   schema: ShortProfiel (normalizr Schema of short profiel)
+ *   schema: { results: arrayOf(ShortProfiel) }
+ *     (i.e. a normalizr Schema of a paginaed short profiel list)
  *   getPromise: api.profiel.list (function of type pk -> promise([]))
  *
  * returns 3 action creaters:
@@ -17,7 +18,7 @@ import * as meta from './meta';
  */
 export default function createListActions(name, schema, listPromise) {
   let REQ = 'REQUEST_' + (decamelize(name)).toUpperCase() + '_LIST';
-  let REC = 'RECEIVE' + (decamelize(name)).toUpperCase() + '_LIST';
+  let REC = 'RECEIVE_' + (decamelize(name)).toUpperCase() + '_LIST';
 
   let actions = {
     REQUEST : REQ,
@@ -35,7 +36,7 @@ export default function createListActions(name, schema, listPromise) {
       return {
         type: REC,
         metatype: meta.RECEIVE_ENTITIES,
-        response: normalize(response, {data: arrayOf(schema)}),
+        response: normalize(response, {data: schema}),
         params: params
       };
     },
@@ -44,7 +45,7 @@ export default function createListActions(name, schema, listPromise) {
       return dispatch => {
         dispatch(actions.requestList(extra_params));
 
-        return listPromise()
+        return listPromise(extra_params)
           .catch((err) => console.error(err))
           .then(resp => {
             dispatch(
