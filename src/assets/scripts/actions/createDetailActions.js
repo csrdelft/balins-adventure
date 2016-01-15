@@ -3,21 +3,21 @@ import { decamelize } from 'humps';
 import * as meta from './meta';
 
 /* E.g.:
- *   name: ProfielDetail (camelcase!)
+ *   name: Profiel (camelcase!)
  *   schema: Profiel (normalizr Schema of Profiel)
  *   getPromise: api.profiel.get (function of type pk -> promise)
  *
  * returns 3 action creaters:
  *   {
- *     requestProfielDetail,
- *     receiveProfielDetail,
- *     fetchProfielDetail,
- *     loadProfielDetail
+ *     request,
+ *     receive,
+ *     fetch,
+ *     load
  *   }
  */
 export default function createDetailActions(name, schema, getPromise) {
-  let REQ = 'REQUEST_' + (decamelize(name)).toUpperCase();
-  let REC = 'RECEIVE' + (decamelize(name)).toUpperCase();
+  let REQ = 'REQUEST_' + (decamelize(name)).toUpperCase() + '_DETAIL';
+  let REC = 'RECEIVE' + (decamelize(name)).toUpperCase() + '_DETAIL';
 
   let actions = {
     REQUEST : REQ,

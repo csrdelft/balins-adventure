@@ -1,6 +1,7 @@
 import api from '../utils/api';
 import { normalize, Schema, arrayOf } from 'normalizr';
 import createDetailActions from './createDetailActions';
+import createListActions from './createListActions';
 
 import * as meta from './meta';
 
@@ -22,6 +23,10 @@ ForumDraad.define({
     results: arrayOf(ForumPost)
   }
 });
+
+//
+// Forum thread detail
+//
 
 export let forumDraad = Object.assign({}, 
   createDetailActions('ForumDraad', ForumDraad, api.forum.draadjes.get), {
@@ -54,3 +59,9 @@ export let forumDraad = Object.assign({},
     }
   }
 );
+
+//
+// Forum (parts) list
+// 
+
+export let forum = createListActions('Forum', Forum, api.forum.list);

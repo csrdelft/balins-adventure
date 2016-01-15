@@ -1,56 +1,43 @@
-import React from "react";
-import $ from "jquery";
-import _ from "underscore";
+import React, {PropTypes} from 'react';
+import { connect } from 'react-redux';
+import $ from 'jquery';
+import _ from 'underscore';
 import { Link } from 'react-router';
-import api from "../utils/api";
+import Layout from '../components/Layout';
+import * as actions from '../actions';
 
-import Layout from "../components/Layout";
-import mui, { List, ListItem } from 'material-ui';
+function loadData(props) {
+  let { dispatch } = props;
 
-class ForumSideMenu extends React.Component {
+  dispatch(actions.forum.loadList());
+}
 
-  constructor(props) {
-    super(props);
+export class ForumSideMenu extends React.Component {
 
-    this.state = {
-      fora: [],
-      // defaults to open
-      categories_open: {}
+  static get propTypes() {
+    return {
+      forums: PropTypes.object.isRequired
     };
   }
 
-  update() {
-
-    api.forum.list()
-      .then(
-        (resp) => {
-          let grouped_fora = _(resp.data)
-              .groupBy((forum) => forum.categorie.pk);
-          let categories = _(grouped_fora).map((fora) => fora[0].categorie);
-          this.setState({fora: grouped_fora, categories: categories});
-        },
-        (resp) => console.error("Failed to get sub fora with status " + resp.status)
-      );
-  }
-
   componentWillMount() {
-    this.update();
-  }
-
-  goTo(forum_pk) {
-    this.context.router.transitionTo("forum-thread-list", {pk: forum_pk});
+    loadData(this.props);
   }
 
   render() {
+    let { forums } = this.props;
+    let grouped_forums = _(forums).groupBy((forum) => forum.categorie.pk);
+    let categories = _(grouped_forums).map((forums) => forums[0].categorie);
+
     return (
       <ul>
         {
-          _.map(this.state.fora, (fora, cat_pk) =>
+          _.map(grouped_forums, (forums, cat_pk) =>
             <li key={cat_pk}>
-              <p>{this.state.categories[cat_pk].titel}</p>
+              <p>{categories[cat_pk].titel}</p>
               <ul>
               {
-                _.map(fora, (forum) => 
+                _.map(forums, (forum) => 
                    <li key={forum.pk}>
                      <Link to={`/forum/parts/${forum.pk}`}>{forum.titel}</Link>
                    </li>
@@ -65,12 +52,29 @@ class ForumSideMenu extends React.Component {
   }
 }
 
-export default class Forum extends React.Component {
+export class Forum extends React.Component {
+
+  static get propTypes() {
+    return {
+      forums: PropTypes.object.isRequired
+    };
+  }
+
   render() {
     return (
-      <Layout title="Reformaforum" sidemenu={ForumSideMenu}>
+      <Layout title="Reformaforum" sidemenu={ForumSideMenu} sidemenuProps={this.props}>
         {this.props.children}
       </Layout>
     );
   }
 }
+
+function select(state, props) {
+  let { entities : { forums }} = state;
+
+  return {
+    forums: forums
+  };
+}
+
+export default connect(select)(Forum);
