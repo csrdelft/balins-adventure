@@ -10,6 +10,7 @@ export function entities(state = {
     kringen: {},
     commissies: {},
     onderverenigingen: {},
+    shortVerticalen: {},
     verticalen: {},
     overigeGroepen: {},
     werkgroepen: {},

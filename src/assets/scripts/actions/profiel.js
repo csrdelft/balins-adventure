@@ -25,6 +25,7 @@ const ShortProfiel = new Schema('shortProfielen', {idAttribute: 'pk'});
 const Werkgroep = new Schema('werkgroepen', {idAttribute: 'pk'});
 const Kring = new Schema('kringen', {idAttribute: 'pk'});
 const OverigeGroep = new Schema('overigeGroepen', {idAttribute: 'pk'});
+const ShortVerticale = new Schema('shortVerticalen', {idAttribute: 'pk'});
 const Verticale = new Schema('verticalen', {idAttribute: 'pk'});
 const Commissie = new Schema('commissies', {idAttribute: 'pk'});
 const Ondervereniging = new Schema('onderverenigingen', {idAttribute: 'pk'});
@@ -33,7 +34,7 @@ Profiel.define({
   kring: Kring,
   onderverenigingen: arrayOf(Ondervereniging),
   commissies: arrayOf(Commissie),
-  verticale: Verticale,
+  verticale: ShortVerticale,
   werkgroepen: arrayOf(Werkgroep),
   overige_groepen: arrayOf(OverigeGroep)
 });
@@ -44,7 +45,11 @@ Profiel.define({
 // ProfielDetail
 //
 
-export let profiel= Object.assign({},
+export let profiel = Object.assign({},
   createDetailActions('Profiel', Profiel, api.profiel.get),
   createListActions('Profiel', paginated(ShortProfiel), api.profiel.list)
+);
+
+export let verticale = Object.assign({},
+  createListActions('Verticale', arrayOf(Verticale), api.verticalen.list)
 );

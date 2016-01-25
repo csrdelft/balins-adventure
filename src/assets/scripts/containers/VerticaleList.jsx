@@ -1,33 +1,26 @@
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from "underscore";
-import actions from "./actions";
-import stores from "./stores";
-import LidPhoto from "groepen/LidPhoto";
+import LidPhoto from "../components/LidPhoto";
 
-export default class VerticaleList extends React.Component {
+import * as actions from "../actions";
 
-  constructor(props) {
-    super(props);
+function loadData(props) {
+  let { dispatch } = props;
+  dispatch(actions.verticale.loadList());
+}
 
-    this.state = {
-      verticalen: []
+class VerticaleList extends Component {
+
+  static get propTypes() {
+    return {
+      verticalen: PropTypes.object.isRequired
     };
   }
-  
+
   componentWillMount() {
-    actions.loadVerticalen();
-  }
-
-  componentDidMount() {
-    this.setState({verticalen: stores.verticaleListStore.getAll()});
-    this.unsubscribe = stores.verticaleListStore.listen((verticalen) => this.setState({
-      verticalen: verticalen
-    }));
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
+    loadData(this.props);
   }
 
   render() {
@@ -39,7 +32,7 @@ export default class VerticaleList extends React.Component {
         </thead>
         <tbody>
         {
-            _.map(this.state.verticalen, (vert) => 
+            _.map(this.props.verticalen, (vert) => 
                 <tr key={vert.pk}>
                   <td>
                     <Link to="verticale-detail" params={{pk: vert.pk}}>{vert.naam}</Link>
@@ -57,3 +50,13 @@ export default class VerticaleList extends React.Component {
     </div>;
   }
 }
+
+function select(state) {
+  let { verticalen } = state.entities;
+
+  return {
+    verticalen
+  };
+}
+
+export default connect(select)(VerticaleList);

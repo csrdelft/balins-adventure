@@ -128,14 +128,14 @@ function select(state, props) {
     onderverenigingen,
     kringen,
     overigeGroepen,
-    verticalen,
+    shortVerticalen,
     werkgroepen
   }} = state;
 
   let profiel = profielen[pk];
   let profielRelations = profiel ? {
     kring: kringen[profiel.kring],
-    verticale: verticalen[profiel.verticale],
+    verticale: shortVerticalen[profiel.verticale],
     commissies: _.map(profiel.commissies, (id) => commissies[id]),
     overigeGroepen: _.map(profiel.overigeGroepen, (id) => overigeGroepen[id]),
     werkgroepen: _.map(profiel.werkgroepen, (id) => werkgroepen[id]),
