@@ -81,7 +81,7 @@ class ThreadList extends React.Component {
 }
 
 function select(state, props) {
-  let { pk } = props.params;
+  let pk = parseInt(props.params.pk);
   let page = 1;
   let { entities: { shortDraadjes }, shortDraadjesByParams } = state;
   let ids = shortDraadjesByParams.get(fromJS({pk, page})) || [];

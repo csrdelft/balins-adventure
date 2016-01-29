@@ -32,7 +32,7 @@ export default class ForumThreadList extends React.Component {
               </td>
 
               <td>
-                <Link to="forum-thread-detail" params={{pk: thread.pk}}>
+                <Link to={`/forum/draadjes/${thread.pk}`} params={{pk: thread.pk}}>
                   { thread.titel }
                 </Link>
               </td>
