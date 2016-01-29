@@ -21,8 +21,8 @@ export default function createListActions(name, schema, listPromise) {
   let REC = 'RECEIVE_' + (decamelize(name)).toUpperCase() + '_LIST';
 
   let actions = {
-    REQUEST : REQ,
-    RECEIVE : REC,
+    REQUEST_LIST : REQ,
+    RECEIVE_LIST : REC,
 
     requestList: (extra_params={}) => {
       return {

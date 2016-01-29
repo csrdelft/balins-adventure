@@ -3,6 +3,9 @@ import $ from "jquery";
 import _ from "underscore";
 import moment from 'moment';
 
+import ProfielLink from '../components/ProfielLink.jsx';
+import {Link} from 'react-router';
+
 export default class ForumThreadList extends React.Component {
   static get propTypes() {
     return {
@@ -10,12 +13,16 @@ export default class ForumThreadList extends React.Component {
     };
   }
 
+  deleteThread(thread_pk) {
+    console.debug("Delete thread not implemented");
+  }
+
   render() {
     return ( <table>
       <tbody>
         {
           _.map(this.props.threads, (thread) => (
-            <tr key={thread.pk}>k
+            <tr key={thread.pk}>
               <td>
                 <ProfielLink pk={thread.user.pk}>
                   { thread.user.full_name }

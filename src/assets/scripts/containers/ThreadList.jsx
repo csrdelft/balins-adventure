@@ -1,44 +1,46 @@
-import React from "react";
-import Reflux from "reflux";
+import React, { Component, PropTypes } from "react";
 import $ from "jquery";
 import _ from "underscore";
 import cs from "classnames";
 import api from "../utils/api";
 import moment from "moment";
+import { connect } from 'react-redux';
+import { fromJS } from 'immutable';
 
-import { Link } from 'react-router';
-import ProfielLink from '../components/ProfielLink.jsx';
 import ThreadForm from "../components/ThreadForm";
 import ForumThreadList from "../components/ThreadList";
-import actions from "../actions";
 
-export default class ForumList extends React.Component {
+import * as actions from '../actions';
+
+function loadData(props) {
+  let { dispatch, page, pk } = props;
+  dispatch(actions.forumDraad.loadList({ pk, page }));
+}
+
+class ThreadList extends React.Component {
+
+  static get propTypes() {
+    return {
+      page: React.PropTypes.number.isRequired,
+      pk: React.PropTypes.number.isRequired,
+      threads: React.PropTypes.array.isRequired
+    };
+  }
 
   constructor(props) {
     super(props);
-
     this.state = {
-      threads: [],
       show_create: false
     };
   }
 
   componentWillMount() {
-  }
-
-
-  update(pk, page=1) {
-    actions.loadThreads(pk, page);
-  }
-
-  componentWillUnmount() {
-    // make sure to unsubscribe from the thread store
-    this.unsubscribe();
+    loadData(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.params.pk != this.props.params.pk || nextProps.params.page != this.props.params.page) {
-      this.update(nextProps.params.pk, nextProps.params.page);
+    if(nextProps.page != this.props.page || nextProps.pk != this.props.pk) {
+      this.update(nextProps);
     }
   }
 
@@ -46,10 +48,6 @@ export default class ForumList extends React.Component {
     this.setState({
       show_create: show
     });
-  }
-
-  deleteThread(thread_pk) {
-    actions.deleteThread(thread_pk);
   }
 
   render() {
@@ -75,9 +73,25 @@ export default class ForumList extends React.Component {
        </div>
 
        <div id="page-content">
-        <ForumThreadList threads={this.state.threads} />
+        <ForumThreadList threads={this.props.threads} />
        </div>
      </div>
     );
   }
 }
+
+function select(state, props) {
+  let { pk } = props.params;
+  let page = 1;
+  let { entities: { shortDraadjes }, shortDraadjesByParams } = state;
+  let ids = shortDraadjesByParams.get(fromJS({pk, page})) || [];
+  let threads = _.map(ids, (id) => shortDraadjes[id]);
+
+  return {
+    page: page,
+    pk,
+    threads: threads
+  };
+}
+
+export default connect(select)(ThreadList);

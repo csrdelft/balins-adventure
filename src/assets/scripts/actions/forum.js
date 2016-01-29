@@ -14,7 +14,7 @@ export const REQUEST_POST_DELETE = 'REQUEST_POST_DELETE';
 export const RECEIVE_POST_DELETE = 'RECEIVE_POST_DELETE';
 
 const Forum = new Schema('forums', {idAttribute: 'pk'});
-const ShortForumDraad = new Schema('short_draadjes', {idAttribute: 'pk'});
+const ShortForumDraad = new Schema('shortDraadjes', {idAttribute: 'pk'});
 const ForumDraad = new Schema('draadjes', {idAttribute: 'pk'});
 const ForumPost = new Schema('posts', {idAttribute: 'pk'});
 
@@ -29,7 +29,12 @@ ForumDraad.define({
 //
 
 export let forumDraad = Object.assign({}, 
-  createDetailActions('ForumDraad', ForumDraad, api.forum.draadjes.get), {
+  createDetailActions('ForumDraad', ForumDraad, api.forum.draadjes.get),
+  createListActions('ForumDraad', {results : arrayOf(ShortForumDraad)}, (params => {
+    let { pk , page } = params;
+    return api.forum.draadjes.list(pk, page);
+  })),
+  {
     requestDeletePost: (pk) => {
       return {
         type: REQUEST_POST_DELETE,

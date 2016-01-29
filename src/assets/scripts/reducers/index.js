@@ -17,6 +17,7 @@ export function entities(state = {
     werkgroepen: {},
     posts: {},
     draadjes: {},
+    shortDraadjes: {},
     forums: {}
   }, action) {
 
@@ -60,6 +61,18 @@ export function shortProfielenByParams(state=Map(), action) {
       return state;
   };
 };
+
+export function shortDraadjesByParams(state=Map(), action) {
+  switch(action.type) {
+    case (actions.forumDraad.RECEIVE_LIST):
+    
+      let { params, response: {entities} } = action;
+      return state.set(fromJS(params), _.keys(entities.shortDraadjes));
+
+    default:
+      return state;
+  }
+}
 
 export function postsByThreadParams(state=Map(), action) {
   switch(action.type) {

@@ -118,14 +118,13 @@ let api_obj = {
           });
       },
 
-      list: (forum=undefined, page=1, page_size=25) => {
+      list: (forum, page=1, extra_params={}) => {
         return Q.xhr
           .get(`${api}/forum/draadjes/`, {
-            params: {
+            params: Object.assign({}, {
               forum: forum,
-              page_size: page_size,
               page: page
-            }
+            }, extra_params)
           });
       },
 

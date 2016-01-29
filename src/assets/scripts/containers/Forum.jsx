@@ -39,7 +39,7 @@ export class ForumSideMenu extends React.Component {
               {
                 _.map(forums, (forum) => 
                    <li key={forum.pk}>
-                     <Link to={`/forum/parts/${forum.pk}`}>{forum.titel}</Link>
+                     <Link to={`/forum/forums/${forum.pk}`}>{forum.titel}</Link>
                    </li>
                 )
               }
