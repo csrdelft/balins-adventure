@@ -25,12 +25,14 @@ class Login extends React.Component {
   }
 
   submit(data) {
+    let {dispatch} = this.props;
+
     // simply kick of the login actions
-    this.props.dispatch(actions
+    dispatch(actions
       .auth
       .login(data.username, data.password))
       .then(
-        (resp) => console.log("DONE!"),
+        (resp) => dispatch(actions.router.push('/')),
         (resp) => this.setError(resp.data.detail)
       );
   }

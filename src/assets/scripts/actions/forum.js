@@ -64,4 +64,4 @@ export let forumDraad = Object.assign({},
 // Forum (parts) list
 // 
 
-export let forum = createListActions('Forum', Forum, api.forum.list);
+export let forum = createListActions('Forum', arrayOf(Forum), api.forum.list);
