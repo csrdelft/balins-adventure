@@ -14,7 +14,7 @@ import ForumRouter from "./Forum";
 // view components
 import App from '../containers/App';
 import Root from '../containers/Root';
-import Login from "../components/Login";
+import Login from "../containers/Login";
 import NotFound from "../components/NotFound";
 
 // <Route path="mededelingen">{MededelingRouter}</Route>

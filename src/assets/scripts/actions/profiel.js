@@ -20,15 +20,15 @@ export const REQUEST_PROFIEL_LIST = 'REQUEST_PROFIEL_LIST';
 // Schemas
 // Describe the JSON structure that we get back from the API.
 // Primarily used to normalize the nested reponses into a flat structure using normalizr
-const Profiel = new Schema('profielen', {idAttribute: 'pk'});
-const ShortProfiel = new Schema('shortProfielen', {idAttribute: 'pk'});
-const Werkgroep = new Schema('werkgroepen', {idAttribute: 'pk'});
-const Kring = new Schema('kringen', {idAttribute: 'pk'});
-const OverigeGroep = new Schema('overigeGroepen', {idAttribute: 'pk'});
-const ShortVerticale = new Schema('shortVerticalen', {idAttribute: 'pk'});
-const Verticale = new Schema('verticalen', {idAttribute: 'pk'});
-const Commissie = new Schema('commissies', {idAttribute: 'pk'});
-const Ondervereniging = new Schema('onderverenigingen', {idAttribute: 'pk'});
+export const Profiel = new Schema('profielen', {idAttribute: 'pk'});
+export const ShortProfiel = new Schema('shortProfielen', {idAttribute: 'pk'});
+export const Werkgroep = new Schema('werkgroepen', {idAttribute: 'pk'});
+export const Kring = new Schema('kringen', {idAttribute: 'pk'});
+export const OverigeGroep = new Schema('overigeGroepen', {idAttribute: 'pk'});
+export const ShortVerticale = new Schema('shortVerticalen', {idAttribute: 'pk'});
+export const Verticale = new Schema('verticalen', {idAttribute: 'pk'});
+export const Commissie = new Schema('commissies', {idAttribute: 'pk'});
+export const Ondervereniging = new Schema('onderverenigingen', {idAttribute: 'pk'});
 
 Profiel.define({
   kring: Kring,
@@ -41,15 +41,15 @@ Profiel.define({
 
 /* Action Creators */
 
-//
-// ProfielDetail
-//
-
 export let profiel = Object.assign({},
   createDetailActions('Profiel', Profiel, api.profiel.get),
   createListActions('Profiel', paginated(ShortProfiel), api.profiel.list)
 );
 
 export let verticale = Object.assign({},
+  createListActions('Verticale', arrayOf(Verticale), api.verticalen.list)
+);
+
+export let commissie = Object.assign({},
   createListActions('Verticale', arrayOf(Verticale), api.verticalen.list)
 );

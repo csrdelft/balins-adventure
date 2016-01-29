@@ -1,15 +1,14 @@
 import React from "react";
-import Reflux from 'reflux';
 import $ from "jquery";
 import _ from "underscore";
+import * as actions from '../actions';
+import { connect } from 'react-redux';
 
 // ui
 import * as Grid from "../components/bootstrap";
 import * as forms from '../components/forms';
 
-// import actions from "auth/actions";
-
-export default class Login extends React.Component {
+class Login extends React.Component {
 
   constructor(props) {
     super(props);
@@ -27,15 +26,13 @@ export default class Login extends React.Component {
 
   submit(data) {
     // simply kick of the login actions
-    /*
-    actions
-      .login(data.username, data.password)
-      // and listen for it to complete/fail
+    this.props.dispatch(actions
+      .auth
+      .login(data.username, data.password))
       .then(
-        (resp) => this.context.router.transitionTo("/"),
+        (resp) => console.log("DONE!"),
         (resp) => this.setError(resp.data.detail)
-      );*/
-
+      );
   }
 
   render() {
@@ -71,3 +68,5 @@ export default class Login extends React.Component {
     );
   }
 }
+
+export default connect(function(state){return {}})(Login);

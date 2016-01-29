@@ -4,3 +4,4 @@ import { combineReducers } from 'redux';
 
 export * from './profiel';
 export * from './forum';
+export * from './auth';

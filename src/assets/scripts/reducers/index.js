@@ -3,6 +3,7 @@ import {Map, fromJS} from 'immutable';
 import _ from 'underscore';
 import {merge} from 'lodash/object';
 import * as meta from '../actions/meta';
+import { normalize } from 'normalizr';
 
 export function entities(state = {
     profielen: {},
@@ -69,4 +70,16 @@ export function postsByThreadParams(state=Map(), action) {
     default:
       return state;
   };
+};
+
+export function auth(state={currentUser: null}, action) {
+  switch(action.type) {
+    case (actions.auth.LOGIN_SUCCESS):
+      return Object.assign({}, state, {
+        currentUser: action.response.result.data
+      });
+
+    default:
+      return state;
+  }
 };
