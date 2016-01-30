@@ -24,7 +24,7 @@ npm install
 npm install -g gulp
 ```
 
-7. Download and install MySQL [from here](http://dev.mysql.com/downloads/windows/installer/5.7.html)
+7. Download and install MySQL [from here](http://dev.mysql.com/downloads/windows/installer/5.7.html). Install the server, the python connector and the workbench.
 
 8. Setup a database by executing the following query (e.g. in the workbench):
 
