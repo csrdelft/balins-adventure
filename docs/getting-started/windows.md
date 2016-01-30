@@ -3,7 +3,8 @@
 1. Install **Python 3.4** (including pip) from the [python site](https://www.python.org/downloads/release/python-343/) and make sure it's on your PATH by adding "C:/Python34/" to your PATH environmental variable or checking the option in the installation wizard.
 2. Install **NodeJS** (including npm) from [here](https://nodejs.org/en/download/)
 3. Clone this repository
-4. Open Powershell at the root of the repository
+4. Open a Powershell as administrator and run the following to allow running powershell scripts `Set-ExecutionPolicy RemoteSigned`
+4. Open a Powershell as a regular user at the root of the repository
 5. Run the following commands to create the python sandbox and install the python dependencies
    as described by the file `requirements`:
 
