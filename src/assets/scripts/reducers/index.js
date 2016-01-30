@@ -92,6 +92,11 @@ export function auth(state={currentUser: null}, action) {
         currentUser: action.response.result.data
       });
 
+    case (actions.auth.PRELOAD_LOGIN_SUCCESS):
+      return Object.assign({}, state, {
+        currentUser: action.user.pk
+      });
+
     default:
       return state;
   }

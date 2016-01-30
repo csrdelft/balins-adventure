@@ -23,16 +23,20 @@ import App from 'containers/App';
 import * as reducers from 'reducers';
 
 // load the preloaded data from the dom into the initial store state
-let preloadData = parse(window.preloadData);
-let initialState = Object.assign({
-  entities: normalize(preloadData, {user: ShortProfiel}).entities,
-  auth: {
-    currentUser: preloadData.user ? preloadData.user.pk : undefined
-  }
-});
+let initialState = {};
 
 let reducer = combineReducers(Object.assign({}, reducers, {routing: routeReducer}));
 let store = configureStore(reducer, initialState);
+
+// call actions to handle preload data
+let preloadData = parse(window.preloadData);
+store.dispatch({
+  metatype: meta.RECEIVE_ENTITIES,
+  response: normalize(preloadData, {user: ShortProfiel})
+});
+if(preloadData.user) {
+  store.dispatch(actions.auth.preloadLogin(preloadData.user));
+}
 
 render(<App store={store} history={history} /> , $('#mount-app')[0]);
 

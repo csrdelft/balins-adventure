@@ -7,6 +7,7 @@ import {ShortProfiel} from './profiel';
 export let auth = {
 
   REQUEST_LOGIN: "REQUEST_LOGIN",
+  PRELOAD_LOGIN_SUCCESS: "PRELOAD_LOGIN_SUCCESS",
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
   LOGIN_FAIL: "LOGIN_FAIL",
 
@@ -22,6 +23,13 @@ export let auth = {
   requestLogin: function(user, pw) {
     return {
       type: auth.REQUEST_LOGIN,
+      user
+    };
+  },
+
+  preloadLogin: function(user) {
+    return {
+      type: auth.PRELOAD_LOGIN_SUCCESS,
       user
     };
   },
