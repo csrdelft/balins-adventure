@@ -1,7 +1,7 @@
 # Windooooows, getting started
 
-1. Install **Python 3.4** (including pip) from the python site
-2. Install **NodeJS** (including npm)
+1. Install **Python 3.4** (including pip) from the [python site](https://www.python.org/downloads/release/python-343/)
+2. Install **NodeJS** (including npm) from [here](https://nodejs.org/en/download/)
 3. Clone this repository
 4. Open Powershell at the root of the repository
 5. Run the following commands to create the python sandbox and install the python dependencies
