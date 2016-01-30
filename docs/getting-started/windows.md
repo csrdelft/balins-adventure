@@ -1,6 +1,6 @@
 # Windooooows, getting started
 
-1. Install **Python 3.4** (including pip) from the [python site](https://www.python.org/downloads/release/python-343/)
+1. Install **Python 3.4** (including pip) from the [python site](https://www.python.org/downloads/release/python-343/) and make sure it's on your PATH by adding "C:/Python34/" to your PATH environmental variable.
 2. Install **NodeJS** (including npm) from [here](https://nodejs.org/en/download/)
 3. Clone this repository
 4. Open Powershell at the root of the repository
