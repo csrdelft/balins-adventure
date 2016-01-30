@@ -145,10 +145,15 @@ class AbstractGroep(models.Model):
   begin_moment = models.DateTimeField(blank=True, null=True)
   eind_moment = models.DateTimeField(blank=True, null=True)
   maker_user = models.ForeignKey(Profiel, db_column='maker_uid', related_name='+')
-  keuzelijst = models.CharField(max_length=255, blank=True)
 
   ## !! IMPORTANT
   ## abstract related object manager `leden` expected on any child class
+
+  class Meta:
+    abstract = True
+
+class KeuzeMixin(models.Model):
+  keuzelijst = models.CharField(max_length=255, blank=True)
 
   class Meta:
     abstract = True
@@ -163,7 +168,7 @@ class GroepDoodlijnenMixin(models.Model):
   class Meta:
     abstract = True
 
-class Groep(AbstractGroep):
+class Groep(KeuzeMixin, AbstractGroep):
   rechten_aanmelden = models.CharField(max_length=255)
 
   def __str__(self):
@@ -172,7 +177,7 @@ class Groep(AbstractGroep):
   class Meta:
     db_table = 'groepen'
 
-class Ketzer(GroepDoodlijnenMixin, AbstractGroep):
+class Ketzer(GroepDoodlijnenMixin, KeuzeMixin, AbstractGroep):
 
   def __str__(self):
     return "Ketzer: %s" % self.naam
@@ -229,7 +234,7 @@ class Kring(AbstractGroep):
   class Meta:
     db_table = 'kringen'
 
-class Werkgroep(GroepDoodlijnenMixin, AbstractGroep):
+class Werkgroep(GroepDoodlijnenMixin, KeuzeMixin, AbstractGroep, ):
 
   def __str__(self):
     return "Werkgroep: %s" % self.naam
@@ -237,7 +242,7 @@ class Werkgroep(GroepDoodlijnenMixin, AbstractGroep):
   class Meta:
     db_table = 'werkgroepen'
 
-class Activiteit(GroepDoodlijnenMixin, AbstractGroep):
+class Activiteit(GroepDoodlijnenMixin, KeuzeMixin, AbstractGroep):
   soort = models.CharField(max_length=15) # TODO choicefield ??
   rechten_aanmelden = models.CharField(max_length=255, blank=True)
   locatie = models.CharField(max_length=255, blank=True)
