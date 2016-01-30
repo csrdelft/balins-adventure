@@ -6,7 +6,6 @@ import {InlineTextInput} from '../components/forms';
 import LedenLayout from '../components/LedenLayout';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
-import { pushPath } from 'redux-simple-router';
 import qs from 'query-string';
 import history from '../store/history';
 import { fromJS } from 'immutable';

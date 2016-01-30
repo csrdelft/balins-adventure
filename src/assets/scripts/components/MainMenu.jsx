@@ -1,5 +1,4 @@
 import React from "react";
-import Reflux from 'reflux';
 import $ from "jquery";
 import _ from "underscore";
 
