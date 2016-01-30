@@ -6,8 +6,8 @@
 2. Install **NodeJS** (including npm) from [here](https://nodejs.org/en/download/)
 3. Clone this repository
 4. Open a Powershell as administrator and run the following to allow running powershell scripts `Set-ExecutionPolicy RemoteSigned`
-4. Open a Powershell as a regular user at the root of the repository
-5. Run the following commands to create the python sandbox and install the python dependencies
+5. Open a Powershell as a regular user at the root of the repository
+6. Run the following commands to create the python sandbox and install the python dependencies
    as described by the file `requirements`:
 
 ```
@@ -16,7 +16,7 @@ python -m venv .virtualenv
 python -m pip install -r requirements
 ```
 
-6. Run the following commands to install the node sandbox with the dependencies as described by the
+7. Run the following commands to install the node sandbox with the dependencies as described by the
    `package.json`:
 
 ```
@@ -24,13 +24,19 @@ npm install
 npm install -g gulp
 ```
 
-7. Download and install MySQL [from here](http://dev.mysql.com/downloads/windows/installer/5.7.html). Install the server, the python connector and the workbench.
+8. Download and install MySQL [from here](http://dev.mysql.com/downloads/windows/installer/5.7.html). Install the server, the python connector and the workbench.
 
-8. Setup a database by executing the following query (e.g. in the workbench):
+9. Setup a database by executing the following query (e.g. in the workbench):
 
-   ```
-    create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';
-   ```
+```
+ create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';
+```
+
+10. Migrate the database
+
+```
+cd src; python manage.py migrate
+```
 
 ## The Python Venv
 
@@ -38,9 +44,9 @@ All python dependencies and tools are LOCAL to the project.
 This way we never clash with other python packages on your system.
 You do have to remember to *activate* the virtual python environment everytime you run a python command (e.g. pip) for the project.
 
-   ```
-    python -m venv .virtualenv
-   ```
+```
+ python -m venv .virtualenv
+```
 
 The environment is active until you close the shell.
 
