@@ -24,7 +24,7 @@ npm install
 npm install -g gulp
 ```
 
-7. Download and install MySQL
+7. Download and install MySQL [from here](http://dev.mysql.com/downloads/file/?id=460621)
 
 8. Setup a database by executing the following query (e.g. in the workbench):
 
