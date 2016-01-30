@@ -7,7 +7,7 @@ class LichtingSerializer(serializers.ModelSerializer):
     model = Lichting
     fields = (
       "pk", "naam", "status", "familie", "samenvatting",
-      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+      "begin_moment", "eind_moment", "maker_user"
     )
 
 class KringListSerializer(serializers.ModelSerializer):
@@ -15,7 +15,7 @@ class KringListSerializer(serializers.ModelSerializer):
     model = Kring
     fields = (
       "pk", "naam", "status", "familie", "samenvatting",
-      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+      "begin_moment", "eind_moment", "maker_user"
     )
 
 class VerticaleListSerializer(serializers.ModelSerializer):
@@ -28,7 +28,7 @@ class VerticaleListSerializer(serializers.ModelSerializer):
     model = Verticale
     fields = (
       "pk", "naam", "status", "familie", "samenvatting",
-      "begin_moment", "eind_moment", "maker_user", "keuzelijst",
+      "begin_moment", "eind_moment", "maker_user",
       "aantal_leden"
     )
 
@@ -37,7 +37,7 @@ class CommissieListSerializer(serializers.ModelSerializer):
     model = Commissie
     fields = (
       "pk", "naam", "status", "familie", "samenvatting",
-      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+      "begin_moment", "eind_moment", "maker_user"
     )
 
 class WerkgroepSerializer(serializers.ModelSerializer):
@@ -45,7 +45,7 @@ class WerkgroepSerializer(serializers.ModelSerializer):
     model = Werkgroep
     fields = (
       "pk", "naam", "status", "familie", "samenvatting",
-      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+      "begin_moment", "eind_moment", "maker_user"
     )
 
 class OnderverenigingSerializer(serializers.ModelSerializer):
@@ -53,7 +53,7 @@ class OnderverenigingSerializer(serializers.ModelSerializer):
     model = Ondervereniging
     fields = (
       "pk", "naam", "status", "familie", "samenvatting",
-      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+      "begin_moment", "eind_moment", "maker_user"
     )
 
 class GroepSerializer(serializers.ModelSerializer):
@@ -61,7 +61,7 @@ class GroepSerializer(serializers.ModelSerializer):
     model = Groep
     fields = (
       "pk", "naam", "status", "familie", "samenvatting",
-      "begin_moment", "eind_moment", "maker_user", "keuzelijst"
+      "begin_moment", "eind_moment", "maker_user"
     )
 
 class ShortProfielSerializer(serializers.ModelSerializer):
@@ -172,7 +172,7 @@ class CommissieDetailSerializer(serializers.ModelSerializer):
     model = Commissie
     fields = (
       "pk", "naam", "status", "familie", "samenvatting",
-      "begin_moment", "eind_moment", "maker_user", "keuzelijst",
+      "begin_moment", "eind_moment", "maker_user",
       "leden"
     )
 
@@ -196,7 +196,7 @@ class KringDetailSerializer(serializers.ModelSerializer):
     model = Kring
     fields = (
       "pk", "naam", "status", "familie", "samenvatting",
-      "begin_moment", "eind_moment", "maker_user", "keuzelijst",
+      "begin_moment", "eind_moment", "maker_user",
       "leden"
     )
 
