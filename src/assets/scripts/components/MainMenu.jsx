@@ -1,25 +1,19 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import $ from "jquery";
 import _ from "underscore";
-
-import { Router, Route, IndexRoute, Link } from 'react-router';
+import { Link } from 'react-router';
 
 // data
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 // the top menu
 // where we use the Link element from the router to activate different views
 export default class Menu extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      forum_notifications: 0,
-      user: undefined
+  static get propTypes() {
+    return {
+      user: PropTypes.object
     };
-
-    this.socket = null;
   }
 
   componentWillMount() {
@@ -34,9 +28,9 @@ export default class Menu extends React.Component {
 
   componentDidMount() {
     // pick up notifications
-    this.socket = io('http://localhost:3000/notifications');
+    // this.socket = io('http://localhost:3000/notifications');
 
-    this.socket.on('connect', function() {
+    /*this.socket.on('connect', function() {
       console.log("Connected to notification server");
     });
 
@@ -46,24 +40,22 @@ export default class Menu extends React.Component {
 
     this.socket.on('disconnect', function() {
       console.warn("Disconnected from notifications server");
-    });
+    });*/
   }
 
   componentWillUnmount() {
-    this.socket.close();
+    /*this.socket.close();
     this.socket = null;
-    this.unsubscribe();
+    this.unsubscribe();*/
   }
 
   privateLinks() {
-    return [];
     // todo fixme
-    if(authStore.isAuthenticated()) {
-      let user = authStore.getCurrentUser();
+    if(this.props.user) {
       return [
         <Link key="leden-link" to="leden">Leden</Link>,
         <Link key="mededelingen-link" to="mededelingen">Mededelingen</Link>,
-        <Link key="profiel-link" to={`/leden/${user.pk}`}>Profiel</Link>
+        <Link key="profiel-link" to={`/leden/${this.props.user.pk}`}>Profiel</Link>
       ];
     } else {
       return [];
@@ -76,7 +68,7 @@ export default class Menu extends React.Component {
         <div className="row">
           <Link to="/">Thuis</Link>
           { this.privateLinks() }
-          <Link to="/forum">Reformaforum ({ this.state.forum_notifications })</Link>
+          <Link to="/forum">Reformaforum</Link>
         </div>
       </div>
     );

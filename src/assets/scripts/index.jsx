@@ -5,6 +5,11 @@ import { render } from 'react-dom';
 import { syncHistory, routeReducer } from 'react-router-redux';
 import { combineReducers } from 'redux';
 import * as immutable from 'immutable';
+import * as meta from 'actions/meta';
+import * as actions from 'actions';
+import { ShortProfiel } from 'actions/profiel';
+import { normalize, arrayOf } from 'normalizr';
+import { parse } from 'json3';
 
 // useful for debuggin'
 window._ = _;
@@ -17,7 +22,14 @@ import history from 'store/history';
 import App from 'containers/App';
 import * as reducers from 'reducers';
 
-let initialState = {};
+// load the preloaded data from the dom into the initial store state
+let preloadData = parse(window.preloadData);
+let initialState = Object.assign({
+  entities: normalize(preloadData, {user: ShortProfiel}).entities,
+  auth: {
+    currentUser: preloadData.user ? preloadData.user.pk : undefined
+  }
+});
 
 let reducer = combineReducers(Object.assign({}, reducers, {routing: routeReducer}));
 let store = configureStore(reducer, initialState);

@@ -1,14 +1,21 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 
 // view components
 import Menu from "../components/MainMenu";
 
-export default class Root extends Component {
+class Root extends Component {
+
+  static get propTypes() {
+    return {
+      user: PropTypes.object
+    };
+  }
 
   render() {
     return <div>
       <div id="global-nav">
-        <Menu />
+        <Menu user={this.props.user} />
       </div>
 
       <div id="app">
@@ -22,3 +29,13 @@ export default class Root extends Component {
     </div>;
   }
 }
+
+function select(state) {
+  let {entities: {shortProfielen}, auth: {currentUser}} = state;
+
+  return {
+    user: currentUser ? shortProfielen[currentUser] : undefined
+  };
+}
+
+export default connect(select)(Root);

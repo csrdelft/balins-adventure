@@ -5,9 +5,7 @@
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
     <script>
       // json encoded preload data
-      window.preloadData = {
-        user: '{{ current_user_js }}'
-      };
+      window.preloadData = '{{ preload_data }}';
     </script>
   </head>
   <body>

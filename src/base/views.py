@@ -10,13 +10,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 def index(request):
+  preloadData = dict()
+
   if request.user.is_authenticated():
-    current_user_js = escapejs(json.dumps(ShortProfielSerializer(request.profiel).data))
-  else:
-    current_user_js = 'undefined'
+    preloadData["user"] = ShortProfielSerializer(request.profiel).data
 
   return render(request, 'main.html', context={
-    'current_user_js': current_user_js
+    'preload_data': escapejs(json.dumps(preloadData))
   })
 
 def su(request, uid):
