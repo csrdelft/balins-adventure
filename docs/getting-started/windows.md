@@ -31,13 +31,6 @@ npm install -g gulp
    ```
     create database csrdelft_django; grant all privileges on csrdelft_django.* to csrdelft@localhost identified by 'bl44t';
    ```
-   
-9. Download and install PyCharm (pro edition, using your TU e-mail account):
-
-10. Configure pycharm. When you open the project it should pick up the virtual python env that we
-   created. You should verify this at `Run > Edit Configurations > Python Interpreter`.
-   In `Settings > Language and Frameworks > Django` you should set the django root to `src`
-   and the settings file to `src/csrdelft/settings.py`.
 
 ## The Python Venv
 
@@ -104,7 +97,16 @@ The above is valid python and uses the Django models to execute 2 SELECT and an 
 
 Now you can login and browse around.
 
-## Some run options
+## PyCharm
+
+The recommended development environment is pycharm:
+
+- Download and install PyCharm (pro edition, using your TU e-mail account):
+
+- Configure pycharm. When you open the project it should pick up the virtual python env that we
+   created. You should verify this at `Run > Edit Configurations > Python Interpreter`.
+   In `Settings > Language and Frameworks > Django` you should set the django root to `src`
+   and the settings file to `src/csrdelft/settings.py`.
 
 To speed up the test runs you should edit your default test run configuration in
 `Run > Edit Configurations > Defaults > Django tests` and set `Options: --keepdb`.
@@ -112,7 +114,7 @@ To speed up the test runs you should edit your default test run configuration in
 You can also add a run configuration for the Django development server such that you can easily
 start it (press `+`, choose *Django Server* and click apply).
 
-## More handy plugins for Intellij
+More handy plugins are:
 
 - CSS Support
 - Git Integration
