@@ -55,6 +55,7 @@ export default class Menu extends React.Component {
       return [
         <Link key="leden-link" to="leden">Leden</Link>,
         <Link key="mededelingen-link" to="mededelingen">Mededelingen</Link>,
+        <Link key="agenda-link" to="agenda">Agenda</Link>,
         <Link key="profiel-link" to={`/leden/${this.props.user.pk}`}>Profiel</Link>
       ];
     } else {

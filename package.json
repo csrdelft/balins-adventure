@@ -36,9 +36,11 @@
     "humps": "^1.0.0",
     "immutable": "^3.7.6",
     "jquery": "^2.1.x",
+    "json3": "^3.3.2",
     "lodash": "^3.10.1",
     "material-ui": "^0.14.1",
     "moment": "^2.10.6",
+    "moment-range": "^2.1.0",
     "normalizr": "^1.4.1",
     "object-assign": "^4.0.x",
     "q": "^1.4.x",
@@ -48,14 +50,13 @@
     "react-dom": "^0.14.x",
     "react-redux": "^4.0.x",
     "react-router": "^1.0.x",
+    "react-router-redux": "^2.1.0",
     "react-tap-event-plugin": "^0.2.1",
     "redux": "3.0.x",
     "redux-devtools": "^3.0.x",
-    "react-router-redux": "^2.1.0",
     "redux-thunk": "^1.0.3",
     "socket.io-client": "^1.4.2",
     "underscore": "^1.8.3",
-    "utf-8-validate": "^1.2.1",
-    "json3": "^3.3.2"
+    "utf-8-validate": "^1.2.1"
   }
 }

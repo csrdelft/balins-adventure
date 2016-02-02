@@ -9,6 +9,7 @@ import {
 // routing
 import GroepenRouter from './Groepen';
 import ForumRouter from "./Forum";
+import AgendaRouter from "./Agenda";
 //import MededelingRouter from './Mededelingen';
 
 // view components
@@ -23,6 +24,7 @@ export default (
     <IndexRoute component={NotFound} />
     <Route path="login" component={Login} />
     <Route path="leden">{GroepenRouter}</Route>
+    <Route path="agenda">{AgendaRouter}</Route>
     <Route path="forum">{ForumRouter}</Route>
     <Route path="*" component={NotFound} />
   </Route>
