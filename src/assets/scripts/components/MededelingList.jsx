@@ -1,12 +1,15 @@
 import React from "react";
 import $ from "jquery";
 import _ from "underscore";
-import api from "api";
 import { Router, Link } from 'react-router';
 
-let PropTypes = Router.PropTypes;
+export default class MededelingList extends React.Component {
 
-class MededelingList extends React.Component {
+  static get propTypes() {
+    return {
+      mededelingen: React.PropTypes.array
+    };
+  }
 
   render() {
     return <div>
@@ -23,10 +26,3 @@ class MededelingList extends React.Component {
     </div>;
   }
 }
-
-// the component takes an attribute to manipulate the update interval
-MededelingList.propTypes = {
-  mededelingen: React.PropTypes.arrayOf(React.PropTypes.object).isRequired
-};
-
-module.exports = MededelingList;

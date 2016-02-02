@@ -44,7 +44,15 @@ function select(state, props) {
   return {
     year: parseInt(year || moment().format("YYYY")),
     month: parseInt(month || moment().format("MM")),
-    events: []
+    events: [{
+      startdatetime: moment([2016, 2, 4, 13, 0]).format(),
+      enddatetime: moment([2016, 2, 4, 15, 0]).format(),
+      title: "Lunchen met het bestuur"
+    },{
+      startdatetime: moment([2016, 2, 8, 17, 0]).format(),
+      enddatetime: moment([2016, 2, 8, 24, 0]).format(),
+      title: "SURPRISE HV"
+    }]
   };
 }
 

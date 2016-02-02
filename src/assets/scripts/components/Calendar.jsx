@@ -4,6 +4,8 @@ import 'moment-range';
 import _ from 'underscore';
 import cn from 'classnames';
 
+const DAY_KEY_FORMAT = "YYYYMMDD";
+
 class CalEvent extends Component {
   static get propTypes() {
     return {
@@ -82,7 +84,7 @@ class CalMonth extends React.Component {
 
     month.by("days", (day) => {
       let focus = day.format("YYYY-DDD") == today;
-      let dayOfWeek = day.format("D");
+      let dayOfWeek = day.format(DAY_KEY_FORMAT);
       days.push(
         <CalDay
           focus={focus}
@@ -161,7 +163,7 @@ export default class Calendar extends React.Component {
       moment
         .range(moment(event.startdatetime), moment(event.enddatetime))
         .by('days', (day) => {
-          let key = moment(event.startdatetime).format("YYYYMMDD");
+          let key = moment(event.startdatetime).format(DAY_KEY_FORMAT);
           let evs = (eventsByDay[key] || []);
           evs.push(event)
           eventsByDay[key] = evs;

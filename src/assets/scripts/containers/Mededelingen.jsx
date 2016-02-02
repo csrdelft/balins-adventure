@@ -2,48 +2,22 @@ import React from "react";
 import $ from "jquery";
 import _ from "underscore";
 import { State } from 'react-router';
-import api from 'api';
+import {connect} from 'react-redux';
+import api from '../utils/api';
 
-import MededelingList from './MededelingList';
-import Layout from "Layout";
+import MededelingList from '../components/MededelingList';
+import Layout from "../components/Layout";
 
-class MededelingenSidemenu extends React.Component {
+class Mededelingen extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return <MededelingList mededelingen={this.props.mededelingen} />;
-  }
-}
-
-export default class Mededelingen extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    // initial state
-    this.state = {
-      mededelingen: []
+  static get propTypes() {
+    return {
+      mededelingen: React.PropTypes.array
     };
-
-  }
-
-  componentWillMount() {
-    this.update();
-  }
-
-  update() {
-    api.mededelingen.list()
-      .then(
-      (resp) => this.setState({mededelingen: resp.data}),
-      (resp) => console.error('Getting mededelingen failed with status ' + resp.status)
-    );
   }
 
   render() {
-    let props = {mededelingen: this.state.mededelingen};
+    let props = {mededelingen: this.props.mededelingen};
 
     return (
       <Layout title="Mededelingen" sidemenu={MededelingList} sidemenuProps={props}>
@@ -52,3 +26,13 @@ export default class Mededelingen extends React.Component {
     );
   }
 }
+
+function select(state) {
+  let { entities: {mededelingen}} = state;
+
+  return {
+    mededelingen: [] 
+  };
+}
+
+export default connect(select)(Mededelingen);

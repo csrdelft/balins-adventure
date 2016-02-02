@@ -10,7 +10,7 @@ import {
 import GroepenRouter from './Groepen';
 import ForumRouter from "./Forum";
 import AgendaRouter from "./Agenda";
-//import MededelingRouter from './Mededelingen';
+import MededelingenRouter from './Mededelingen';
 
 // view components
 import App from '../containers/App';
@@ -18,7 +18,6 @@ import Root from '../containers/Root';
 import Login from "../containers/Login";
 import NotFound from "../components/NotFound";
 
-// <Route path="mededelingen">{MededelingRouter}</Route>
 export default (
   <Route path="/" component={Root}>
     <IndexRoute component={NotFound} />
@@ -26,6 +25,7 @@ export default (
     <Route path="leden">{GroepenRouter}</Route>
     <Route path="agenda">{AgendaRouter}</Route>
     <Route path="forum">{ForumRouter}</Route>
+    <Route path="mededelingen">{MededelingenRouter}</Route>
     <Route path="*" component={NotFound} />
   </Route>
 );

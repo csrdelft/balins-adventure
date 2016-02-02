@@ -18,7 +18,8 @@ export function entities(state = {
     posts: {},
     draadjes: {},
     shortDraadjes: {},
-    forums: {}
+    forums: {},
+    mededelingen: {}
   }, action) {
 
   switch(action.metatype) {
