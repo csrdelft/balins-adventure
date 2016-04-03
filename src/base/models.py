@@ -13,6 +13,7 @@ GROUP_STATUS_CHOICES = Choices(
 class Profiel(models.Model):
   class Meta:
     db_table = 'profielen'
+    verbose_name_plural = 'profielen'
 
   STATUS = Choices(
     OVERLEDEN='OVE',
@@ -176,6 +177,7 @@ class Groep(KeuzeMixin, AbstractGroep):
 
   class Meta:
     db_table = 'groepen'
+    verbose_name_plural = 'groepen'
 
 class Ketzer(GroepDoodlijnenMixin, KeuzeMixin, AbstractGroep):
 
@@ -184,6 +186,7 @@ class Ketzer(GroepDoodlijnenMixin, KeuzeMixin, AbstractGroep):
 
   class Meta:
     db_table = 'ketzers'
+    verbose_name_plural = 'ketzers'
 
 class Lichting(AbstractGroep):
   lidjaar = models.IntegerField(unique=True)
@@ -197,6 +200,7 @@ class Lichting(AbstractGroep):
 
   class Meta:
     db_table = 'lichtingen'
+    verbose_name_plural = 'lichtingen'
 
 class Ondervereniging(AbstractGroep):
   soort = models.CharField(max_length=1)
@@ -206,6 +210,7 @@ class Ondervereniging(AbstractGroep):
 
   class Meta:
     db_table = 'onderverenigingen'
+    verbose_name_plural = 'onderverenigingen'
 
 class Verticale(AbstractGroep):
   letter = models.CharField(unique=True, max_length=1)
@@ -215,6 +220,7 @@ class Verticale(AbstractGroep):
 
   class Meta:
     db_table = 'verticalen'
+    verbose_name_plural = 'verticalen'
 
 class Woonoord(AbstractGroep):
 
@@ -223,6 +229,7 @@ class Woonoord(AbstractGroep):
 
   class Meta:
     db_table = 'woonoorden'
+    verbose_name_plural = 'woonoorden'
 
 class Kring(AbstractGroep):
   verticale = models.ForeignKey(Verticale, db_column='verticale')
@@ -233,6 +240,7 @@ class Kring(AbstractGroep):
 
   class Meta:
     db_table = 'kringen'
+    verbose_name_plural = 'kringen'
 
 class Werkgroep(GroepDoodlijnenMixin, KeuzeMixin, AbstractGroep, ):
 
@@ -241,6 +249,7 @@ class Werkgroep(GroepDoodlijnenMixin, KeuzeMixin, AbstractGroep, ):
 
   class Meta:
     db_table = 'werkgroepen'
+    verbose_name_plural = 'werkgroepen'
 
 class Activiteit(GroepDoodlijnenMixin, KeuzeMixin, AbstractGroep):
   soort = models.CharField(max_length=15) # TODO choicefield ??
@@ -253,6 +262,7 @@ class Activiteit(GroepDoodlijnenMixin, KeuzeMixin, AbstractGroep):
 
   class Meta:
     db_table = 'activiteiten'
+    verbose_name_plural = 'activiteiten'
 
 class Bestuur(AbstractGroep):
   bijbeltekst = models.TextField()
@@ -262,6 +272,7 @@ class Bestuur(AbstractGroep):
 
   class Meta:
     db_table = 'besturen'
+    verbose_name_plural = 'besturen'
 
 class Commissie(AbstractGroep):
   soort = models.CharField(max_length=1)
@@ -272,6 +283,7 @@ class Commissie(AbstractGroep):
   class Meta:
     db_table = 'commissies'
     ordering = ['-eind_moment']
+    verbose_name_plural = 'commissies'
 
 class AbstractLid(models.Model):
   user = models.ForeignKey(Profiel, db_column='uid', related_name='%(class)s')
@@ -294,36 +306,43 @@ class GroepsLid(AbstractLid):
 
   class Meta:
     db_table = 'groep_leden'
+    verbose_name_plural = 'groeps leden'
 
 class KringLid(AbstractLid):
   groep = models.ForeignKey(Kring, related_name="leden")
 
   class Meta:
     db_table = 'kring_leden'
+    verbose_name_plural = 'kring leden'
 
 class CommissieLid(AbstractLid):
   groep = models.ForeignKey(Commissie, related_name="leden")
 
   class Meta:
     db_table = 'commissie_leden'
+    verbose_name_plural = 'commissie leden'
 
 class BestuursLid(AbstractLid):
   groep = models.ForeignKey(Bestuur, related_name="leden")
 
   class Meta:
     db_table = 'bestuurs_leden'
+    verbose_name_plural = 'bestuurs leden'
 
 class VerticaleLid(AbstractLid):
   groep = models.ForeignKey(Verticale, related_name="leden")
 
   class Meta:
     db_table = 'verticale_leden'
+    verbose_name_plural = 'verticale leden'
 
 class Bewoners(AbstractLid):
   groep = models.ForeignKey(Woonoord, related_name="leden")
 
   class Meta:
     db_table = 'bewoners'
+    verbose_name_plural = 'bewoners'
+
 
 class LichtingLid(AbstractLid):
   groep = models.ForeignKey(Lichting, related_name="leden")
@@ -334,12 +353,14 @@ class LichtingLid(AbstractLid):
 
   class Meta:
     db_table = 'lichting_leden'
+    verbose_name_plural = 'lichting leden'
 
 class OnderverenigingsLid(AbstractLid):
   groep = models.ForeignKey(Ondervereniging, related_name="leden")
 
   class Meta:
     db_table = 'ondervereniging_leden'
+    verbose_name_plural = 'ondervereniging leden'
 
 class KetzerDeelnemer(AbstractLid):
   groep = models.ForeignKey(Ketzer, related_name="leden")
